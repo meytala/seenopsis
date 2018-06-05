@@ -2,9 +2,12 @@
 
 import pandas as pd
 import numpy as np
+import html
+
 # from scipy import stats
 # from scipy.stats import zscore
 # import matplotlib.pyplot as plt
+
 
 
 #######################################################
@@ -213,49 +216,50 @@ class Variable:
 
 
 
-###I need to have a for loop to run this for every variable in the list of variables.
-###the following works only with variables that are continoues - dtype('int64'), dtype('float64')
-#
-
-list_of_objects = []
-for index, variable in enumerate (column_name_list):
-    name = variable
-    values = df_table[name]
-    type = variable_type_list[index]
-    list_of_objects.append(Variable(name, values, type))
-
-#print("list of objects: ", list_of_objects)
-
-for object in list_of_objects:
-    if object.type.name in ('int64', 'float64'):
-        print ("object: ", object.name,
-               "mean: ", object.mean_of_var(),
-               "median: ", object.median_of_var(),
-               "minimum: ", object.minimum_of_var(),
-               "maximum: ", object.maximum_of_var(),
-               "sd: ", object.sd_of_var())
-
-
-
-
-
-
-# if df[col].dtype.name == 'datetime64[ns]':
 
 # name_1 = name_of_variables (df)[1]                            #QA
 # values_1 = df[name_of_variables (df)[1]].values
 # test = Variable(name_1, values_1 )
 # print(test.maximum_of_var())
 # # # , test.median_of_var(), test.minimum_of_var(), test.maximum_of_var(), test.sd_of_var())
-#
 
 
 
-#######################################################
-####################Outliers###########################
-#######################################################
 
-"""a function that detect outlier"""
+######creating a list of objects for the Variable class. Each object has to have:
+#  1. a name (the name of the variable)   - line 67, def: name_of_variables, line 119 - the name of the list (column_name_list)
+#  2. The values of the variables  - in the dataframe - the values of rows 1 and more (0 is the title) - line 33 the def, line 113 - name of table: df_table
+#  3. The type of the variable - line 94: var type, line 125: name of variable: variable_type_list
+
+## I have extracted all of these properties before (lines
+
+list_of_objects = []
+for index, variable in enumerate (column_name_list):
+    name = variable
+    values = df_table[name]  ##in pandas - this is how you get the values
+    type = variable_type_list[index]
+    list_of_objects.append(Variable(name, values, type))
+
+#print("list of objects: ", list_of_objects)            #QA
+
+
+##### for each object, apply the methods of the class Variable. The stat methods are only for variables that are int64 and float64
+##### store it as a list
+
+stat_list = []
+for object in list_of_objects:
+    if object.type.name in ('int64', 'float64'):
+        # print ("name: ", object.name,
+        #        "mean: ", object.mean_of_var(),
+        #        "median: ", object.median_of_var(),
+        #        "minimum: ", object.minimum_of_var(),
+        #        "maximum: ", object.maximum_of_var(),
+        #        "sd: ", object.sd_of_var())
+        stat_list += [object.name,object.mean_of_var(), object.median_of_var(), object.sd_of_var(), object.minimum_of_var(), object.maximum_of_var()]   ###appending the list with few variables
+
+
+print ("this is the stat list: ", stat_list)            ##QA
+
 
 
 
@@ -265,4 +269,60 @@ for object in list_of_objects:
 #######################################################
 
 """ a function that wrap everything nicely in a table to display"""
+
+##https://stackoverflow.com/questions/1475123/easiest-way-to-turn-a-list-into-an-html-table-in-python
+
+######first, given a "flat list", produce a list of sublists
+
+
+def row_major(alist, sublen):
+  return [alist[i:i+sublen] for i in range(0, len(alist), sublen)]
+
+
+alist = stat_list
+sublen = 6 ### name, mean, median, min, max, sd
+
+list_of_lists = row_major(alist, sublen)
+print("list of lists:", list_of_lists)
+
+
+html_top = """<html>
+<table border = 1>
+    <tr>
+        <th>Variable name</th>
+        <th>Mean</th>
+        <th>Median</th>
+        <th>sd</th>
+        <th>Min</th>
+        <th>Max</th>
+    </tr>
+    <indent>"""
+
+html_bottomn = """<indent>
+</table>
+</html>"""
+
+
+body_list = []
+for i in list_of_lists:
+    list_for_body = "<tr>" \
+                    "<td>{}</td>" \
+                    "<td>{}</td>" \
+                    "<td>{}</td>" \
+                    "<td>{}</td>" \
+                    "<td>{}</td>" \
+                    "<td>{}</td>" \
+                    "</tr>".format (i[0], i[1], i[2],i[3],i[4],i[5])
+    body_list.append(list_for_body)
+
+
+merged_html = html_top + "".join(body_list) +html_bottomn
+
+print(merged_html)
+
+
+with open("test.html","w") as html_file:
+    html_file.write(merged_html)
+    html_file.close()
+
 
