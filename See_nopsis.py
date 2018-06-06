@@ -2,7 +2,9 @@
 
 import pandas as pd
 import numpy as np
-import html
+from decimal import Decimal
+from numpy import percentile
+
 
 # from scipy import stats
 # from scipy.stats import zscore
@@ -46,12 +48,13 @@ def table_as_df (table_name):
 """ a function that count the number of records in the table"""
 
 ##input = df
-##output = number of records
+##output = number of nun null records
 
 def count_records (df):
     num_records = df.count()
     maximal_numer = max(num_records)
     #print("the number of records in the dataset is {}".format(maximal_numer))
+    print(num_records)
     return maximal_numer
 
 
@@ -144,22 +147,6 @@ print("This is a list with the type of the variables: ",variable_type_list)
 ##NEED TO CODE
 
 
-#######################################################
-####################Variable histogrial################
-#######################################################
-
-""" a function that build an histogram"""
-
-
-
-
-#######################################################
-####################Missing Value######################
-#######################################################
-
-"""a function that is looking for the missing values"""
-
-
 #########################################################
 ####################Basic Statistic######################
 #########################################################
@@ -176,13 +163,25 @@ class Variable:
         name = self.name
         mean = np.mean(self.values)
         #print("the mean of the coloum {} is {}".format (name, mean))
-        return mean
+        return round(mean,2)
 
     def median_of_var (self):
         name = self.name
         median = np.median(self.values)
         #print("the median of the coloum {} is {}".format (name, median))
         return median
+
+    def lower_iqr (self):
+        name = self.name
+        values = self.values
+        low_iqr = np.percentile(values,25)
+        return low_iqr
+
+    def upper_iqr(self):
+        name = self.name
+        values = self.values
+        up_iqr = np.percentile(values, 75)
+        return up_iqr
 
     def minimum_of_var (self):
         name = self.name
@@ -200,13 +199,14 @@ class Variable:
         name = self.name
         sd = np.std(self.values)
         #print("the std of coloum {} is {}".format (name, sd))
-        return sd
+        return round(sd,2)
 
-    # def count_null (self):
-    #     name = self.name
-    #     is_null = df[name].isnull().sum()
-    #     print("there number of null values of the variable {} is {}".format (name, is_null))
-    #     return is_null
+    def count_null (self):
+        name = self.name
+        values = self.values
+        number_of_null=values.isnull().sum()
+        return number_of_null
+
 
     # def outliers (self):
     #     name = self.name
@@ -214,7 +214,33 @@ class Variable:
     #     outlier = df[name[(np.abs(stats.zscore()) > threshold)]]
     #     return ("there number of outliers of the variable {} is {}".format (name, outlier))
 
+    #
+    # def histogram (self):
+    #     name = self.name
+    #     values = self.values
+    #     hist = np.histogram(self.values, bins=2)
+    #     return (hist)
 
+
+
+
+
+
+
+#######################################################
+####################Variable histogrial################
+#######################################################
+
+""" a function that build an histogram"""
+
+
+
+
+#######################################################
+####################Missing Value######################
+#######################################################
+
+"""a function that is looking for the missing values"""
 
 
 # name_1 = name_of_variables (df)[1]                            #QA
@@ -254,8 +280,19 @@ for object in list_of_objects:
         #        "median: ", object.median_of_var(),
         #        "minimum: ", object.minimum_of_var(),
         #        "maximum: ", object.maximum_of_var(),
-        #        "sd: ", object.sd_of_var())
-        stat_list += [object.name,object.mean_of_var(), object.median_of_var(), object.sd_of_var(), object.minimum_of_var(), object.maximum_of_var()]   ###appending the list with few variables
+        #        "sd: ", object.sd_of_var(),
+        #        "numer of null: ", count_null())
+        ###print ("histogram:", object.histogram())
+        stat_list += [object.name,
+                      object.type,
+                      object.mean_of_var(),
+                      object.sd_of_var(),
+                      object.median_of_var(),
+                      object.lower_iqr(),
+                      object.upper_iqr(),
+                      object.minimum_of_var(),
+                      object.maximum_of_var(),
+                      object.count_null()]   ###appending the list with few variables
 
 
 print ("this is the stat list: ", stat_list)            ##QA
@@ -280,49 +317,50 @@ def row_major(alist, sublen):
 
 
 alist = stat_list
-sublen = 6 ### name, mean, median, min, max, sd
+sublen = 10 ### name, mean, median, min, max, sd
 
 list_of_lists = row_major(alist, sublen)
-print("list of lists:", list_of_lists)
+##print("list of lists:", list_of_lists)                ##QA
 
 
 html_top = """<html>
 <table border = 1>
     <tr>
         <th>Variable name</th>
-        <th>Mean</th>
-        <th>Median</th>
-        <th>sd</th>
+        <th>Variable type</th>
+        <th>Mean &plusmn sd</th>
+        <th>Median (IQR) </th>
         <th>Min</th>
         <th>Max</th>
-    </tr>
-    <indent>"""
+        <th>Null</th>
+    </tr>"""
 
-html_bottomn = """<indent>
-</table>
+html_bottomn = """</table>
 </html>"""
 
 
 body_list = []
 for i in list_of_lists:
     list_for_body = "<tr>" \
-                    "<td>{}</td>" \
-                    "<td>{}</td>" \
-                    "<td>{}</td>" \
-                    "<td>{}</td>" \
-                    "<td>{}</td>" \
-                    "<td>{}</td>" \
-                    "</tr>".format (i[0], i[1], i[2],i[3],i[4],i[5])
+                        "<td> {} </ td>" \
+                        "<td> {} </ td>" \
+                        "<td> {} &plusmn {} </ td>" \
+                        "<td> {} ({}, {}) </ td>" \
+                        "<td> {} </ td>" \
+                        "<td> {} </ td>" \
+                        "<td> {} </ td>" \
+                    "</tr>".format (i[0], i[1], i[2],i[3],i[4],i[5], i[6], i[7], i[8], i[9])
     body_list.append(list_for_body)
 
 
 merged_html = html_top + "".join(body_list) +html_bottomn
 
-print(merged_html)
+##print(merged_html)            ##QA
 
 
 with open("test.html","w") as html_file:
     html_file.write(merged_html)
     html_file.close()
+
 
 
