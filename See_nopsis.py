@@ -2,6 +2,7 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 from decimal import Decimal
 from numpy import percentile
 
@@ -35,7 +36,7 @@ def name_of_table (name):
 
 
 def table_as_df (table_name):
-    df = pd.read_csv(table_name)
+    df = pd.read_csv(table_name, parse_dates=True,infer_datetime_format=True)
     #print("this is the database: ", df)                                       ###QA
     return df
 
@@ -154,10 +155,11 @@ print("This is a list with the type of the variables: ",variable_type_list)
 """a function that gives you basic statistics"""
 
 class Variable:
-    def __init__(self, name, values, type):
+    def __init__(self, name, values, type, index):
         self.name = name
         self.values=values
         self.type = type
+        self.index = index
 
     def mean_of_var (self):
         name = self.name
@@ -167,20 +169,20 @@ class Variable:
 
     def median_of_var (self):
         name = self.name
-        median = np.median(self.values)
+        median = np.nanmedian(self.values)
         #print("the median of the coloum {} is {}".format (name, median))
-        return median
+        return round(median,1)
 
     def lower_iqr (self):
         name = self.name
         values = self.values
-        low_iqr = np.percentile(values,25)
+        low_iqr = np.nanpercentile(values,25)
         return low_iqr
 
     def upper_iqr(self):
         name = self.name
         values = self.values
-        up_iqr = np.percentile(values, 75)
+        up_iqr = np.nanpercentile(values, 75)
         return up_iqr
 
     def minimum_of_var (self):
@@ -215,15 +217,20 @@ class Variable:
     #     return ("there number of outliers of the variable {} is {}".format (name, outlier))
 
     #
-    # def histogram (self):
-    #     name = self.name
-    #     values = self.values
-    #     hist = np.histogram(self.values, bins=2)
-    #     return (hist)
+    def histogram (self):
+        plt.hist(self.values.dropna(), bins=50)    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
+        plt.savefig("hist_{}".format(self.index))
+        plt.close()
+        return self.index
 
 
-
-
+    ###QA
+# name_2 = column_name_list[1]                            #QA
+# values_2 = df_table[name_2]
+# type_2 = variable_type_list[1]
+# test = Variable(name_2, values_2, type_2, index=1)
+# print("histogram", test.histogram())
+# # # , test.median_of_var(), test.minimum_of_var(), test.maximum_of_var(), test.sd_of_var())
 
 
 
@@ -264,7 +271,8 @@ for index, variable in enumerate (column_name_list):
     name = variable
     values = df_table[name]  ##in pandas - this is how you get the values
     type = variable_type_list[index]
-    list_of_objects.append(Variable(name, values, type))
+    index=index
+    list_of_objects.append(Variable(name, values, type,index))
 
 #print("list of objects: ", list_of_objects)            #QA
 
@@ -272,30 +280,23 @@ for index, variable in enumerate (column_name_list):
 ##### for each object, apply the methods of the class Variable. The stat methods are only for variables that are int64 and float64
 ##### store it as a list
 
-stat_list = []
-for object in list_of_objects:
-    if object.type.name in ('int64', 'float64'):
-        # print ("name: ", object.name,
-        #        "mean: ", object.mean_of_var(),
-        #        "median: ", object.median_of_var(),
-        #        "minimum: ", object.minimum_of_var(),
-        #        "maximum: ", object.maximum_of_var(),
-        #        "sd: ", object.sd_of_var(),
-        #        "numer of null: ", count_null())
-        ###print ("histogram:", object.histogram())
-        stat_list += [object.name,
-                      object.type,
-                      object.mean_of_var(),
-                      object.sd_of_var(),
-                      object.median_of_var(),
-                      object.lower_iqr(),
-                      object.upper_iqr(),
-                      object.minimum_of_var(),
-                      object.maximum_of_var(),
-                      object.count_null()]   ###appending the list with few variables
-
-
-print ("this is the stat list: ", stat_list)            ##QA
+# stat_list = []
+# for object in list_of_objects:
+#     if object.type.name in ('int64', 'float64'):
+#         stat_list.append ( [object.name,
+#                       object.type,
+#                       object.mean_of_var(),
+#                       object.sd_of_var(),
+#                       object.median_of_var(),
+#                       object.lower_iqr(),
+#                       object.upper_iqr(),
+#                       object.minimum_of_var(),
+#                       object.maximum_of_var(),
+#                       object.count_null(),
+#                       object.histogram()])   ###appending the list with few variables
+#
+#
+# ##print ("this is the stat list: ", stat_list)            ##QA
 
 
 
@@ -305,62 +306,66 @@ print ("this is the stat list: ", stat_list)            ##QA
 ####################Output Table#######################
 #######################################################
 
-""" a function that wrap everything nicely in a table to display"""
+""" a function that wrap everything nicely in a table to display """
 
 ##https://stackoverflow.com/questions/1475123/easiest-way-to-turn-a-list-into-an-html-table-in-python
 
 ######first, given a "flat list", produce a list of sublists
 
-
-def row_major(alist, sublen):
-  return [alist[i:i+sublen] for i in range(0, len(alist), sublen)]
-
-
-alist = stat_list
-sublen = 10 ### name, mean, median, min, max, sd
-
-list_of_lists = row_major(alist, sublen)
-##print("list of lists:", list_of_lists)                ##QA
-
-
 html_top = """<html>
-<table border = 1>
+<table border = 5 border-spacing: 0.5rem>
+<caption>SEENOPSIS</caption>
     <tr>
         <th>Variable name</th>
-        <th>Variable type</th>
+        <th>Type</th>
         <th>Mean &plusmn sd</th>
         <th>Median (IQR) </th>
         <th>Min</th>
         <th>Max</th>
         <th>Null</th>
+        <th>Histogram</th>
     </tr>"""
+
+#<th>histogram</th>
 
 html_bottomn = """</table>
 </html>"""
 
 
 body_list = []
-for i in list_of_lists:
-    list_for_body = "<tr>" \
-                        "<td> {} </ td>" \
-                        "<td> {} </ td>" \
-                        "<td> {} &plusmn {} </ td>" \
-                        "<td> {} ({}, {}) </ td>" \
-                        "<td> {} </ td>" \
-                        "<td> {} </ td>" \
-                        "<td> {} </ td>" \
-                    "</tr>".format (i[0], i[1], i[2],i[3],i[4],i[5], i[6], i[7], i[8], i[9])
-    body_list.append(list_for_body)
+for object in list_of_objects:
+    if object.type.name in ('int64', 'float64'):
+        list_for_body = "<tr>" \
+                            "<th> {} </ th>" \
+                            "<td> {} </ td>" \
+                            "<td> {} &plusmn  <br> {} </ td>" \
+                            "<td> {} <br> ({}, {}) </ td>" \
+                            "<td> {} </ td>" \
+                            "<td> {} </ td>" \
+                            "<td> {} </ td>" \
+                            "<td> <img src='hist_{}.png' width ='200' hight='150'> </img> </td>"\
+                         "</tr>".format ( object.name,
+                                          object.type,
+                                          object.mean_of_var(),
+                                          object.sd_of_var(),
+                                          object.median_of_var(),
+                                          object.lower_iqr(),
+                                          object.upper_iqr(),
+                                          object.minimum_of_var(),
+                                          object.maximum_of_var(),
+                                          object.count_null(),
+                                          object.histogram())
+        body_list.append(list_for_body)
 
+
+##############################the histogram doesn't show. in the function (219) I return a saved file. I tried show.
 
 merged_html = html_top + "".join(body_list) +html_bottomn
 
 ##print(merged_html)            ##QA
 
 
-with open("test.html","w") as html_file:
+with open("test2.html","w") as html_file:
     html_file.write(merged_html)
     html_file.close()
-
-
 
