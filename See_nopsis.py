@@ -345,7 +345,7 @@ for object in list_of_objects:
                             "<td> {} </ td>" \
                             "<td> <img src='hist_{}.png' width ='200' hight='150'> </img> </td>"\
                          "</tr>".format ( object.name,
-                                          object.type,
+                                       object.type,
                                           object.mean_of_var(),
                                           object.sd_of_var(),
                                           object.median_of_var(),
