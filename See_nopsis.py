@@ -96,40 +96,11 @@ def count_var (df):
 ################identifying the type of the variable #################
 ######################################################################
 
-#####identify the type of the variable
-##potential types:
-
-###if dtype is in (int64, float64 - than numeric (unless only 2 unique)
-####if dtype is object
-
-#bollian - only 2 unique values (except for null)
-#categorical - < 10 uniqe variables - of numeric - no need if string - there is a need
-#continuoues - >10 unique variables
-
-
-
-# if list_of_binary_variable = []
-# for i in name_of_variables(table_as_df(name_of_table ("test_data"))):
-#     if df[i].nunique()== 2:
-#         list_of_binary_variable.append (i)
-# print("the binary variables are:", list_of_binary_variable)
-
-# list_of_categorical_variable = []
-# for i in name_of_variables(table_as_df(name_of_table ("test_data"))):
-#     if df[i].nunique() >=3 and df[i].nunique() <= 10:
-#         list_of_categorical_variable.append (i)
-# print("the category variables are:",  list_of_categorical_variable)
-
-
-
-# df.name.unique()
-
-
 
 
 ##################calling tHe functions#############3
 
-table_name = name_of_table ("test_data")
+table_name = name_of_table ("weather")
 print("The name of the table is: ", table_name)
 
 df_table = table_as_df (table_name)
@@ -333,7 +304,6 @@ for object in list_of_objects:
                          </tr>""".format (object.name,
                                           object.pie(),
                                           object.count_null())
-            body_list.append(list_for_body)
         else: list_for_body = """<tr>
                             <th> {} </ th>
                             <td> {} </ td>
@@ -356,9 +326,8 @@ for object in list_of_objects:
                                         object.upper_iqr(),
                                         object.count_null(),
                                         object.number_of_outliers(outlier_constant=1.5))
-        body_list.append(list_for_body)
     elif object.var_type() == 'object':
-         if object.values.nunique()<= 2:
+        if object.values.nunique()<= 2:
             list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Binaric Variable </ td>
@@ -369,8 +338,19 @@ for object in list_of_objects:
                          </tr>""".format (object.name,
                                           object.bars(),
                                           object.count_null())
-            body_list.append(list_for_body)
-         else: list_for_body = """<tr>
+        elif object.values.nunique()> 2 and object.values.nunique() <=20:
+             list_for_body = """<tr>
+                            <th> {} </ th>
+                            <td> Categorial Variable </ td>
+                            <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                            <td> Categorial variable  
+                            <td> {} </ td>
+                            <td> Categorial variable - No outliers </ td>
+                         </tr>""".format (object.name,
+                                          object.bars(),
+                                          object.count_null())
+        else:
+             list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Categorial Variable </ td>
                             <td> <img src='hist_{}.png' width ='200' hight='150'> </img> </td>
@@ -380,7 +360,8 @@ for object in list_of_objects:
                          </tr>""".format (object.name,
                                           object.histogram(),
                                           object.count_null())
-         body_list.append(list_for_body)
+    body_list.append(list_for_body)
+
 
 
 
