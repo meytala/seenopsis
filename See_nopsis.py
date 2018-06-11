@@ -36,7 +36,7 @@ def name_of_table (name):
 
 def table_as_df (table_name):
     global df
-    df = pd.read_csv(table_name, parse_dates=True, date_parser=pd.datetools.to_datetime)
+    df = pd.read_csv(table_name, parse_dates=True,infer_datetime_format =True, date_parser=pd.to_datetime)
     #print("this is the database: ", df)                                       ###QA
     return df
 
