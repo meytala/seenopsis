@@ -3,14 +3,16 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import webbrowser
 from decimal import Decimal
 from numpy import percentile
 from pandas.api.types import is_string_dtype
 from io import StringIO
 import matplotlib.cm as cm
+from tkinter.filedialog import askopenfilename
 
 
-######find dates and the distribution in % of binary variable
+
 
 
 #######################################################
@@ -30,16 +32,18 @@ def name_of_table (name):
     str1 = str(name)
     str2 = ".csv"
     table_name = "".join((str1, str2))
+    filename = askopenfilename()
     #print("the name of the dataset is: {}".format (table_name))               ###QA
-    return table_name
+    return filename
+
+
 
 
 def table_as_df (table_name):
     global df
-    df = pd.read_csv(table_name, parse_dates=True,infer_datetime_format =True, date_parser=pd.to_datetime)
+    df = pd.read_csv(table_name, parse_dates = True, infer_datetime_format = True, date_parser = pd.to_datetime, encoding='UTF-8')
     #print("this is the database: ", df)                                       ###QA
     return df
-
 
 
 #######################################################
@@ -59,8 +63,6 @@ def count_records (df):
     return maximal_numer
 
 
-
-
 ###############################################################################################
 ###############careat a list with the names of the variables from the original df##############
 ###############################################################################################
@@ -76,9 +78,6 @@ def name_of_variables (df):
     return column_name_list
 
 
-
-
-
 ######################################################################
 ################count the number of variables in a dataset############
 ######################################################################
@@ -90,9 +89,6 @@ def count_var (df):
     number_of_variables = len(name_of_variables(df))
     #print("there are {} variables in the dataset".format(number_of_variables) )
     return  number_of_variables
-
-
-
 
 
 
@@ -110,30 +106,12 @@ def count_var (df):
 #categorical - < 10 uniqe variables - of numeric - no need if string - there is a need
 #continuoues - >10 unique variables
 
-
-
-# if list_of_binary_variable = []
-# for i in name_of_variables(table_as_df(name_of_table ("test_data"))):
-#     if df[i].nunique()== 2:
-#         list_of_binary_variable.append (i)
-# print("the binary variables are:", list_of_binary_variable)
-
-# list_of_categorical_variable = []
-# for i in name_of_variables(table_as_df(name_of_table ("test_data"))):
-#     if df[i].nunique() >=3 and df[i].nunique() <= 10:
-#         list_of_categorical_variable.append (i)
-# print("the category variables are:",  list_of_categorical_variable)
-
-
-
-# df.name.unique()
-
-
+####will do it at the HTML building
 
 
 ##################calling tHe functions#############3
 
-table_name = name_of_table ("weather")
+table_name = name_of_table ("test_from_r")
 print("The name of the table is: ", table_name)
 
 df_table = table_as_df (table_name)
@@ -197,31 +175,31 @@ class ContVariable:
         name = self.name
         median = np.nanmedian(self.values)
         #print("the median of the coloum {} is {}".format (name, median))
-        return round(median,1)   ####this function returns median round to 2 decimal
+        return round(median,2)   ####this function returns median round to 2 decimal
 
     def lower_iqr (self):
         name = self.name
         values = self.values
         low_iqr = np.nanpercentile(values,25)
-        return low_iqr       ####this function returns the lower boundry of IQR
+        return round(low_iqr,2)       ####this function returns the lower boundry of IQR
 
     def upper_iqr(self):
         name = self.name
         values = self.values
         up_iqr = np.nanpercentile(values, 75)    ####this function returns the upper boundry of IQR
-        return up_iqr
+        return round(up_iqr,2)
 
     def minimum_of_var (self):
         name = self.name
         minimum = np.min(self.values)
         #print("the minimal value of coloum {} is {}".format (name, minimum))    ##QA
-        return minimum ####this function returns the minimal value of the variable
+        return round(minimum,2) ####this function returns the minimal value of the variable
 
     def maximum_of_var (self):
         name = self.name
         maximum = np.max(self.values)
         #print("the maximal value of coloum {} is {}".format (name, maximum))    ##QA
-        return maximum    ####this function returns the maximal value of the variable
+        return round(maximum,2)    ####this function returns the maximal value of the variable
 
     def sd_of_var (self):
         name = self.name
@@ -273,6 +251,18 @@ class ContVariable:
         counts = self.values.value_counts()
         return self.index
 
+
+    def count_binary (self):
+        # unique, counts = np.unique(self.values, return_counts=True)
+        # percentage = self.values.value_counts()/len(self.values)*100
+        percentage = (np.unique(self.values, return_counts=True)[1] / len(self.values)) * 100
+        # counts, freq = self.values.value_counts(normalize=True)
+        # percent = freq *100
+        # return round(percentage,1)
+        return percentage.round(1)
+
+
+
 # #     ###QA
 # name_2 = column_name_list[9]                            #QA
 # values_2 = df_table[name_2]
@@ -309,10 +299,19 @@ for index, variable in enumerate (column_name_list):
 """ a function that wrap everything nicely in a table to display """
 
 html_top = """<html> 
-<table border = 5 border-spacing: 0.1rem> 
-<caption>SEENOPSIS</caption> 
-<caption>This is the seenopsis of the detaset:  {}</caption> 
-<caption>This detaset has {} records and {} variables</caption> 
+<head>
+  <title>SEENOPSIS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+<h2>SEENOPSIS</h2> 
+<p>This is the seenopsis of the detaset:  {} <br>
+This detaset has {} records and {} variables</p> 
+<table class="table table-hover"> 
+    <thead>
     <tr> 
         <th>Variable name</th>  
         <th>Type</th> 
@@ -320,7 +319,7 @@ html_top = """<html>
         <th>Basic Stat</th>
         <th>Null</th> 
         <th>Outliers (n)</th>  
-    </tr>""".format(table_name, record_count, number_of_variables  )
+    </tr></thead>""".format(table_name, record_count, number_of_variables  )
 
 
 body_list = []
@@ -329,27 +328,32 @@ for object in list_of_objects:
         if object.values.nunique()<= 2:
             list_for_body = """<tr>
                             <th> {} </ th>
-                            <td> Binaric Variable </ td>
+                            <td> Binary Variable </ td>
                             <td> <img src='bars_{}.png' width='200' hight='200'> </img> </td>
-                            <td> Binary variable </ td>
+                            <td> Binary variable 
+                            <br> {}: {}%, {}: {}% </ td>
                             <td> {} </ td>
-                            <td> Binaric variable - No outliers </ td>
+                            <td> Binary variable
+                             <br>No outliers </ td>
                          </tr>""".format (object.name,
                                           object.bars(),
+                                          object.values.unique()[0],
+                                          object.count_binary()[0],
+                                          object.values.unique()[1],
+                                          object.count_binary()[1],
                                           object.count_null())
-            body_list.append(list_for_body)
         elif object.values.nunique()>2 and object.values.nunique()<6 :
             list_for_body = """<tr>
                             <th> {} </ th>
-                            <td> Categoric Variable </ td>
+                            <td> Categorical Variable* </ td>
                             <td> <img src='bars_{}.png' width='200' hight='200'> </img> </td>
-                            <td> Categoric Variable </ td>
+                            <td> Categorical Variable </ td>
                             <td> {} </ td>
-                            <td> Categoric Variable - No outliers </ td>
+                            <td> Categorical Variable
+                             <br>No outliers </ td>
                          </tr>""".format (object.name,
                                           object.bars(),
                                           object.count_null())
-            body_list.append(list_for_body)
         else: list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Continuous variable 
@@ -378,43 +382,49 @@ for object in list_of_objects:
         if object.values.nunique()<= 2 and object.values.nunique()>0:
             list_for_body = """<tr>
                             <th> {} </ th>
-                            <td> Binaric Variable </ td>
+                            <td> Binary Variable </ td>
                             <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
-                            <td> Binaric variable  
+                            <td> Binary variable 
+                            <br> {}: {}%, {}: {}% </ td>
                             <td> {} </ td>
-                            <td> Binaric variable - No outliers </ td>
+                            <td> Binary variable
+                             <br>No outliers </ td>
                          </tr>""".format (object.name,
                                           object.bars(),
+                                          object.values.unique()[0],
+                                          object.count_binary()[0],
+                                          object.values.unique()[1],
+                                          object.count_binary()[1],
                                           object.count_null())
-            body_list.append(list_for_body)
         elif object.values.nunique()> 2 and object.values.nunique()<=20:
             list_for_body = """<tr>
                             <th> {} </ th>
-                            <td> Categorial Variable </ td>
+                            <td> Categorical Variable** </ td>
                             <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
-                            <td> Categorial variable  
+                            <td> Categorical variable  
                             <td> {} </ td>
-                            <td> Categorial variable - No outliers </ td>
+                            <td> Categorical variable
+                             <br>No outliers </ td>
                          </tr>""".format (object.name,
-                                          object.bars(),
+                                         object.bars(),
                                           object.count_null())
-            body_list.append(list_for_body)
-
         else:
             list_for_body = """<tr>
                                 <th> {} </ th>
-                                <td> Text variable</ td>
+                                <td> Text/Date variable</ td>
                                 <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Text variable - 
+                                <td> Text/Date variable - 
                                 <br> only top 10 values are presented </td>
                                 <td> {} </ td>
-                                <td> Text variable - No outliers </ td>
+                                <td> Text/Date variable
+                                 <br>No outliers </ td>
                              </tr>""".format(object.name,
                                              object.bars(),
                                              object.count_null())
-            body_list.append(list_for_body)
+        body_list.append(list_for_body)
 
-html_bottomn = """</table>
+html_bottomn = """</table> 
+</div></body>
 </html>"""
 
 
@@ -427,4 +437,9 @@ merged_html = html_top + "".join(body_list) +html_bottomn
 
 with open("output_seenopsis.html","w") as html_file:
     html_file.write(merged_html)
+    html_file.close()
+
+with open("output_seenopsis.html","r") as html_file:
+    Seenopsis_table = html_file.read()
+    webbrowser.open_new_tab('output_seenopsis.html')
     html_file.close()

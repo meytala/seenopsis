@@ -1,8 +1,17 @@
 <html> 
-<table border = 5 border-spacing: 0.1rem> 
-<caption>SEENOPSIS</caption> 
-<caption>This is the seenopsis of the detaset:  weather.csv</caption> 
-<caption>This detaset has 214 records and 23 variables</caption> 
+<head>
+  <title>SEENOPSIS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+<h2>SEENOPSIS</h2> 
+<p>This is the seenopsis of the detaset:  C:/Users/meyta/PycharmProjects/Final_project/test_data.csv <br>
+This detaset has 1001 records and 10 variables</p> 
+<table class="table table-hover"> 
+    <thead>
     <tr> 
         <th>Variable name</th>  
         <th>Type</th> 
@@ -10,251 +19,102 @@
         <th>Basic Stat</th>
         <th>Null</th> 
         <th>Outliers (n)</th>  
-    </tr><tr>
-                                <th> EDT </ th>
-                                <td> Text variable</ td>
-                                <td> <img src='bars_0.png' width ='200' hight='150'> </img> </td>
-                                <td> Text variable - 
-                                <br> only top 10 values are presented </td>
-                                <td> 0 </ td>
-                                <td> Text variable - No outliers </ td>
-                             </tr><tr>
-                            <th> Max TemperatureC </ th>
+    </tr></thead><tr>
+                            <th> Unnamed: 0 </ th>
                             <td> Continuous variable 
                             <br>(int64) </ td>
-                            <td> <img src='hist_1.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -9 
-                            <br> Max: 36 
-                            <br> Mean &plusmn SD: 17.44 &plusmn 10.34 
-                            <br> Median (IQR): 17.0 (9.25, 27.0) </ td>
+                            <td> <img src='hist_0.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 500 
+                            <br> Max: 1500 
+                            <br> Mean &plusmn SD: 1000.0 &plusmn 288.96 
+                            <br> Median (IQR): 1000.0 (750.0, 1250.0) </ td>
                             <td> 0 </ td>
                             <td> 0 </ td>
                          </tr><tr>
-                            <th> Mean TemperatureC </ th>
+                                <th> diab_date </ th>
+                                <td> Text/Date variable</ td>
+                                <td> <img src='bars_1.png' width ='200' hight='150'> </img> </td>
+                                <td> Text/Date variable - 
+                                <br> only top 10 values are presented </td>
+                                <td> 0 </ td>
+                                <td> Text/Date variable
+                                 <br>No outliers </ td>
+                             </tr><tr>
+                            <th> age </ th>
                             <td> Continuous variable 
-                            <br>(int64) </ td>
+                            <br>(float64) </ td>
                             <td> <img src='hist_2.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -14 
-                            <br> Max: 31 
-                            <br> Mean &plusmn SD: 13.23 &plusmn 9.8 
-                            <br> Median (IQR): 12.5 (5.25, 23.0) </ td>
-                            <td> 0 </ td>
-                            <td> 0 </ td>
-                         </tr><tr>
-                            <th> Min TemperatureC </ th>
-                            <td> Continuous variable 
-                            <br>(int64) </ td>
-                            <td> <img src='hist_3.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -18 
-                            <br> Max: 27 
-                            <br> Mean &plusmn SD: 8.76 &plusmn 9.48 
-                            <br> Median (IQR): 8.0 (2.0, 18.0) </ td>
-                            <td> 0 </ td>
+                            <td> Min: 60.0 
+                            <br> Max: 100.0 
+                            <br> Mean &plusmn SD: 73.2 &plusmn 8.4 
+                            <br> Median (IQR): 72.0 (66.0, 80.0) </ td>
+                            <td> 40 </ td>
                             <td> 0 </ td>
                          </tr><tr>
-                            <th> Dew PointC </ th>
-                            <td> Continuous variable 
-                            <br>(int64) </ td>
-                            <td> <img src='hist_4.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -24 
-                            <br> Max: 25 
-                            <br> Mean &plusmn SD: 7.32 &plusmn 9.91 
-                            <br> Median (IQR): 7.0 (-0.75, 16.0) </ td>
+                            <th> sex </ th>
+                            <td> Binary Variable </ td>
+                            <td> <img src='bars_3.png' width ='200' hight='150'> </img> </td>
+                            <td> Binary variable 
+                            <br> F: 49.8%, M: 50.2% </ td>
                             <td> 0 </ td>
-                            <td> 0 </ td>
+                            <td> Binary variable
+                             <br>No outliers </ td>
                          </tr><tr>
-                            <th> MeanDew PointC </ th>
+                            <th> residence </ th>
+                            <td> Binary Variable </ td>
+                            <td> <img src='bars_4.png' width ='200' hight='150'> </img> </td>
+                            <td> Binary variable 
+                            <br> Urban: 9.0%, Rural: 91.0% </ td>
+                            <td> 0 </ td>
+                            <td> Binary variable
+                             <br>No outliers </ td>
+                         </tr><tr>
+                            <th> bmi_pre_value </ th>
                             <td> Continuous variable 
-                            <br>(int64) </ td>
+                            <br>(float64) </ td>
                             <td> <img src='hist_5.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -27 
-                            <br> Max: 22 
-                            <br> Mean &plusmn SD: 3.62 &plusmn 10.71 
-                            <br> Median (IQR): 4.0 (-4.0, 13.0) </ td>
-                            <td> 0 </ td>
-                            <td> 0 </ td>
+                            <td> Min: 16.18 
+                            <br> Max: 56.71 
+                            <br> Mean &plusmn SD: 29.15 &plusmn 5.34 
+                            <br> Median (IQR): 28.26 (25.51, 31.9) </ td>
+                            <td> 25 </ td>
+                            <td> 31 </ td>
                          </tr><tr>
-                            <th> Min DewpointC </ th>
-                            <td> Continuous variable 
-                            <br>(int64) </ td>
-                            <td> <img src='hist_6.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -28 
-                            <br> Max: 21 
-                            <br> Mean &plusmn SD: -0.46 &plusmn 11.21 
-                            <br> Median (IQR): -2.0 (-9.0, 9.0) </ td>
-                            <td> 0 </ td>
-                            <td> 0 </ td>
+                            <th> smoking_status_2010 </ th>
+                            <td> Categorical Variable** </ td>
+                            <td> <img src='bars_6.png' width ='200' hight='150'> </img> </td>
+                            <td> Categorical variable  
+                            <td> 31 </ td>
+                            <td> Categorical variable
+                             <br>No outliers </ td>
                          </tr><tr>
-                            <th> Max Humidity </ th>
-                            <td> Continuous variable 
-                            <br>(int64) </ td>
-                            <td> <img src='hist_7.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 36 
-                            <br> Max: 100 
-                            <br> Mean &plusmn SD: 73.44 &plusmn 15.72 
-                            <br> Median (IQR): 74.0 (60.25, 89.0) </ td>
+                            <th> ethnicity_desc </ th>
+                            <td> Categorical Variable** </ td>
+                            <td> <img src='bars_7.png' width ='200' hight='150'> </img> </td>
+                            <td> Categorical variable  
                             <td> 0 </ td>
-                            <td> 0 </ td>
+                            <td> Categorical variable
+                             <br>No outliers </ td>
                          </tr><tr>
-                            <th> Mean Humidity </ th>
+                            <th> LDL_pre_result </ th>
                             <td> Continuous variable 
-                            <br>(int64) </ td>
+                            <br>(float64) </ td>
                             <td> <img src='hist_8.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 23 
-                            <br> Max: 90 
-                            <br> Mean &plusmn SD: 56.26 &plusmn 13.99 
-                            <br> Median (IQR): 54.0 (45.0, 66.0) </ td>
+                            <td> Min: 23.7 
+                            <br> Max: 400.0 
+                            <br> Mean &plusmn SD: 102.39 &plusmn 33.74 
+                            <br> Median (IQR): 97.0 (79.8, 120.0) </ td>
+                            <td> 28 </ td>
+                            <td> 24 </ td>
+                         </tr><tr>
+                            <th> sex2 </ th>
+                            <td> Binary Variable </ td>
+                            <td> <img src='bars_9.png' width='200' hight='200'> </img> </td>
+                            <td> Binary variable 
+                            <br> 0: 49.8%, 1: 50.2% </ td>
                             <td> 0 </ td>
-                            <td> 0 </ td>
-                         </tr><tr>
-                            <th> Min Humidity </ th>
-                            <td> Continuous variable 
-                            <br>(int64) </ td>
-                            <td> <img src='hist_9.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 9 
-                            <br> Max: 85 
-                            <br> Mean &plusmn SD: 38.65 &plusmn 15.08 
-                            <br> Median (IQR): 37.0 (27.0, 47.0) </ td>
-                            <td> 0 </ td>
-                            <td> 4 </ td>
-                         </tr><tr>
-                            <th> Max Sea Level PressurehPa </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_10.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 1001.0 
-                            <br> Max: 1037.0 
-                            <br> Mean &plusmn SD: 1019.2 &plusmn 6.45 
-                            <br> Median (IQR): 1019.0 (1015.0, 1023.0) </ td>
-                            <td> 3 </ td>
-                            <td> 6 </ td>
-                         </tr><tr>
-                            <th> Mean Sea Level PressurehPa </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_11.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 994.0 
-                            <br> Max: 1035.0 
-                            <br> Mean &plusmn SD: 1015.45 &plusmn 6.9 
-                            <br> Median (IQR): 1016.0 (1011.0, 1020.0) </ td>
-                            <td> 3 </ td>
-                            <td> 2 </ td>
-                         </tr><tr>
-                            <th> Min Sea Level PressurehPa </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_12.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 989.0 
-                            <br> Max: 1031.0 
-                            <br> Mean &plusmn SD: 1011.84 &plusmn 7.55 
-                            <br> Median (IQR): 1012.0 (1008.0, 1017.0) </ td>
-                            <td> 3 </ td>
-                            <td> 8 </ td>
-                         </tr><tr>
-                            <th> Max VisibilityKm </ th>
-                            <td> Categoric Variable </ td>
-                            <td> <img src='bars_13.png' width='200' hight='200'> </img> </td>
-                            <td> Categoric Variable </ td>
-                            <td> 3 </ td>
-                            <td> Categoric Variable - No outliers </ td>
-                         </tr><tr>
-                            <th> Max VisibilityKm </ th>
-                            <td> Categoric Variable </ td>
-                            <td> <img src='bars_13.png' width='200' hight='200'> </img> </td>
-                            <td> Categoric Variable </ td>
-                            <td> 3 </ td>
-                            <td> Categoric Variable - No outliers </ td>
-                         </tr><tr>
-                            <th> Mean VisibilityKm </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_14.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 1.0 
-                            <br> Max: 16.0 
-                            <br> Mean &plusmn SD: 13.91 &plusmn 2.86 
-                            <br> Median (IQR): 15.0 (12.0, 16.0) </ td>
-                            <td> 3 </ td>
-                            <td> 4 </ td>
-                         </tr><tr>
-                            <th> Min VisibilitykM </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_15.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 0.0 
-                            <br> Max: 16.0 
-                            <br> Mean &plusmn SD: 10.22 &plusmn 5.84 
-                            <br> Median (IQR): 13.0 (4.0, 16.0) </ td>
-                            <td> 3 </ td>
-                            <td> 0 </ td>
-                         </tr><tr>
-                            <th> Max Wind SpeedKm/h </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_16.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 8.0 
-                            <br> Max: 121.0 
-                            <br> Mean &plusmn SD: 23.78 &plusmn 9.5 
-                            <br> Median (IQR): 23.0 (19.0, 27.0) </ td>
-                            <td> 3 </ td>
-                            <td> 7 </ td>
-                         </tr><tr>
-                            <th> Mean Wind SpeedKm/h </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_17.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 2.0 
-                            <br> Max: 25.0 
-                            <br> Mean &plusmn SD: 9.12 &plusmn 4.14 
-                            <br> Median (IQR): 8.0 (6.0, 11.0) </ td>
-                            <td> 3 </ td>
-                            <td> 8 </ td>
-                         </tr><tr>
-                            <th> Max Gust SpeedKm/h </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_18.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 16.0 
-                            <br> Max: 72.0 
-                            <br> Mean &plusmn SD: 38.33 &plusmn 11.4 
-                            <br> Median (IQR): 35.0 (30.0, 45.0) </ td>
-                            <td> 7 </ td>
-                            <td> 4 </ td>
-                         </tr><tr>
-                                <th> Precipitationmm </ th>
-                                <td> Text variable</ td>
-                                <td> <img src='bars_19.png' width ='200' hight='150'> </img> </td>
-                                <td> Text variable - 
-                                <br> only top 10 values are presented </td>
-                                <td> 0 </ td>
-                                <td> Text variable - No outliers </ td>
-                             </tr><tr>
-                            <th> CloudCover </ th>
-                            <td> Continuous variable 
-                            <br>(float64) </ td>
-                            <td> <img src='hist_20.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 0.0 
-                            <br> Max: 8.0 
-                            <br> Mean &plusmn SD: 3.17 &plusmn 2.75 
-                            <br> Median (IQR): 2.5 (1.0, 6.0) </ td>
-                            <td> 4 </ td>
-                            <td> 0 </ td>
-                         </tr><tr>
-                            <th> Events </ th>
-                            <td> Categorial Variable </ td>
-                            <td> <img src='bars_21.png' width ='200' hight='150'> </img> </td>
-                            <td> Categorial variable  
-                            <td> 136 </ td>
-                            <td> Categorial variable - No outliers </ td>
-                         </tr><tr>
-                            <th> WindDirDegrees </ th>
-                            <td> Continuous variable 
-                            <br>(int64) </ td>
-                            <td> <img src='hist_22.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: -1 
-                            <br> Max: 359 
-                            <br> Mean &plusmn SD: 187.34 &plusmn 107.72 
-                            <br> Median (IQR): 221.5 (73.5, 285.0) </ td>
-                            <td> 0 </ td>
-                            <td> 0 </ td>
-                         </tr></table>
+                            <td> Binary variable
+                             <br>No outliers </ td>
+                         </tr></table> 
+</div></body>
 </html>
