@@ -8,113 +8,331 @@
 <body>
 <div class="container">
 <h2>SEENOPSIS</h2> 
-<p>This is the seenopsis of the detaset:  C:/Users/meyta/PycharmProjects/Final_project/test_data.csv <br>
-This detaset has 1001 records and 10 variables</p> 
+<p>This is the seenopsis of the detaset:  C:/Users/meyta/PycharmProjects/Final_project/test_from_r.csv <br>
+This detaset has 267799 records and 29 variables</p> 
 <table class="table table-hover"> 
     <thead>
     <tr> 
-        <th>Variable name</th>  
+        <th>Variable Name</th>  
         <th>Type</th> 
         <th>Graphic Representation</th>
-        <th>Basic Stat</th>
-        <th>Null</th> 
+        <th>Basic Statistic</th>
+        <th>Missing</th> 
         <th>Outliers (n)</th>  
     </tr></thead><tr>
                             <th> Unnamed: 0 </ th>
                             <td> Continuous variable 
                             <br>(int64) </ td>
                             <td> <img src='hist_0.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 500 
-                            <br> Max: 1500 
-                            <br> Mean &plusmn SD: 1000.0 &plusmn 288.96 
-                            <br> Median (IQR): 1000.0 (750.0, 1250.0) </ td>
+                            <td> Min: 1 
+                            <br> Max: 1071192 
+                            <br> Mean &plusmn SD: 536327.99 &plusmn 308947.04 
+                            <br> Median (IQR): 537821.0 (268568.5, 803877.0) </ td>
                             <td> 0 </ td>
                             <td> 0 </ td>
                          </tr><tr>
-                                <th> diab_date </ th>
-                                <td> Text/Date variable</ td>
-                                <td> <img src='bars_1.png' width ='200' hight='150'> </img> </td>
-                                <td> Text/Date variable - 
-                                <br> only top 10 values are presented </td>
-                                <td> 0 </ td>
-                                <td> Text/Date variable
-                                 <br>No outliers </ td>
-                             </tr><tr>
-                            <th> age </ th>
+                            <th> interaction </ th>
+                            <td> Binary Variable </ td>
+                            <td> <img src='bars_1.png' width='200' hight='200'> </img> </td>
+                            <td> Binary variable 
+                            <br> 0: 91.3%, 1: 8.7% </ td>
+                            <td> 0 </ td>
+                            <td> Binary variable
+                             <br>No outliers </ td>
+                         </tr><tr>
+                            <th> d1n </ th>
                             <td> Continuous variable 
-                            <br>(float64) </ td>
+                            <br>(int64) </ td>
                             <td> <img src='hist_2.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 60.0 
-                            <br> Max: 100.0 
-                            <br> Mean &plusmn SD: 73.2 &plusmn 8.4 
-                            <br> Median (IQR): 72.0 (66.0, 80.0) </ td>
-                            <td> 40 </ td>
+                            <td> Min: 1 
+                            <br> Max: 1429 
+                            <br> Mean &plusmn SD: 470.48 &plusmn 334.81 
+                            <br> Median (IQR): 413.0 (187.0, 704.0) </ td>
+                            <td> 0 </ td>
                             <td> 0 </ td>
                          </tr><tr>
-                            <th> sex </ th>
-                            <td> Binary Variable </ td>
-                            <td> <img src='bars_3.png' width ='200' hight='150'> </img> </td>
-                            <td> Binary variable 
-                            <br> F: 49.8%, M: 50.2% </ td>
+                            <th> d2n </ th>
+                            <td> Continuous variable 
+                            <br>(int64) </ td>
+                            <td> <img src='hist_3.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 2 
+                            <br> Max: 1432 
+                            <br> Mean &plusmn SD: 941.44 &plusmn 341.69 
+                            <br> Median (IQR): 995.0 (694.0, 1232.0) </ td>
                             <td> 0 </ td>
-                            <td> Binary variable
-                             <br>No outliers </ td>
-                         </tr><tr>
-                            <th> residence </ th>
-                            <td> Binary Variable </ td>
-                            <td> <img src='bars_4.png' width ='200' hight='150'> </img> </td>
-                            <td> Binary variable 
-                            <br> Urban: 9.0%, Rural: 91.0% </ td>
                             <td> 0 </ td>
-                            <td> Binary variable
-                             <br>No outliers </ td>
                          </tr><tr>
-                            <th> bmi_pre_value </ th>
+                            <th> eig_1 </ th>
                             <td> Continuous variable 
                             <br>(float64) </ td>
-                            <td> <img src='hist_5.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 16.18 
-                            <br> Max: 56.71 
-                            <br> Mean &plusmn SD: 29.15 &plusmn 5.34 
-                            <br> Median (IQR): 28.26 (25.51, 31.9) </ td>
-                            <td> 25 </ td>
-                            <td> 31 </ td>
-                         </tr><tr>
-                            <th> smoking_status_2010 </ th>
-                            <td> Categorical Variable** </ td>
-                            <td> <img src='bars_6.png' width ='200' hight='150'> </img> </td>
-                            <td> Categorical variable  
-                            <td> 31 </ td>
-                            <td> Categorical variable
-                             <br>No outliers </ td>
-                         </tr><tr>
-                            <th> ethnicity_desc </ th>
-                            <td> Categorical Variable** </ td>
-                            <td> <img src='bars_7.png' width ='200' hight='150'> </img> </td>
-                            <td> Categorical variable  
+                            <td> <img src='hist_4.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 1.0 
+                            <br> Mean &plusmn SD: 0.23 &plusmn 0.19 
+                            <br> Median (IQR): 0.18 (0.07, 0.34) </ td>
                             <td> 0 </ td>
-                            <td> Categorical variable
-                             <br>No outliers </ td>
+                            <td> 4899 </ td>
                          </tr><tr>
-                            <th> LDL_pre_result </ th>
+                            <th> degree_1 </ th>
+                            <td> Continuous variable 
+                            <br>(int64) </ td>
+                            <td> <img src='hist_5.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 2 
+                            <br> Max: 872 
+                            <br> Mean &plusmn SD: 181.34 &plusmn 148.26 
+                            <br> Median (IQR): 146.0 (70.0, 258.0) </ td>
+                            <td> 0 </ td>
+                            <td> 8551 </ td>
+                         </tr><tr>
+                            <th> alf_1 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_6.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: -221.59 
+                            <br> Max: 197.43 
+                            <br> Mean &plusmn SD: 0.01 &plusmn 42.18 
+                            <br> Median (IQR): 1.22 (-22.37, 20.83) </ td>
+                            <td> 0 </ td>
+                            <td> 15313 </ td>
+                         </tr><tr>
+                            <th> ct_1 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_7.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.25 
+                            <br> Mean &plusmn SD: 0.01 &plusmn 0.03 
+                            <br> Median (IQR): 0.0 (0.0, 0.01) </ td>
+                            <td> 0 </ td>
+                            <td> 40472 </ td>
+                         </tr><tr>
+                            <th> bt_1 </ th>
                             <td> Continuous variable 
                             <br>(float64) </ td>
                             <td> <img src='hist_8.png' width ='200' hight='150'> </img> </td>
-                            <td> Min: 23.7 
-                            <br> Max: 400.0 
-                            <br> Mean &plusmn SD: 102.39 &plusmn 33.74 
-                            <br> Median (IQR): 97.0 (79.8, 120.0) </ td>
-                            <td> 28 </ td>
-                            <td> 24 </ td>
-                         </tr><tr>
-                            <th> sex2 </ th>
-                            <td> Binary Variable </ td>
-                            <td> <img src='bars_9.png' width='200' hight='200'> </img> </td>
-                            <td> Binary variable 
-                            <br> 0: 49.8%, 1: 50.2% </ td>
+                            <td> Min: 0.0 
+                            <br> Max: 10.66 
+                            <br> Mean &plusmn SD: 5.78 &plusmn 2.27 
+                            <br> Median (IQR): 6.28 (4.58, 7.34) </ td>
                             <td> 0 </ td>
-                            <td> Binary variable
+                            <td> 8676 </ td>
+                         </tr><tr>
+                            <th> cls_1 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_9.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.0 
+                            <br> Mean &plusmn SD: 0.0 &plusmn 0.0 
+                            <br> Median (IQR): 0.0 (0.0, 0.0) </ td>
+                            <td> 0 </ td>
+                            <td> 6451 </ td>
+                         </tr><tr>
+                            <th> pwr_1 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_10.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: -5.22 
+                            <br> Max: 4.6 
+                            <br> Mean &plusmn SD: -0.02 &plusmn 0.99 
+                            <br> Median (IQR): 0.01 (-0.55, 0.46) </ td>
+                            <td> 0 </ td>
+                            <td> 15313 </ td>
+                         </tr><tr>
+                            <th> trngl_1 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_11.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.23 
+                            <br> Mean &plusmn SD: 0.08 &plusmn 0.04 
+                            <br> Median (IQR): 0.07 (0.05, 0.1) </ td>
+                            <td> 0 </ td>
+                            <td> 9933 </ td>
+                         </tr><tr>
+                            <th> wc_1 </ th>
+                            <td> Continuous variable 
+                            <br>(int64) </ td>
+                            <td> <img src='hist_12.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 1 
+                            <br> Max: 96 
+                            <br> Mean &plusmn SD: 8.33 &plusmn 6.65 
+                            <br> Median (IQR): 5.0 (5.0, 9.0) </ td>
+                            <td> 0 </ td>
+                            <td> 24866 </ td>
+                         </tr><tr>
+                            <th> eig_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_13.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 1.0 
+                            <br> Mean &plusmn SD: 0.12 &plusmn 0.16 
+                            <br> Median (IQR): 0.04 (0.01, 0.17) </ td>
+                            <td> 0 </ td>
+                            <td> 16120 </ td>
+                         </tr><tr>
+                            <th> degree_2 </ th>
+                            <td> Continuous variable 
+                            <br>(int64) </ td>
+                            <td> <img src='hist_14.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 2 
+                            <br> Max: 872 
+                            <br> Mean &plusmn SD: 91.47 &plusmn 116.43 
+                            <br> Median (IQR): 44.0 (12.0, 130.0) </ td>
+                            <td> 0 </ td>
+                            <td> 16490 </ td>
+                         </tr><tr>
+                            <th> alf_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_15.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: -221.59 
+                            <br> Max: 197.43 
+                            <br> Mean &plusmn SD: 0.91 &plusmn 42.91 
+                            <br> Median (IQR): 2.99 (-22.3, 23.41) </ td>
+                            <td> 0 </ td>
+                            <td> 12823 </ td>
+                         </tr><tr>
+                            <th> ct_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_16.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.25 
+                            <br> Mean &plusmn SD: 0.04 &plusmn 0.07 
+                            <br> Median (IQR): 0.01 (0.0, 0.04) </ td>
+                            <td> 0 </ td>
+                            <td> 40022 </ td>
+                         </tr><tr>
+                            <th> bt_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_17.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 10.66 
+                            <br> Mean &plusmn SD: 3.72 &plusmn 2.7 
+                            <br> Median (IQR): 3.83 (0.95, 5.97) </ td>
+                            <td> 0 </ td>
+                            <td> 0 </ td>
+                         </tr><tr>
+                            <th> cls_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_18.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.0 
+                            <br> Mean &plusmn SD: 0.0 &plusmn 0.0 
+                            <br> Median (IQR): 0.0 (0.0, 0.0) </ td>
+                            <td> 0 </ td>
+                            <td> 870 </ td>
+                         </tr><tr>
+                            <th> pwr_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_19.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: -5.22 
+                            <br> Max: 4.6 
+                            <br> Mean &plusmn SD: -0.0 &plusmn 1.01 
+                            <br> Median (IQR): 0.05 (-0.55, 0.53) </ td>
+                            <td> 0 </ td>
+                            <td> 12823 </ td>
+                         </tr><tr>
+                            <th> trngl_2 </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_20.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.23 
+                            <br> Mean &plusmn SD: 0.07 &plusmn 0.06 
+                            <br> Median (IQR): 0.07 (0.02, 0.11) </ td>
+                            <td> 0 </ td>
+                            <td> 0 </ td>
+                         </tr><tr>
+                            <th> wc_2 </ th>
+                            <td> Continuous variable 
+                            <br>(int64) </ td>
+                            <td> <img src='hist_21.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 1 
+                            <br> Max: 98 
+                            <br> Mean &plusmn SD: 12.13 &plusmn 17.53 
+                            <br> Median (IQR): 6.0 (5.0, 9.0) </ td>
+                            <td> 0 </ td>
+                            <td> 42024 </ td>
+                         </tr><tr>
+                            <th> dst </ th>
+                            <td> Categorical Variable* </ td>
+                            <td> <img src='bars_22.png' width='200' hight='200'> </img> </td>
+                            <td> Categorical Variable </ td>
+                            <td> 0 </ td>
+                            <td> Categorical Variable
                              <br>No outliers </ td>
+                         </tr><tr>
+                            <th> simJ </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_23.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 1.0 
+                            <br> Mean &plusmn SD: 0.04 &plusmn 0.09 
+                            <br> Median (IQR): 0.01 (0.0, 0.04) </ td>
+                            <td> 0 </ td>
+                            <td> 31804 </ td>
+                         </tr><tr>
+                            <th> simAA </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_24.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 272.24 
+                            <br> Mean &plusmn SD: 5.19 &plusmn 11.82 
+                            <br> Median (IQR): 0.66 (0.0, 4.51) </ td>
+                            <td> 0 </ td>
+                            <td> 37625 </ td>
+                         </tr><tr>
+                            <th> eig_prod </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_25.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.85 
+                            <br> Mean &plusmn SD: 0.03 &plusmn 0.06 
+                            <br> Median (IQR): 0.01 (0.0, 0.03) </ td>
+                            <td> 0 </ td>
+                            <td> 30379 </ td>
+                         </tr><tr>
+                            <th> ct_prod </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_26.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 0.06 
+                            <br> Mean &plusmn SD: 0.0 &plusmn 0.0 
+                            <br> Median (IQR): 0.0 (0.0, 0.0) </ td>
+                            <td> 0 </ td>
+                            <td> 39712 </ td>
+                         </tr><tr>
+                            <th> alf_div </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_27.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: -1115.06 
+                            <br> Max: 1317.42 
+                            <br> Mean &plusmn SD: -0.01 &plusmn 17.68 
+                            <br> Median (IQR): -0.0 (-0.93, 0.92) </ td>
+                            <td> 0 </ td>
+                            <td> 49852 </ td>
+                         </tr><tr>
+                            <th> bt_div </ th>
+                            <td> Continuous variable 
+                            <br>(float64) </ td>
+                            <td> <img src='hist_28.png' width ='200' hight='150'> </img> </td>
+                            <td> Min: 0.0 
+                            <br> Max: 109.2 
+                            <br> Mean &plusmn SD: 22.74 &plusmn 19.71 
+                            <br> Median (IQR): 19.9 (3.91, 37.27) </ td>
+                            <td> 0 </ td>
+                            <td> 234 </ td>
                          </tr></table> 
 </div></body>
 </html>

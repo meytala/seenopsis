@@ -4,16 +4,13 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import webbrowser
-from decimal import Decimal
-from numpy import percentile
-from pandas.api.types import is_string_dtype
-from io import StringIO
-import matplotlib.cm as cm
 from tkinter.filedialog import askopenfilename
-
-
-
-
+import matplotlib.colors as colors
+# from decimal import Decimal
+# from numpy import percentile
+# from pandas.api.types import is_string_dtype
+# from io import StringIO
+import matplotlib.cm as cm
 
 #######################################################
 ####################Importing Table####################
@@ -29,19 +26,17 @@ from tkinter.filedialog import askopenfilename
 ###the function will take the name that the user wrote and add to it ".csv"
 
 def name_of_table (name):
-    str1 = str(name)
-    str2 = ".csv"
-    table_name = "".join((str1, str2))
+    # str1 = str(name)
+    # str2 = ".csv"
+    # filename = "".join((str1, str2))
     filename = askopenfilename()
-    #print("the name of the dataset is: {}".format (table_name))               ###QA
+    #print("the name of the dataset is: {}".format (filename))               ###QA
     return filename
 
 
-
-
-def table_as_df (table_name):
+def table_as_df (filename):
     global df
-    df = pd.read_csv(table_name, parse_dates = True, infer_datetime_format = True, date_parser = pd.to_datetime, encoding='UTF-8')
+    df = pd.read_csv(filename, parse_dates = True, infer_datetime_format = True, date_parser = pd.to_datetime, encoding='UTF-8')
     #print("this is the database: ", df)                                       ###QA
     return df
 
@@ -91,27 +86,9 @@ def count_var (df):
     return  number_of_variables
 
 
-
-######################################################################
-################identifying the type of the variable #################
-######################################################################
-
-#####identify the type of the variable
-##potential types:
-
-###if dtype is in (int64, float64 - than numeric (unless only 2 unique)
-####if dtype is object
-
-#bollian - only 2 unique values (except for null)
-#categorical - < 10 uniqe variables - of numeric - no need if string - there is a need
-#continuoues - >10 unique variables
-
-####will do it at the HTML building
-
-
 ##################calling tHe functions#############3
 
-table_name = name_of_table ("test_from_r")
+table_name = name_of_table ("weather")
 print("The name of the table is: ", table_name)
 
 df_table = table_as_df (table_name)
@@ -129,21 +106,6 @@ print("This is a list with the names of the variables: ", column_name_list)
 
 number_of_variables = count_var (df_table)
 print("In this dataset, the number of variables is: ", number_of_variables)
-
-
-#######################################################
-#########################ID############################
-#######################################################
-
-""" A function that identify an ID coloumn if exist"""
-###this is needed to make sure that you don't run the functions for this coloumn
-### if there is more than one row with the same ID - function will only work for first row
-### will be identified if each row has a unique variable
-
-##input: df
-##output: the index of the coloumn in which the ID is present
-
-##NEED TO CODE
 
 
 #########################################################
@@ -244,11 +206,9 @@ class ContVariable:
 
 
     def bars (self):
-        self.values.value_counts()[:10].plot(kind='barh')
-        # plt.pie(self.values.dropna())    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
+        self.values.value_counts().nlargest(10).plot(kind='barh')
         plt.savefig("bars_{}".format(self.index))
         plt.close()
-        counts = self.values.value_counts()
         return self.index
 
 
@@ -276,10 +236,10 @@ class ContVariable:
 #######################OBJECTS#########################
 #######################################################
 
-######creating a list of objects for the Variable class. Each object has to have:
+"""creating a list of objects for the Variable class. Each object has to have:
 #  1. a name - the name of the variable
 #  2. The values of the variable
-#  3. The index of the variable
+#  3. The index of the variable"""
 
 
 list_of_objects = []
@@ -295,6 +255,25 @@ for index, variable in enumerate (column_name_list):
 #######################################################
 ####################Output Table#######################
 #######################################################
+
+##the output will be differential based on the type of the variable
+
+##potential types:
+
+###if dtype is in (int64, float64):
+#single variable - only one value
+#binary - only 2 unique values (except for null)
+#categorical - <= 10 unique variables
+#continuoues - >10 unique variables
+
+####if dtype is object:
+#single variable - only one value
+#binary - only 2 unique values (except for null)
+#categorical - <= 10 unique variables
+#text/date - >10 unique variables
+
+####will do it while building the HTML
+
 
 """ a function that wrap everything nicely in a table to display """
 
@@ -313,11 +292,11 @@ This detaset has {} records and {} variables</p>
 <table class="table table-hover"> 
     <thead>
     <tr> 
-        <th>Variable name</th>  
+        <th>Variable Name</th>  
         <th>Type</th> 
         <th>Graphic Representation</th>
-        <th>Basic Stat</th>
-        <th>Null</th> 
+        <th>Basic Statistic</th>
+        <th>Missing</th> 
         <th>Outliers (n)</th>  
     </tr></thead>""".format(table_name, record_count, number_of_variables  )
 
@@ -325,7 +304,22 @@ This detaset has {} records and {} variables</p>
 body_list = []
 for object in list_of_objects:
     if object.var_type() in ('int64', 'float64'):
-        if object.values.nunique()<= 2:
+        if object.values.nunique()== 1:
+            list_for_body = """<tr>
+                            <th> {} </ th>
+                            <td> Single Value</ td>
+                            <td> <img src='bars_{}.png' width='200' hight='200'> </img> </td>
+                            <td> Single value:
+                            <br> {}: {}% </ td>
+                            <td> {} </ td>
+                            <td> Single Value: 
+                             <br>No outliers </ td>
+                         </tr>""".format (object.name,
+                                          object.bars(),
+                                          object.values.unique()[0],
+                                          object.count_binary()[0],
+                                          object.count_null())
+        elif object.values.nunique()== 2:
             list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Binary Variable </ td>
@@ -342,7 +336,7 @@ for object in list_of_objects:
                                           object.values.unique()[1],
                                           object.count_binary()[1],
                                           object.count_null())
-        elif object.values.nunique()>2 and object.values.nunique()<6 :
+        elif object.values.nunique()>2 and object.values.nunique()<=10 :
             list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Categorical Variable* </ td>
@@ -379,7 +373,22 @@ for object in list_of_objects:
                                         object.number_of_outliers(outlier_constant=1.5))
         body_list.append(list_for_body)
     elif object.var_type() == 'object':
-        if object.values.nunique()<= 2 and object.values.nunique()>0:
+        if object.values.nunique()== 1:
+            list_for_body = """<tr>
+                            <th> {} </ th>
+                            <td> Single value </ td>
+                            <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                            <td> Single Value: 
+                            <br> {}: {}% </ td>
+                            <td> {} </ td>
+                            <td> Single Value:
+                             <br>No outliers </ td>
+                         </tr>""".format (object.name,
+                                          object.bars(),
+                                          object.values.unique()[0],
+                                          object.count_binary()[0],
+                                          object.count_null())
+        elif object.values.nunique()== 2:
             list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Binary Variable </ td>
@@ -396,7 +405,7 @@ for object in list_of_objects:
                                           object.values.unique()[1],
                                           object.count_binary()[1],
                                           object.count_null())
-        elif object.values.nunique()> 2 and object.values.nunique()<=20:
+        elif object.values.nunique()> 2 and object.values.nunique()<=10:
             list_for_body = """<tr>
                             <th> {} </ th>
                             <td> Categorical Variable** </ td>
@@ -443,3 +452,4 @@ with open("output_seenopsis.html","r") as html_file:
     Seenopsis_table = html_file.read()
     webbrowser.open_new_tab('output_seenopsis.html')
     html_file.close()
+
