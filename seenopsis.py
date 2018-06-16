@@ -29,15 +29,17 @@ def process_csv():
     process_pandas_df(df_table)
 
 
-def process_pandas_df(df_table):
+def process_pandas_df(name_of_df):
     global record_count
     global column_name_list
     global number_of_variables
     global list_of_objects
-    record_count = count_records(df_table)
-    column_name_list = name_of_variables(df_table)
-    number_of_variables = count_var(df_table)
-    list_of_objects = list_of_object(column_name_list, df_table)
+    global df
+    df = name_of_df
+    record_count = count_records(df)
+    column_name_list = name_of_variables(df)
+    number_of_variables = count_var(df)
+    list_of_objects = list_of_object(column_name_list, df)
     build_html()
     print("In this dataset, the number of variables is: ", number_of_variables)
     print("The number of records in the dataset is: ", record_count)
@@ -60,7 +62,6 @@ def get_csv_table ():
 
 
 def table_as_df (filename):
-    global df
     df = pd.read_csv(filename, parse_dates = True, infer_datetime_format = True, date_parser = pd.to_datetime, encoding='UTF-8')
     #print("this is the database: ", df)                                       ###QA
     return df
@@ -189,7 +190,8 @@ class VariableInfo:
         name = self.name
         values = self.values
         number_of_null=values.isnull().sum()
-        return number_of_null   ####this function returns the number of nulls in the variable
+        percent_of_null = round((number_of_null/len(self.values)) *100,1)
+        return number_of_null,  percent_of_null  ####this function returns the number of nulls in the variable
 
 
     def number_of_outliers(self, outlier_constant):
@@ -314,9 +316,9 @@ def build_html():
         This is the seenopsis of your file:</p> 
         <table class="table table-hover"> 
             <thead>
-            <tr> 
+            <tr align="left"> 
                 <th>Variable Name</th>  
-                <th>Type</th> 
+                <th >Type</th> 
                 <th>Graphic Representation</th>
                 <th>Basic Statistic</th>
                 <th>Missing</th> 
@@ -327,19 +329,21 @@ def build_html():
     for object in list_of_objects:
         if object.var_type() in ('int64', 'float64'):
             if object.values.nunique()== 1:
-                list_for_body = """ <tr>
+                list_for_body = """ <tr align="left">
                                     <th> {} </ th>
                                     <td> Single Value</ td>
                                     <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
                                     <td> Single value
-                                    <td> {} </ td>
+                                    <td> n={}
+                                    <br>{}% </td>
                                     <td> Single Value: 
                                     <br>No outliers </ td>
                                     </tr>""".format (object.name,
                                                   object.bars(),
-                                                  object.count_null())
+                                                  object.count_null()[0],
+                                                  object.count_null()[1])
             elif object.values.nunique()== 2:
-                list_for_body = """<tr>
+                list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Binary Variable 
                                 <br> (integer based)</ td>
@@ -347,30 +351,34 @@ def build_html():
                                 <td> Binary variable 
                                 <br> {}: {}%
                                 <br> {}: {}%</ td>
-                                <td> {} </ td>
+                                <td> n={}
+                                    <br>{}% </td>
                                 <td> Binary variable
-                                 <br>No outliers </ td>
+                                <br>No outliers </ td>
                              </tr>""".format (object.name,
                                              object.bars(),
                                               object.count_binary()[0][0],
                                               object.count_binary()[0][1],
                                               object.count_binary()[1][0],
                                               object.count_binary()[1][1],
-                                              object.count_null())
+                                              object.count_null()[0],
+                                              object.count_null()[1])
             elif object.values.nunique()>2 and object.values.nunique()<=10 :
-                list_for_body = """<tr>
+                list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Categorical Variable 
                                 <br> (integer based) </ td>
                                 <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
                                 <td> Categorical Variable </ td>
-                                <td> {} </ td>
+                                <td> n={}
+                                    <br>{}% </td>
                                 <td> Categorical Variable
-                                 <br>No outliers </ td>
+                                <br>No outliers </ td>
                              </tr>""".format (object.name,
                                               object.bars(),
-                                              object.count_null())
-            else: list_for_body = """<tr>
+                                              object.count_null()[0],
+                                              object.count_null()[1])
+            else: list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Continuous variable 
                                 <br>({}) </ td>
@@ -379,7 +387,8 @@ def build_html():
                                 <br> Max: {} 
                                 <br> Mean &plusmn SD: {} &plusmn {} 
                                 <br> Median (IQR): {} ({}, {}) </ td>
-                                <td> {} </ td>
+                                <td> n={}
+                                    <br>{}% </td>
                                 <td> {} </ td>
                              </tr>""".format ( object.name,
                                             object.var_type(),
@@ -391,79 +400,90 @@ def build_html():
                                             object.median_of_var(),
                                             object.lower_iqr(),
                                             object.upper_iqr(),
-                                            object.count_null(),
+                                            object.count_null()[0],
+                                              object.count_null()[1],
                                             object.number_of_outliers(outlier_constant=1.5))
         elif object.var_type() == 'object':
             if object.values.nunique()== 1:
-                list_for_body = """<tr>
+                list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Single value </ td>
                                 <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Single Value: 
-                                <td> {} </ td>
+                                <td> n={}
+                                    <br>{}% </td>
                                 <td> Single Value:
-                                 <br>No outliers </ td>
+                                <br>No outliers </ td>
                              </tr>""".format (object.name,
                                               object.bars(),
-                                              object.count_null())
+                                              object.count_null()[0],
+                                              object.count_null()[1])
             elif object.values.nunique()== 2:
-                list_for_body = """<tr>
+                list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Binary Variable
-                                 <br> (text/date based) </ td>
+                                <br> (text/date based) </ td>
                                 <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Binary variable 
                                 <br> {}: {}%
                                 <br> {}: {}% </ td>
-                                <td> {} </ td>
+                                <td> n={}
+                                    <br>{}% </td>
                                 <td> Binary variable
-                                 <br>No outliers </ td>
-                             </tr>""".format (object.name,
+                                <br>No outliers </ td>
+                             </tr >""".format (object.name,
                                               object.bars(),
                                               object.count_binary()[0][0],
                                               object.count_binary()[0][1],
                                               object.count_binary()[1][0],
                                               object.count_binary()[1][1],
-                                              object.count_null())
+                                              object.count_null()[0],
+                                              object.count_null()[1])
             elif object.values.nunique()> 2 and object.values.nunique()<=10:
-                list_for_body = """<tr>
+                list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Categorical Variable 
                                 <br> (text/date based) </ td>
                                 <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Categorical variable  
-                                <td> {} </ td>
+                                <td> n={}
+                                    <br>{}% </td>
                                 <td> Categorical variable
                                 <br>No outliers </ td>
                                 </tr>""".format (object.name,
                                              object.bars(),
-                                              object.count_null())
+                                             object.count_null()[0],
+                                             object.count_null()[1])
             else:
-                list_for_body = """<tr>
+                list_for_body = """<tr align="left">
                                     <th> {} </ th>
                                     <td> Text/Date variable</ td>
                                     <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                     <td> Text/Date variable - 
                                     <br> only top 10 values are presented </td>
-                                    <td> {} </ td>
+                                    <td> n={}
+                                    <br>{}% </td>
                                     <td> Text/Date variable
-                                     <br>No outliers </ td>
+                                    <br>No outliers </ td>
                                  </tr>""".format(object.name,
                                                  object.bars(),
-                                                 object.count_null())
+                                                 object.count_null()[0],
+                                                 object.count_null()[1])
         else:
-            list_for_body = """<tr>
+            list_for_body = """<tr align="left">
                                 <th> {} </ th>
                                 <td> Text/Date variable</ td>
                                 <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Text/Date variable - 
                                 <br> only top 10 values are presented </td>
-                                <td> {} </ td>
+                                <td> n={}
+                                <br>{}% </td>
                                 <td> Text/Date variable
-                                 <br>No outliers </ td>
+                                <br>No outliers </ td>
                              </tr>""".format(object.name,
                                              object.bars(),
-                                             object.count_null())
+                                             object.count_null()[0],
+                                             object.count_null()[1])
         body_list.append(list_for_body)
 
     html_bottomn = """</table> 
