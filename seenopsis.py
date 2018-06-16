@@ -303,6 +303,11 @@ def list_of_object(column_name_list, df_table):
 ###############building the HTML###########################
 ###########################################################
 
+
+
+##############need to deal with bool
+
+
 """ a function that wrap everything nicely in an html table to display """
 
 
@@ -332,13 +337,14 @@ def build_html():
 
     body_list = []
     for object in list_of_objects:
-        if object.var_type() in ('int64', 'float64'):
+        if object.var_type() in ('int64', 'float64', 'int32', 'float32'):
             if object.values.nunique()== 1:
                 list_for_body = """ <tr align="left">
                                     <th> {} </th>
                                     <td> Single Value </td>
                                     <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
-                                    <td> Single value
+                                    <td> Single value: 
+                                    <br> No statistic </td>
                                     <td> {} </td>
                                     <td> Single Value: 
                                     <br>No outliers </td>
@@ -406,9 +412,10 @@ def build_html():
             if object.values.nunique()== 1:
                 list_for_body = """<tr align="left">
                                 <th> {} </th>
-                                <td> Single value </td>
+                                <td> Single value</td>
                                 <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Single Value: 
+                                <td> Single Value:
+                                <br> No statistic </td> 
                                 <td> {} </td>
                                 <td> Single Value:
                                 <br>No outliers </td>
