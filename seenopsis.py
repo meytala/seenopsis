@@ -13,16 +13,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 import webbrowser
 from tkinter.filedialog import askopenfilename
-import matplotlib.colors as colors
+import os
+# import matplotlib.colors as colors
 # from decimal import Decimal
 # from numpy import percentile
 # from pandas.api.types import is_string_dtype
 # from io import StringIO
-import matplotlib.cm as cm
+# import matplotlib.cm as cm
 
 #############################functions that call csv or pandas df
-
-
 
 def process_csv():
     table_name = get_csv_table()
@@ -45,9 +44,6 @@ def process_pandas_df(df_table):
     print("This is a list with the names of the variables: ", column_name_list)
 
 
-# def process_pandas_df ():
-
-
 #######################################################
 ####################Importing Table from CSV###########
 #######################################################
@@ -61,6 +57,7 @@ def process_pandas_df(df_table):
 def get_csv_table ():
     filename = askopenfilename()
     return filename
+
 
 def table_as_df (filename):
     global df
@@ -107,47 +104,37 @@ def name_of_variables (df):
     #print("column names: ", column_name_list)
     return column_name_list
 
+#########################################################
+####################directory for graphs#################
+#########################################################
 
-#####################################################################
-##################calling tHe functions of the meta data#############
-#####################################################################
+######create a directory for the graphs or use the graph directory if available
 
+script_dir = os.path.dirname(__file__)
+graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
 
-
-# table_name = get_csv_table()
-# print("The name of the table is: ", table_name)
-
-# df_table = table_as_df (table_name)
-#
-# record_count = count_records(df_table)
-# print("The number of records in the dataset is: ", record_count)
-#
-# column_name_list = name_of_variables (df_table)
-# print("This is a list with the names of the variables: ", column_name_list)
-#
-# number_of_variables = count_var (df_table)
-# print("In this dataset, the number of variables is: ", number_of_variables)
-#
+if not os.path.isdir(graph_dir):
+    os.makedirs(graph_dir)
 
 
 #########################################################
-####################Basic Statistic######################
+################seenopsis data to present################
 #########################################################
 
-"""Instances of the Class represents the variable"""
-####decided to run as a class, than, for each variable (will turn to object) there will be methods
-####the output of the method will be displayed in the output table
+"""Instances of the Class represents the different variables"""
+####each variable will turn to an object (in the class VariableInfo) and the following are the object's methods:
 
-
-class ContVariable:
+class VariableInfo:
     def __init__(self, name, values, index):
         self.name = name
         self.values=values
         self.index = index
 
+
     def var_type (self):
         type_of_variable = np.dtype(df[self.name])
         return type_of_variable
+
 
     def mean_of_var (self):
         name = self.name
@@ -155,11 +142,13 @@ class ContVariable:
         #print("the mean of the coloum {} is {}".format (name, mean))
         return round(mean,2)    ####this function returns mean round to 2 decimal
 
+
     def median_of_var (self):
         name = self.name
         median = np.nanmedian(self.values)
         #print("the median of the coloum {} is {}".format (name, median))
         return round(median,2)   ####this function returns median round to 2 decimal
+
 
     def lower_iqr (self):
         name = self.name
@@ -167,11 +156,13 @@ class ContVariable:
         low_iqr = np.nanpercentile(values,25)
         return round(low_iqr,2)       ####this function returns the lower boundry of IQR
 
+
     def upper_iqr(self):
         name = self.name
         values = self.values
         up_iqr = np.nanpercentile(values, 75)    ####this function returns the upper boundry of IQR
         return round(up_iqr,2)
+
 
     def minimum_of_var (self):
         name = self.name
@@ -179,11 +170,13 @@ class ContVariable:
         #print("the minimal value of coloum {} is {}".format (name, minimum))    ##QA
         return round(minimum,2) ####this function returns the minimal value of the variable
 
+
     def maximum_of_var (self):
         name = self.name
         maximum = np.max(self.values)
         #print("the maximal value of coloum {} is {}".format (name, maximum))    ##QA
         return round(maximum,2)    ####this function returns the maximal value of the variable
+
 
     def sd_of_var (self):
         name = self.name
@@ -191,11 +184,13 @@ class ContVariable:
         #print("the std of coloum {} is {}".format (name, sd))        ##QA
         return round(sd,2)   #####this function returns the sd, round to 2 decimals
 
+
     def count_null (self):
         name = self.name
         values = self.values
         number_of_null=values.isnull().sum()
         return number_of_null   ####this function returns the number of nulls in the variable
+
 
     def number_of_outliers(self, outlier_constant):
         a = np.array(self.values)
@@ -211,25 +206,29 @@ class ContVariable:
                 count +=1
         return count   ####this function returns the number of outliers, based on bounderies +/-  X times IQR
 
+
     def histogram (self):
         plt.hist(self.values.dropna(), bins=50)    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
-        plt.savefig("hist_{}".format(self.index))
+        plt.savefig(graph_dir + "hist_{}".format(self.index))
         plt.close()
         return self.index
+
 
     def pie (self):
         self.values.value_counts().plot(kind='pie')
         # plt.pie(self.values.dropna())    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
-        plt.savefig("pie_{}".format(self.index))
+        plt.savefig(graph_dir + "pie_{}".format(self.index))
         plt.close()
         counts = self.values.value_counts()
         return self.index
 
+
     def bars (self):
         self.values.value_counts().nlargest(10).plot(kind='barh')
-        plt.savefig("bars_{}".format(self.index))
+        plt.savefig(graph_dir + "bars_{}".format(self.index))
         plt.close()
         return self.index
+
 
     def count_binary (self):
         # unique, counts = np.unique(self.values, return_counts=True)
@@ -246,22 +245,12 @@ class ContVariable:
         # return round(percentage,1)
         return percentage_list
 
-    # count = self.values.value_counts()
-    # for x, y in count.items():                                            percentage is a results containing the values and the counts, I can change it to a tupple, or array
-
-
-# #     ###QA
-# name_2 = column_name_list[9]                            #QA
-# values_2 = df_table[name_2]
-# test = ContVariable(name_2, values_2, index=9)
-# # print("var_type", test.var_type()) ###there is a problem, date returns as an object
-# # # # , test.median_of_var(), test.minimum_of_var(), test.maximum_of_var(), test.sd_of_var())
-# print("pie",test.pie() )
 
 
 #######################################################
 #######################OBJECTS#########################
 #######################################################
+
 
 """creating a list of objects for the Variable class. Each object has to have:
 #  1. a name - the name of the variable
@@ -275,9 +264,8 @@ def list_of_object(column_name_list, df_table):
         name = variable
         values = df_table[name]  ##in pandas - this is how you get the values
         index=index
-        list_of_objects.append(ContVariable(name, values, index))
+        list_of_objects.append(VariableInfo(name, values, index))
     return list_of_objects
-
 
 #print("list of objects: ", list_of_objects)            #QA
 
@@ -285,24 +273,28 @@ def list_of_object(column_name_list, df_table):
 ####################Output Table#######################
 #######################################################
 
-##the output will be differential based on the type of the variable
+##the output table is differential based on the types of the variables
 
-##potential types:
+##currently categorized  out put based on the types:
 
 ###if dtype is in (int64, float64):
 #single variable - only one value
 #binary - only 2 unique values (except for null)
-#categorical - <= 10 unique variables
+#categorical - >2 and <=10 unique variables
 #continuoues - >10 unique variables
 
 ####if dtype is object:
 #single variable - only one value
-#binary - only 2 unique values (except for null)
-#categorical - <= 10 unique variables
+#binary - 2 unique values (except for null)
+#categorical - >2 and <= 10 unique variables
 #text/date - >10 unique variables
 
-####will do it while building the HTML
+####the categorization is executed while building the HTML
 
+
+###########################################################
+###############building the HTML###########################
+###########################################################
 
 """ a function that wrap everything nicely in an html table to display """
 
@@ -318,8 +310,8 @@ def build_html():
         <body>
         <div class="container">
         <h2>SEENOPSIS</h2> 
-        <p>This is the seenopsis of the detaset<br>
-        This detaset has {} records and {} variables</p> 
+        <p>The file you are investing has {} records and {} variables <br>
+        This is the seenopsis of your file:</p> 
         <table class="table table-hover"> 
             <thead>
             <tr> 
@@ -338,7 +330,7 @@ def build_html():
                 list_for_body = """ <tr>
                                     <th> {} </ th>
                                     <td> Single Value</ td>
-                                    <td> <img src='bars_{}.png' width='200' hight='200'> </img> </td>
+                                    <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
                                     <td> Single value
                                     <td> {} </ td>
                                     <td> Single Value: 
@@ -351,7 +343,7 @@ def build_html():
                                 <th> {} </ th>
                                 <td> Binary Variable 
                                 <br> (integer based)</ td>
-                                <td> <img src='bars_{}.png' width='200' hight='200'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
                                 <td> Binary variable 
                                 <br> {}: {}%
                                 <br> {}: {}%</ td>
@@ -370,7 +362,7 @@ def build_html():
                                 <th> {} </ th>
                                 <td> Categorical Variable 
                                 <br> (integer based) </ td>
-                                <td> <img src='bars_{}.png' width='200' hight='200'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
                                 <td> Categorical Variable </ td>
                                 <td> {} </ td>
                                 <td> Categorical Variable
@@ -382,7 +374,7 @@ def build_html():
                                 <th> {} </ th>
                                 <td> Continuous variable 
                                 <br>({}) </ td>
-                                <td> <img src='hist_{}.png' width ='200' hight='150'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/hist_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Min: {} 
                                 <br> Max: {} 
                                 <br> Mean &plusmn SD: {} &plusmn {} 
@@ -406,7 +398,7 @@ def build_html():
                 list_for_body = """<tr>
                                 <th> {} </ th>
                                 <td> Single value </ td>
-                                <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Single Value: 
                                 <td> {} </ td>
                                 <td> Single Value:
@@ -419,7 +411,7 @@ def build_html():
                                 <th> {} </ th>
                                 <td> Binary Variable
                                  <br> (text/date based) </ td>
-                                <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Binary variable 
                                 <br> {}: {}%
                                 <br> {}: {}% </ td>
@@ -438,7 +430,7 @@ def build_html():
                                 <th> {} </ th>
                                 <td> Categorical Variable 
                                 <br> (text/date based) </ td>
-                                <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Categorical variable  
                                 <td> {} </ td>
                                 <td> Categorical variable
@@ -450,7 +442,7 @@ def build_html():
                 list_for_body = """<tr>
                                     <th> {} </ th>
                                     <td> Text/Date variable</ td>
-                                    <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                                    <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                     <td> Text/Date variable - 
                                     <br> only top 10 values are presented </td>
                                     <td> {} </ td>
@@ -463,7 +455,7 @@ def build_html():
             list_for_body = """<tr>
                                 <th> {} </ th>
                                 <td> Text/Date variable</ td>
-                                <td> <img src='bars_{}.png' width ='200' hight='150'> </img> </td>
+                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
                                 <td> Text/Date variable - 
                                 <br> only top 10 values are presented </td>
                                 <td> {} </ td>
@@ -491,7 +483,14 @@ def build_html():
         html_file.close()
 
 
-##############################the histogram doesn't show. in the function (219) I return a saved file. I tried show.
 
 
+###############call seenopsis
+
+####call seenopsis fron this file
 # process_csv()
+# process_pandas_df()
+
+####call seenopsis from a different tab
+# import seenopsis
+# seenopsis.process_csv()
