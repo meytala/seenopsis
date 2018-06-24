@@ -14,12 +14,7 @@ import matplotlib.pyplot as plt
 import webbrowser
 from tkinter.filedialog import askopenfilename
 import os
-# import matplotlib.colors as colors
-# from decimal import Decimal
-# from numpy import percentile
-# from pandas.api.types import is_string_dtype
-# from io import StringIO
-# import matplotlib.cm as cm
+
 
 #############################functions that call csv or pandas df
 
@@ -137,35 +132,11 @@ class VariableInfo:
         return type_of_variable
 
 
-    def type (self):
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique()== 1:
-                return "single"
-            elif self.values.nunique()== 2:
-                return "binary"
-            elif self.values.nunique()>2 and self.values.nunique()<=10:
-                return "categorical"
-            else:
-                return "continuous"
-        elif self.var_type() == 'object':
-            if self.values.nunique()== 1:
-                return "single"
-            elif self.values.nunique()== 2:
-                return "binary"
-            elif self.values.nunique()> 2 and self.values.nunique()<=10:
-                return "categorical"
-            else:
-                return "text or Date"
-        else:
-            return "text or Date"
-
-
     def mean_of_var (self):
-        if self.type() == "continuous":
-            name = self.name
-            mean = np.mean(self.values)
-            #print("the mean of the coloum {} is {}".format (name, mean))
-            return round(mean,2)    ####this function returns mean round to 2 decimal
+        name = self.name
+        mean = np.mean(self.values)
+        #print("the mean of the coloum {} is {}".format (name, mean))
+        return round(mean,2)    ####this function returns mean round to 2 decimal
 
 
     def median_of_var (self):
@@ -208,44 +179,6 @@ class VariableInfo:
         sd = np.std(self.values)
         #print("the std of coloum {} is {}".format (name, sd))        ##QA
         return round(sd,2)   #####this function returns the sd, round to 2 decimals
-
-
-    def statistics (self):
-        if self.type() == "continuous":
-            return """
-                    <td> Min: {}  
-                    <br> Max: {} 
-                    <br> Mean &plusmn SD: {} &plusmn {}  
-                    <br> Median (IQR): {} ({}, {}) </td>""".format (self.minimum_of_var(),
-                              self.maximum_of_var(),
-                              self.mean_of_var(),
-                              self.sd_of_var(),
-                              self.median_of_var(),
-                              self.lower_iqr(),
-                              self.upper_iqr())
-
-        elif self.type() == "categorical":
-             return """
-                    <td> Categorical Variable 
-                    <br> {} unique values </td>""".format (self.unique_categories())
-
-        elif self.type() == "binary":
-            return """
-                    <td> Binary variable 
-                    <br> {}: {}% 
-                    <br> {}: {}% </td>""".format (self.count_binary()[0][0],
-                                                  self.count_binary()[0][1],
-                                                  self.count_binary()[1][0],
-                                                  self.count_binary()[1][1])
-        elif self.type() == "single":
-            return """<td> Single value 
-                      <br> No Statisticc </td>"""
-
-        else:
-            return """
-                    <td> Text/Date variable - 
-                    <br> only top 10 values are presented 
-                    <br> out of {} unique values </td>""".format(self.unique_categories())
 
 
     def count_null (self):
@@ -312,6 +245,7 @@ class VariableInfo:
         # return round(percentage,1)
         return percentage_list
 
+
     def unique_categories (self):
         unique_counts = self.values.nunique()
         return unique_counts
@@ -364,10 +298,6 @@ def list_of_object(column_name_list, df_table):
 ###########################################################
 ###############building the HTML###########################
 ###########################################################
-
-
-
-##############need to deal with bool
 
 
 """ a function that wrap everything nicely in an html table to display """
@@ -565,7 +495,6 @@ def build_html():
         Seenopsis_table = html_file.read()
         webbrowser.open_new_tab('output_seenopsis.html')
         html_file.close()
-
 
 
 
