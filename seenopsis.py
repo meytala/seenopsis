@@ -63,7 +63,7 @@ def table_as_df (filename):
 
 
 #######################################################
-####################Meta data for  the table################
+####################Meta data for  the table###########
 #######################################################
 
 
@@ -78,7 +78,6 @@ def count_var (df):
 
 
 ######## count the number of the values in each variable not including NA
-
 ##input = df
 ##output = number of nun null records
 
@@ -103,8 +102,7 @@ def name_of_variables (df):
 #########################################################
 ####################directory for graphs#################
 #########################################################
-
-######create a directory for the graphs or use the graph directory if available
+##create a directory for the graphs or use the graph directory if available
 
 script_dir = os.path.dirname(__file__)
 graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
@@ -130,6 +128,54 @@ class VariableInfo:
     def var_type (self):
         type_of_variable = np.dtype(df[self.name])
         return type_of_variable
+
+
+    def type (self):
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
+            if self.values.nunique()== 1:
+                return "Single Variable\n"  \
+                       " ({})".format (self.var_type())
+            elif self.values.nunique()== 2:
+                return "Binary Variable\n" +\
+                        " ({})".format (self.var_type())
+            elif self.values.nunique()>2 and self.values.nunique()<=10:
+                return "Categorical variable\n" +\
+                        " ({})".format (self.var_type())
+            else:
+                return "Continuous variable\n" +\
+                        " ({})".format (self.var_type())
+        elif self.var_type() == 'object':
+            if self.values.nunique()== 1:
+                return "Single Variable"
+            elif self.values.nunique()== 2:
+                return "Binary Variable"
+            elif self.values.nunique()> 2 and self.values.nunique()<=10:
+                return "Categorical variable"
+            else:
+                return "Text or Date"
+        else:
+            return "Text or Date"
+
+
+    def histogram (self):
+        plt.hist(self.values.dropna(), bins=50)    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
+        plt.savefig(graph_dir + "hist_{}".format(self.index))
+        plt.close()
+        return "hist_{}.png".format(self.index)
+
+
+    def bars(self):
+        self.values.value_counts().nlargest(10).plot(kind='barh')
+        plt.savefig(graph_dir + "bars_{}".format(self.index))
+        plt.close()
+        return "bars_{}.png".format(self.index)
+
+
+    def graph(self):
+        if self.type() == "continuous":
+            return self.histogram()
+        else:
+            return self.bars()
 
 
     def mean_of_var (self):
@@ -181,6 +227,33 @@ class VariableInfo:
         return round(sd,2)   #####this function returns the sd, round to 2 decimals
 
 
+    def statistics (self):
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
+            if self.values.nunique()> 10:
+                return ["Min: {}".format (self.minimum_of_var()),
+                        "Max: {}".format (self.maximum_of_var()),
+                        "Mean &plusmn SD: {} &plusmn {}".format (self.mean_of_var(),self.sd_of_var()),
+                        "Median (IQR): {} ({}, {})".format (self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
+
+        elif self.values.nunique()> 2 and self.values.nunique()>= 10 :
+            return ["Categorical Variable", "{} unique values".format (self.unique_categories())]
+
+        elif self.values.nunique()== 2:
+            return ["Binary variable",
+                    "{}: {}%".format (self.count_binary()[0][0], self.count_binary()[0][1]),
+                    "{}: {}%".format (self.count_binary()[1][0], self.count_binary()[1][1])]
+
+        elif self.values.nunique()== 1:
+            return ["Single value",
+                    "No Statistic"]
+
+        else:
+            return [
+                    "Text/Date variable",
+                    "Only top 10 values are presented",
+                    "Out of {} unique values".format(self.unique_categories())]
+
+
     def count_null (self):
         name = self.name
         values = self.values
@@ -189,45 +262,36 @@ class VariableInfo:
             return "No Missing Values"
         else:
             percent_of_null = round((number_of_null/len(self.values)) *100,1)
-            return ("N={} <br>{}%".format(number_of_null,  percent_of_null) ) ####this function returns the number of nulls in the variable
+            return ("N={}, {}%".format(number_of_null,  percent_of_null) ) ####this function returns the number of nulls in the variable
 
 
     def number_of_outliers(self, outlier_constant):
-        a = np.array(self.values)
-        upper_quartile = np.nanpercentile(a,75)
-        lower_quartile = np.nanpercentile(a, 25)
-        IQR = (upper_quartile - lower_quartile)
-        extend_IQR = IQR * outlier_constant
-        louer_boundry = lower_quartile - extend_IQR
-        upper_boundry = upper_quartile + extend_IQR
-        count=0
-        for y in a:
-            if (y <= louer_boundry) or (y >= upper_boundry):
-                count +=1
-        return count   ####this function returns the number of outliers, based on bounderies +/-  X times IQR
-
-
-    def histogram (self):
-        plt.hist(self.values.dropna(), bins=50)    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
-        plt.savefig(graph_dir + "hist_{}".format(self.index))
-        plt.close()
-        return self.index
-
-
-    def pie (self):
-        self.values.value_counts().plot(kind='pie')
-        # plt.pie(self.values.dropna())    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
-        plt.savefig(graph_dir + "pie_{}".format(self.index))
-        plt.close()
-        counts = self.values.value_counts()
-        return self.index
-
-
-    def bars (self):
-        self.values.value_counts().nlargest(10).plot(kind='barh')
-        plt.savefig(graph_dir + "bars_{}".format(self.index))
-        plt.close()
-        return self.index
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
+            if self.values.nunique()> 10:
+                a = np.array(self.values)
+                upper_quartile = np.nanpercentile(a,75)
+                lower_quartile = np.nanpercentile(a, 25)
+                IQR = (upper_quartile - lower_quartile)
+                extend_IQR = IQR * outlier_constant
+                louer_boundry = lower_quartile - extend_IQR
+                upper_boundry = upper_quartile + extend_IQR
+                count=0
+                for y in a:
+                    if (y <= louer_boundry) or (y >= upper_boundry):
+                        count +=1
+                    return ["N={}".format(count)]
+        elif self.values.nunique()>2 and self.values.nunique()< 10:
+            return ["Categorical variable",
+                    "No outlier"]
+        elif self.values.nunique()== 2:
+            return ["Binary variable",
+                   "No outlier"]
+        elif self.values.nunique()==1:
+            return ["Single variable",
+                   "No outlier"]
+        else:
+            return ["Text/Date variable",
+                   "No outliers"]
 
 
     def count_binary (self):
@@ -254,7 +318,6 @@ class VariableInfo:
 #######################OBJECTS#########################
 #######################################################
 
-
 """creating a list of objects for the Variable class. Each object has to have:
 #  1. a name - the name of the variable
 #  2. The values of the variable
@@ -272,33 +335,10 @@ def list_of_object(column_name_list, df_table):
 
 #print("list of objects: ", list_of_objects)            #QA
 
-#######################################################
-####################Output Table#######################
-#######################################################
-
-##the output table is differential based on the types of the variables
-
-##currently categorized  out put based on the types:
-
-###if dtype is in (int64, float64):
-#single variable - only one value
-#binary - only 2 unique values (except for null)
-#categorical - >2 and <=10 unique variables
-#continuoues - >10 unique variables
-
-####if dtype is object:
-#single variable - only one value
-#binary - 2 unique values (except for null)
-#categorical - >2 and <= 10 unique variables
-#text/date - >10 unique variables
-
-####the categorization is executed while building the HTML
-
 
 ###########################################################
 ###############building the HTML###########################
 ###########################################################
-
 
 """ a function that wrap everything nicely in an html table to display """
 
@@ -319,166 +359,33 @@ def build_html():
         <table class="table table-hover"> 
             <thead>
             <tr align="left"> 
-                <th>Variable Name</th>  
+                <th >Variable Name</th>  
                 <th >Type</th> 
-                <th>Graphic Representation</th>
-                <th>Basic Statistic</th>
-                <th>Missing</th> 
-                <th>Outliers (n)</th>  
+                <th >Graphic Representation</th>
+                <th >Basic Statistic</th>
+                <th >Missing</th> 
+                <th >Outliers (n)</th>  
             </tr></thead>""".format(record_count, number_of_variables)
+
 
     body_list = []
     for object in list_of_objects:
-        if object.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if object.values.nunique()== 1:
-                list_for_body = """ <tr align="left">
-                                    <th> {} </th>
-                                    <td> Single Value </td>
-                                    <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
-                                    <td> Single value: 
-                                    <br> No statistic </td>
-                                    <td> {} </td>
-                                    <td> Single Value: 
-                                    <br>No outliers </td>
-                                    </tr>""".format (object.name,
-                                                  object.bars(),
-                                                  object.count_null())
-            elif object.values.nunique()== 2:
-                list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Binary Variable 
-                                <br> (integer based)</td>
-                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
-                                <td> Binary variable 
-                                <br> {}: {}% 
-                                <br> {}: {}% </td>
-                                <td> {} </td>
-                                <td> Binary variable
-                                <br>No outliers </ td>
-                             </tr>""".format (object.name,
-                                             object.bars(),
-                                              object.count_binary()[0][0],
-                                              object.count_binary()[0][1],
-                                              object.count_binary()[1][0],
-                                              object.count_binary()[1][1],
-                                              object.count_null())
-            elif object.values.nunique()>2 and object.values.nunique()<=10 :
-                list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Categorical Variable 
-                                <br> (integer based) </td>
-                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width='200' hight='200'> </img> </td>
-                                <td> Categorical Variable 
-                                <br> {} unique values </td>
-                                <td> {} </td>
-                                <td> Categorical Variable
-                                <br>No outliers </td>
-                             </tr>""".format (object.name,
-                                              object.bars(),
-                                              object.unique_categories(),
-                                              object.count_null())
-            else: list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Continuous variable 
-                                <br>({}) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: {} 
-                                <br> Max: {} 
-                                <br> Mean &plusmn SD: {} &plusmn {} 
-                                <br> Median (IQR): {} ({}, {}) </td>
-                                <td> {} </td>
-                                <td> {} </td>
-                             </tr>""".format ( object.name,
-                                            object.var_type(),
-                                            object.histogram(),
-                                            object.minimum_of_var(),
-                                            object.maximum_of_var(),
-                                            object.mean_of_var(),
-                                            object.sd_of_var(),
-                                            object.median_of_var(),
-                                            object.lower_iqr(),
-                                            object.upper_iqr(),
-                                            object.count_null(),
-                                            object.number_of_outliers(outlier_constant=1.5))
-        elif object.var_type() == 'object':
-            if object.values.nunique()== 1:
-                list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Single value</td>
-                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Single Value:
-                                <br> No statistic </td> 
-                                <td> {} </td>
-                                <td> Single Value:
-                                <br>No outliers </td>
-                             </tr>""".format (object.name,
-                                              object.bars(),
-                                              object.count_null())
-            elif object.values.nunique()== 2:
-                list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Binary Variable
-                                <br> (text/date based) </td>
-                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Binary variable 
-                                <br> {}: {}%
-                                <br> {}: {}% </td>
-                                <td> {} </td>
-                                <td> Binary variable
-                                <br>No outliers </td>
-                             </tr >""".format (object.name,
-                                              object.bars(),
-                                              object.count_binary()[0][0],
-                                              object.count_binary()[0][1],
-                                              object.count_binary()[1][0],
-                                              object.count_binary()[1][1],
-                                              object.count_null())
-            elif object.values.nunique()> 2 and object.values.nunique()<=10:
-                list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Categorical Variable 
-                                <br> (text/date based) </td>
-                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Categorical variable
-                                <br> {} unique values  
-                                <td> {} </td>
-                                <td> Categorical variable
-                                <br>No outliers </td>
-                                </tr>""".format (object.name,
-                                             object.bars(),
-                                             object.unique_categories(),
-                                             object.count_null())
-            else:
-                list_for_body = """<tr align="left">
-                                    <th> {} </th>
-                                    <td> Text/Date variable </td>
-                                    <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
-                                    <td> Text/Date variable - 
-                                    <br> only top 10 values are presented 
-                                    <br> out of {} unique values </td>
-                                    <td> {} </td>
-                                    <td> Text/Date variable
-                                    <br>No outliers </td>
-                                 </tr>""".format(object.name,
-                                                 object.bars(),
-                                                 object.unique_categories(),
-                                                 object.count_null())
-        else:
-            list_for_body = """<tr align="left">
-                                <th> {} </th>
-                                <td> Text/Date variable </td>
-                                <td> <img src='Graphs_for_seenopsis/bars_{}.png' width ='200' hight='150'> </img> </td>
-                                <td> Text/Date variable - 
-                                <br> only top 10 values are presented 
-                                <br> out of {} unique values </td>
-                                <td> {} </td>
-                                <td> Text/Date variable
-                                <br>No outliers </td>
-                             </tr>""".format(object.name,
-                                             object.bars(),
-                                             object.unique_categories(),
-                                             object.count_null())
+        list_for_body = """ 
+        <tr align="left">
+        <th > {} </th>
+        <td > {} </td>
+        <td > <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
+        <td > {} </td>
+        <td > {} </td>
+        <td > {} </td>
+        </tr>""".format (object.name,
+                         object.type(),
+                         object.graph(),
+                         "<br>".join(object.statistics()),
+                         object.count_null(),
+                         "<br>".join(object.number_of_outliers(1.5)))
         body_list.append(list_for_body)
+
 
     html_bottomn = """</table> 
                     <footer>&copy; Copyright 2018 Meytal Avgil Tsadok</footer>
@@ -498,6 +405,7 @@ def build_html():
 
 
 
+
 ###############call seenopsis
 
 ####call seenopsis fron this file
@@ -507,3 +415,4 @@ def build_html():
 ####call seenopsis from a different tab
 # import seenopsis
 # seenopsis.process_csv()
+
