@@ -19,8 +19,8 @@ import os
 #############################functions that call csv or pandas df
 
 def process_csv():
-    table_name = get_csv_table()
-    df_table = table_as_df (table_name)
+    file_name = get_csv_table()
+    df_table = table_as_df (file_name)
     process_pandas_df(df_table)
 
 
@@ -31,6 +31,7 @@ def process_pandas_df(name_of_df):
     global list_of_objects
     global df
     df = name_of_df
+    df = df.dropna(how='all',axis=0)
     record_count = count_records(df)
     column_name_list = name_of_variables(df)
     number_of_variables = count_var(df)
@@ -38,7 +39,6 @@ def process_pandas_df(name_of_df):
     build_html()
     print("In this dataset, the number of variables is: ", number_of_variables)
     print("The number of records in the dataset is: ", record_count)
-    print("This is a list with the names of the variables: ", column_name_list)
 
 
 #######################################################
@@ -136,7 +136,7 @@ class VariableInfo:
                 return "Single Variable\n"  \
                        " ({})".format (self.var_type())
             elif self.values.nunique()== 2:
-                return "Binary Variable\n" +\
+               return "Binary Variable\n" +\
                         " ({})".format (self.var_type())
             elif self.values.nunique()>2 and self.values.nunique()<=10:
                 return "Categorical variable\n" +\
@@ -172,7 +172,7 @@ class VariableInfo:
 
 
     def graph(self):
-        if self.type() == "continuous":
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
             return self.histogram()
         else:
             return self.bars()
@@ -228,15 +228,16 @@ class VariableInfo:
 
 
     def statistics (self):
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique()> 10:
-                return ["Min: {}".format (self.minimum_of_var()),
-                        "Max: {}".format (self.maximum_of_var()),
-                        "Mean &plusmn SD: {} &plusmn {}".format (self.mean_of_var(),self.sd_of_var()),
-                        "Median (IQR): {} ({}, {})".format (self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
+            return ["Min: {}".format (self.minimum_of_var()),
+                    "Max: {}".format (self.maximum_of_var()),
+                    "Mean &plusmn SD: {} &plusmn {}".format (self.mean_of_var(),self.sd_of_var()),
+                    "Median (IQR): {} ({}, {})".format (self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
 
         elif self.values.nunique()> 2 and self.values.nunique()>= 10 :
-            return ["Categorical Variable", "{} unique values".format (self.unique_categories())]
+            return ["Categorical Variable",
+                    "{} unique values".format (self.unique_categories()),
+                    "Up to top 10 values are presented"]
 
         elif self.values.nunique()== 2:
             return ["Binary variable",
@@ -250,7 +251,7 @@ class VariableInfo:
         else:
             return [
                     "Text/Date variable",
-                    "Only top 10 values are presented",
+                    "Up to top 10 values are presented",
                     "Out of {} unique values".format(self.unique_categories())]
 
 
@@ -259,27 +260,27 @@ class VariableInfo:
         values = self.values
         number_of_null=values.isnull().sum()
         if number_of_null == 0:
-            return "No Missing Values"
+            return ["No missing",
+                    "values"]
         else:
             percent_of_null = round((number_of_null/len(self.values)) *100,1)
-            return ("N={}, {}%".format(number_of_null,  percent_of_null) ) ####this function returns the number of nulls in the variable
+            return [("N={}, {}%".format(number_of_null,  percent_of_null) )]
 
 
     def number_of_outliers(self, outlier_constant):
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique()> 10:
-                a = np.array(self.values)
-                upper_quartile = np.nanpercentile(a,75)
-                lower_quartile = np.nanpercentile(a, 25)
-                IQR = (upper_quartile - lower_quartile)
-                extend_IQR = IQR * outlier_constant
-                louer_boundry = lower_quartile - extend_IQR
-                upper_boundry = upper_quartile + extend_IQR
-                count=0
-                for y in a:
-                    if (y <= louer_boundry) or (y >= upper_boundry):
-                        count +=1
-                    return ["N={}".format(count)]
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
+            a = np.array(self.values)
+            upper_quartile = np.nanpercentile(a,75)
+            lower_quartile = np.nanpercentile(a, 25)
+            IQR = (upper_quartile - lower_quartile)
+            extend_IQR = IQR * outlier_constant
+            louer_boundry = lower_quartile - extend_IQR
+            upper_boundry = upper_quartile + extend_IQR
+            count=0
+            for y in a:
+                if (y <= louer_boundry) or (y >= upper_boundry):
+                    count +=1
+                return ["N={}".format(count)]
         elif self.values.nunique()>2 and self.values.nunique()< 10:
             return ["Categorical variable",
                     "No outlier"]
@@ -300,7 +301,7 @@ class VariableInfo:
         percentage_list = []
         count = self.values.value_counts()
         for name, count in count.items():
-            percentage = round(count/len(self.values),3)*100
+            percentage = round((count/len(self.values))*100,2)
             sub_list = [name, percentage]
             percentage_list.append(sub_list)
             # (np.unique(self.values, return_counts=True)[1] / len(self.values)) * 100
@@ -359,12 +360,12 @@ def build_html():
         <table class="table table-hover"> 
             <thead>
             <tr align="left"> 
-                <th >Variable Name</th>  
-                <th >Type</th> 
-                <th >Graphic Representation</th>
-                <th >Basic Statistic</th>
-                <th >Missing</th> 
-                <th >Outliers (n)</th>  
+                <th align="left">Variable Name</th>  
+                <th align="left" >Type</th> 
+                <th align="left">Graphic Representation</th>
+                <th align="left">Basic Statistic</th>
+                <th align="left">Missing</th> 
+                <th align="left">Outliers (n)</th>  
             </tr></thead>""".format(record_count, number_of_variables)
 
 
@@ -372,17 +373,17 @@ def build_html():
     for object in list_of_objects:
         list_for_body = """ 
         <tr align="left">
-        <th > {} </th>
-        <td > {} </td>
-        <td > <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
-        <td > {} </td>
-        <td > {} </td>
-        <td > {} </td>
+        <th align="left"> {} </th>
+        <td align="left"> {} </td>
+        <td align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
+        <td align="left"> {} </td>
+        <td align="left"> {} </td>
+        <td align="left"> {} </td>
         </tr>""".format (object.name,
                          object.type(),
                          object.graph(),
                          "<br>".join(object.statistics()),
-                         object.count_null(),
+                         "<br>".join(object.count_null()),
                          "<br>".join(object.number_of_outliers(1.5)))
         body_list.append(list_for_body)
 
@@ -405,7 +406,6 @@ def build_html():
 
 
 
-
 ###############call seenopsis
 
 ####call seenopsis fron this file
@@ -415,4 +415,3 @@ def build_html():
 ####call seenopsis from a different tab
 # import seenopsis
 # seenopsis.process_csv()
-
