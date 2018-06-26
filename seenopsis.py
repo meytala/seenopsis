@@ -19,8 +19,8 @@ import os
 #############################functions that call csv or pandas df
 
 def process_csv():
-    table_name = get_csv_table()
-    df_table = table_as_df (table_name)
+    file_name = get_csv_table()
+    df_table = table_as_df (file_name)
     process_pandas_df(df_table)
 
 
@@ -172,7 +172,7 @@ class VariableInfo:
 
 
     def graph(self):
-        if self.type() == "continuous":
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
             return self.histogram()
         else:
             return self.bars()
@@ -228,12 +228,11 @@ class VariableInfo:
 
 
     def statistics (self):
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique()> 10:
-                return ["Min: {}".format (self.minimum_of_var()),
-                        "Max: {}".format (self.maximum_of_var()),
-                        "Mean &plusmn SD: {} &plusmn {}".format (self.mean_of_var(),self.sd_of_var()),
-                        "Median (IQR): {} ({}, {})".format (self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
+            return ["Min: {}".format (self.minimum_of_var()),
+                    "Max: {}".format (self.maximum_of_var()),
+                    "Mean &plusmn SD: {} &plusmn {}".format (self.mean_of_var(),self.sd_of_var()),
+                    "Median (IQR): {} ({}, {})".format (self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
 
         elif self.values.nunique()> 2 and self.values.nunique()>= 10 :
             return ["Categorical Variable",
@@ -269,20 +268,19 @@ class VariableInfo:
 
 
     def number_of_outliers(self, outlier_constant):
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique()> 10:
-                a = np.array(self.values)
-                upper_quartile = np.nanpercentile(a,75)
-                lower_quartile = np.nanpercentile(a, 25)
-                IQR = (upper_quartile - lower_quartile)
-                extend_IQR = IQR * outlier_constant
-                louer_boundry = lower_quartile - extend_IQR
-                upper_boundry = upper_quartile + extend_IQR
-                count=0
-                for y in a:
-                    if (y <= louer_boundry) or (y >= upper_boundry):
-                        count +=1
-                    return ["N={}".format(count)]
+        if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
+            a = np.array(self.values)
+            upper_quartile = np.nanpercentile(a,75)
+            lower_quartile = np.nanpercentile(a, 25)
+            IQR = (upper_quartile - lower_quartile)
+            extend_IQR = IQR * outlier_constant
+            louer_boundry = lower_quartile - extend_IQR
+            upper_boundry = upper_quartile + extend_IQR
+            count=0
+            for y in a:
+                if (y <= louer_boundry) or (y >= upper_boundry):
+                    count +=1
+                return ["N={}".format(count)]
         elif self.values.nunique()>2 and self.values.nunique()< 10:
             return ["Categorical variable",
                     "No outlier"]
