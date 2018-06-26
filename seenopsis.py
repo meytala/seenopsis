@@ -249,8 +249,7 @@ class VariableInfo:
                     "No Statistic"]
 
         else:
-            return [
-                    "Text/Date variable",
+            return ["Text/Date variable",
                     "Up to top 10 values are presented",
                     "Out of {} unique values".format(self.unique_categories())]
 
@@ -345,41 +344,79 @@ def list_of_object(column_name_list, df_table):
 
 
 def build_html():
-    html_top = """<html> 
-        <head>
-          <title>SEENOPSIS</title>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <link rel="stylesheet" href="bootstrap.min.css">
-        </head>
-        <body>
-        <div class="container">
+    html_top = """<html>
+<head>
+   <title>SEENOPSIS</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="bootstrap.min.css">
+   <style>
+      .bottom-bar{{
+         background: #deede9;
+      }}
+      .navbar.bottom-bar{{
+         border: none;
+      }}
+      .main-bg{{
+         background-color: #FFFFFF;
+      }}
+      .single-row{{
+         margin-bottom: 5px;
+      }}
+      .content-table td{{
+         padding-bottom: 10px;
+      }}
+   </style>
+</head>
+<body class="main-bg">
+<div class="navbar-wrapper" >
+   <div class="container main-bg">
+      <div class="row  navbar-fixed-top">
+         <div class="container main-bg" style="color: #1d576b">
         <h2>SEENOPSIS</h2> 
-        <p>The file you are investing has {} records and {} variables <br>
-        This is the seenopsis of your file:</p> 
-        <table class="table table-hover"> 
+        <span>The file you are investing has {} records and {} variables <br>
+        This is the seenopsis of your file:</span> 
+        <table class="table table-hover" style="margin-bottom:0px">
             <thead>
-            <tr align="left"> 
-                <th align="left">Variable Name</th>  
-                <th align="left" >Type</th> 
-                <th align="left">Graphic Representation</th>
-                <th align="left">Basic Statistic</th>
-                <th align="left">Missing</th> 
-                <th align="left">Outliers (n)</th>  
-            </tr></thead>""".format(record_count, number_of_variables)
+            <tr align="right" >
+                <th width="7%">Variable<br/>Name</th>
+                  <th width="15%" >Type</th>
+                  <th width="15%">Graphic<br/> Representation</th>
+                  <th width="15%">Basic<br/> Statistic</th>
+                  <th width="15%">Missing</th>
+                  <th width="15%">Outliers(n)</th>
+            </tr></thead></table>
+         </div>
+      </div>
+   </div>
+</div> 
+<div class="container" style="padding-top:160px">
+   <div class="row">
+      <div class="container">
+         <table class="content-table">
+            <thead>
+            <tr >
+               <th width="7%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+            </tr>
+            </thead>""".format(record_count, number_of_variables)
 
 
     body_list = []
     for object in list_of_objects:
         list_for_body = """ 
-        <tr align="left">
+        <tr align="left" class="single-row">
         <th align="left"> {} </th>
         <td align="left"> {} </td>
         <td align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
         <td align="left"> {} </td>
         <td align="left"> {} </td>
         <td align="left"> {} </td>
-        </tr>""".format (object.name,
+        <tr align="left" class="single-row">""".format (object.name,
                          object.type(),
                          object.graph(),
                          "<br>".join(object.statistics()),
@@ -388,10 +425,21 @@ def build_html():
         body_list.append(list_for_body)
 
 
-    html_bottomn = """</table> 
-                    <footer>&copy; Copyright 2018 Meytal Avgil Tsadok</footer>
-                    </div></body>
-                    </html>"""
+    html_bottomn = """</tr>
+         </table>
+      </div>
+                    <div class="navbar navbar-fixed-bottom bottom-bar" >
+         <div class="container">
+            <div class="nav navbar-nav pull-right ">
+               <br/>
+               <span style="color: #257D92">&copy; Copyright 2018 Meytal Avgil Tsadok</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</body>
+</html>"""
 
     merged_html = html_top + "".join(body_list) +html_bottomn
 
