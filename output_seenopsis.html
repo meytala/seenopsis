@@ -1,343 +1,493 @@
-<html> 
-        <head>
-          <title>SEENOPSIS</title>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1">
-          <link rel="stylesheet" href="bootstrap.min.css">
-        </head>
-        <body>
-        <div class="container">
-        <h2>SEENOPSIS</h2> 
-        <p>The file you are investing has 267799 records and 29 variables <br>
-        This is the seenopsis of your file:</p> 
-        <table class="table table-hover"> 
+<html>
+<head>
+   <title>SEENOPSIS</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="bootstrap.min.css">
+   <style>
+      .bottom-bar{
+         background: #B2D6CC;
+      }
+      .navbar.bottom-bar{
+         border: none;
+      }
+      .main-bg{
+         background-color: #FFFDF4;
+      }
+      .single-row{
+         margin-bottom: 5px;
+      }
+      .content-table td{
+         padding-bottom: 10px;
+      }
+   </style>
+</head>
+<body class="main-bg">
+<div class="navbar-wrapper" >
+   <!-- This is the header -->
+   <div class="container main-bg">
+      <div class="row  navbar-fixed-top">
+         <div class="container main-bg" style="color: #E06769">
+            <h2>SEENOPSIS</h2>
+            <span>The file you are investing has 267799 records and 29 variables : </span>
+            <table class="table table-hover" style="margin-bottom:0px">
+               <thead>
+               <tr align="right" >
+                  <th width="7%">Variable<br/>Name</th>
+                  <th width="15%" >Type</th>
+                  <th width="15%">Graphic<br/> Representation</th>
+                  <th width="15%">Basic<br/> Statistic</th>
+                  <th width="15%">Missing</th>
+                  <th width="15%">Outliers(n)</th>
+               </tr>
+               </thead>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- This is the end of header -->
+<!-- This is the body -->
+<div class="container" style="padding-top:160px">
+   <div class="row">
+      <div class="container">
+         <table class="content-table">
             <thead>
-            <tr align="left"> 
-                <th>Variable Name</th>  
-                <th >Type</th> 
-                <th>Graphic Representation</th>
-                <th>Basic Statistic</th>
-                <th>Missing</th> 
-                <th>Outliers (n)</th>  
-            </tr></thead><tr align="left">
-                                <th> Unnamed: 0 </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_0.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 1 
-                                <br> Max: 1071192 
-                                <br> Mean &plusmn SD: 536327.99 &plusmn 308947.04 
-                                <br> Median (IQR): 537821.0 (268568.5, 803877.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 0 </td>
-                             </tr><tr align="left">
-                                <th> interaction </th>
-                                <td> Binary Variable 
-                                <br> (integer based)</td>
-                                <td> <img src='Graphs_for_seenopsis/bars_1.png' width='200' hight='200'> </img> </td>
-                                <td> Binary variable 
-                                <br> 0: 91.3% 
-                                <br> 1: 8.7% </td>
-                                <td> No Missing Values </td>
-                                <td> Binary variable
-                                <br>No outliers </ td>
-                             </tr><tr align="left">
-                                <th> d1n </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_2.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 1 
-                                <br> Max: 1429 
-                                <br> Mean &plusmn SD: 470.48 &plusmn 334.81 
-                                <br> Median (IQR): 413.0 (187.0, 704.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 0 </td>
-                             </tr><tr align="left">
-                                <th> d2n </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_3.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 2 
-                                <br> Max: 1432 
-                                <br> Mean &plusmn SD: 941.44 &plusmn 341.69 
-                                <br> Median (IQR): 995.0 (694.0, 1232.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 0 </td>
-                             </tr><tr align="left">
-                                <th> eig_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_4.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 1.0 
-                                <br> Mean &plusmn SD: 0.23 &plusmn 0.19 
-                                <br> Median (IQR): 0.18 (0.07, 0.34) </td>
-                                <td> No Missing Values </td>
-                                <td> 4899 </td>
-                             </tr><tr align="left">
-                                <th> degree_1 </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_5.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 2 
-                                <br> Max: 872 
-                                <br> Mean &plusmn SD: 181.34 &plusmn 148.26 
-                                <br> Median (IQR): 146.0 (70.0, 258.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 8551 </td>
-                             </tr><tr align="left">
-                                <th> alf_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_6.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: -221.59 
-                                <br> Max: 197.43 
-                                <br> Mean &plusmn SD: 0.01 &plusmn 42.18 
-                                <br> Median (IQR): 1.22 (-22.37, 20.83) </td>
-                                <td> No Missing Values </td>
-                                <td> 15313 </td>
-                             </tr><tr align="left">
-                                <th> ct_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_7.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.25 
-                                <br> Mean &plusmn SD: 0.01 &plusmn 0.03 
-                                <br> Median (IQR): 0.0 (0.0, 0.01) </td>
-                                <td> No Missing Values </td>
-                                <td> 40472 </td>
-                             </tr><tr align="left">
-                                <th> bt_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_8.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 10.66 
-                                <br> Mean &plusmn SD: 5.78 &plusmn 2.27 
-                                <br> Median (IQR): 6.28 (4.58, 7.34) </td>
-                                <td> No Missing Values </td>
-                                <td> 8676 </td>
-                             </tr><tr align="left">
-                                <th> cls_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_9.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.0 
-                                <br> Mean &plusmn SD: 0.0 &plusmn 0.0 
-                                <br> Median (IQR): 0.0 (0.0, 0.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 6451 </td>
-                             </tr><tr align="left">
-                                <th> pwr_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_10.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: -5.22 
-                                <br> Max: 4.6 
-                                <br> Mean &plusmn SD: -0.02 &plusmn 0.99 
-                                <br> Median (IQR): 0.01 (-0.55, 0.46) </td>
-                                <td> No Missing Values </td>
-                                <td> 15313 </td>
-                             </tr><tr align="left">
-                                <th> trngl_1 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_11.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.23 
-                                <br> Mean &plusmn SD: 0.08 &plusmn 0.04 
-                                <br> Median (IQR): 0.07 (0.05, 0.1) </td>
-                                <td> No Missing Values </td>
-                                <td> 9933 </td>
-                             </tr><tr align="left">
-                                <th> wc_1 </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_12.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 1 
-                                <br> Max: 96 
-                                <br> Mean &plusmn SD: 8.33 &plusmn 6.65 
-                                <br> Median (IQR): 5.0 (5.0, 9.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 24866 </td>
-                             </tr><tr align="left">
-                                <th> eig_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_13.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 1.0 
-                                <br> Mean &plusmn SD: 0.12 &plusmn 0.16 
-                                <br> Median (IQR): 0.04 (0.01, 0.17) </td>
-                                <td> No Missing Values </td>
-                                <td> 16120 </td>
-                             </tr><tr align="left">
-                                <th> degree_2 </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_14.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 2 
-                                <br> Max: 872 
-                                <br> Mean &plusmn SD: 91.47 &plusmn 116.43 
-                                <br> Median (IQR): 44.0 (12.0, 130.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 16490 </td>
-                             </tr><tr align="left">
-                                <th> alf_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_15.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: -221.59 
-                                <br> Max: 197.43 
-                                <br> Mean &plusmn SD: 0.91 &plusmn 42.91 
-                                <br> Median (IQR): 2.99 (-22.3, 23.41) </td>
-                                <td> No Missing Values </td>
-                                <td> 12823 </td>
-                             </tr><tr align="left">
-                                <th> ct_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_16.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.25 
-                                <br> Mean &plusmn SD: 0.04 &plusmn 0.07 
-                                <br> Median (IQR): 0.01 (0.0, 0.04) </td>
-                                <td> No Missing Values </td>
-                                <td> 40022 </td>
-                             </tr><tr align="left">
-                                <th> bt_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_17.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 10.66 
-                                <br> Mean &plusmn SD: 3.72 &plusmn 2.7 
-                                <br> Median (IQR): 3.83 (0.95, 5.97) </td>
-                                <td> No Missing Values </td>
-                                <td> 0 </td>
-                             </tr><tr align="left">
-                                <th> cls_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_18.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.0 
-                                <br> Mean &plusmn SD: 0.0 &plusmn 0.0 
-                                <br> Median (IQR): 0.0 (0.0, 0.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 870 </td>
-                             </tr><tr align="left">
-                                <th> pwr_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_19.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: -5.22 
-                                <br> Max: 4.6 
-                                <br> Mean &plusmn SD: -0.0 &plusmn 1.01 
-                                <br> Median (IQR): 0.05 (-0.55, 0.53) </td>
-                                <td> No Missing Values </td>
-                                <td> 12823 </td>
-                             </tr><tr align="left">
-                                <th> trngl_2 </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_20.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.23 
-                                <br> Mean &plusmn SD: 0.07 &plusmn 0.06 
-                                <br> Median (IQR): 0.07 (0.02, 0.11) </td>
-                                <td> No Missing Values </td>
-                                <td> 0 </td>
-                             </tr><tr align="left">
-                                <th> wc_2 </th>
-                                <td> Continuous variable 
-                                <br>(int64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_21.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 1 
-                                <br> Max: 98 
-                                <br> Mean &plusmn SD: 12.13 &plusmn 17.53 
-                                <br> Median (IQR): 6.0 (5.0, 9.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 42024 </td>
-                             </tr><tr align="left">
-                                <th> dst </th>
-                                <td> Categorical Variable 
-                                <br> (integer based) </td>
-                                <td> <img src='Graphs_for_seenopsis/bars_22.png' width='200' hight='200'> </img> </td>
-                                <td> Categorical Variable 
-                                <br> 6 unique values </td>
-                                <td> No Missing Values </td>
-                                <td> Categorical Variable
-                                <br>No outliers </td>
-                             </tr><tr align="left">
-                                <th> simJ </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_23.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 1.0 
-                                <br> Mean &plusmn SD: 0.04 &plusmn 0.09 
-                                <br> Median (IQR): 0.01 (0.0, 0.04) </td>
-                                <td> No Missing Values </td>
-                                <td> 31804 </td>
-                             </tr><tr align="left">
-                                <th> simAA </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_24.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 272.24 
-                                <br> Mean &plusmn SD: 5.19 &plusmn 11.82 
-                                <br> Median (IQR): 0.66 (0.0, 4.51) </td>
-                                <td> No Missing Values </td>
-                                <td> 37625 </td>
-                             </tr><tr align="left">
-                                <th> eig_prod </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_25.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.85 
-                                <br> Mean &plusmn SD: 0.03 &plusmn 0.06 
-                                <br> Median (IQR): 0.01 (0.0, 0.03) </td>
-                                <td> No Missing Values </td>
-                                <td> 30379 </td>
-                             </tr><tr align="left">
-                                <th> ct_prod </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_26.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 0.06 
-                                <br> Mean &plusmn SD: 0.0 &plusmn 0.0 
-                                <br> Median (IQR): 0.0 (0.0, 0.0) </td>
-                                <td> No Missing Values </td>
-                                <td> 39712 </td>
-                             </tr><tr align="left">
-                                <th> alf_div </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_27.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: -1115.06 
-                                <br> Max: 1317.42 
-                                <br> Mean &plusmn SD: -0.01 &plusmn 17.68 
-                                <br> Median (IQR): -0.0 (-0.93, 0.92) </td>
-                                <td> No Missing Values </td>
-                                <td> 49852 </td>
-                             </tr><tr align="left">
-                                <th> bt_div </th>
-                                <td> Continuous variable 
-                                <br>(float64) </td>
-                                <td> <img src='Graphs_for_seenopsis/hist_28.png' width ='200' hight='150'> </img> </td>
-                                <td> Min: 0.0 
-                                <br> Max: 109.2 
-                                <br> Mean &plusmn SD: 22.74 &plusmn 19.71 
-                                <br> Median (IQR): 19.9 (3.91, 37.27) </td>
-                                <td> No Missing Values </td>
-                                <td> 234 </td>
-                             </tr></table> 
-                    <footer>&copy; Copyright 2018 Meytal Avgil Tsadok</footer>
-                    </div></body>
-                    </html>
+            <tr >
+               <th width="7%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+               <th width="15%"></th>
+            </tr>
+            </thead>
+            <!-- THIS IS WHERE YOUR DATA LOOP KICKES IN...-->
+            <!--------------------------------------->
+            <!-- Thats where the table row starts  -->
+            <!--------------------------------------->
+            <tr align="left" class="single-row">
+               <th > Unnamed: 0 </th>
+               <td c> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_0.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 1
+                  <br> Max: 1071192
+                  <br> Mean &plusmn SD: 536327.99 &plusmn 308947.04
+                  <br> Median (IQR): 537821.0 (268568.5, 803877.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 0 </td>
+            </tr>
+            <!------------------------------------->
+            <!-- Thats where the table row ends  -->
+            <!------------------------------------->
+            <tr align="left" class="single-row">
+               <th> interaction </th>
+               <td> Binary Variable
+                  <br> (integer based)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/bars_1.png' width='200' hight='200'> </img> </td>
+               <td> Binary variable
+                  <br> 0: 91.3%
+                  <br> 1: 8.7%
+               </td>
+               <td> No Missing Values </td>
+               <td> Binary variable
+                  <br>No outliers </ td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> d1n </th>
+               <td> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_2.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 1
+                  <br> Max: 1429
+                  <br> Mean &plusmn SD: 470.48 &plusmn 334.81
+                  <br> Median (IQR): 413.0 (187.0, 704.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 0 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> d2n </th>
+               <td> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_3.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 2
+                  <br> Max: 1432
+                  <br> Mean &plusmn SD: 941.44 &plusmn 341.69
+                  <br> Median (IQR): 995.0 (694.0, 1232.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 0 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> eig_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_4.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 1.0
+                  <br> Mean &plusmn SD: 0.23 &plusmn 0.19
+                  <br> Median (IQR): 0.18 (0.07, 0.34)
+               </td>
+               <td> No Missing Values </td>
+               <td> 4899 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> degree_1 </th>
+               <td> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_5.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 2
+                  <br> Max: 872
+                  <br> Mean &plusmn SD: 181.34 &plusmn 148.26
+                  <br> Median (IQR): 146.0 (70.0, 258.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 8551 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> alf_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_6.png' width ='200' hight='150'> </img> </td>
+               <td> Min: -221.59
+                  <br> Max: 197.43
+                  <br> Mean &plusmn SD: 0.01 &plusmn 42.18
+                  <br> Median (IQR): 1.22 (-22.37, 20.83)
+               </td>
+               <td> No Missing Values </td>
+               <td> 15313 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> ct_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_7.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.25
+                  <br> Mean &plusmn SD: 0.01 &plusmn 0.03
+                  <br> Median (IQR): 0.0 (0.0, 0.01)
+               </td>
+               <td> No Missing Values </td>
+               <td> 40472 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> bt_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_8.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 10.66
+                  <br> Mean &plusmn SD: 5.78 &plusmn 2.27
+                  <br> Median (IQR): 6.28 (4.58, 7.34)
+               </td>
+               <td> No Missing Values </td>
+               <td> 8676 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> cls_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_9.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.0
+                  <br> Mean &plusmn SD: 0.0 &plusmn 0.0
+                  <br> Median (IQR): 0.0 (0.0, 0.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 6451 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> pwr_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_10.png' width ='200' hight='150'> </img> </td>
+               <td> Min: -5.22
+                  <br> Max: 4.6
+                  <br> Mean &plusmn SD: -0.02 &plusmn 0.99
+                  <br> Median (IQR): 0.01 (-0.55, 0.46)
+               </td>
+               <td> No Missing Values </td>
+               <td> 15313 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> trngl_1 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_11.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.23
+                  <br> Mean &plusmn SD: 0.08 &plusmn 0.04
+                  <br> Median (IQR): 0.07 (0.05, 0.1)
+               </td>
+               <td> No Missing Values </td>
+               <td> 9933 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> wc_1 </th>
+               <td> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_12.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 1
+                  <br> Max: 96
+                  <br> Mean &plusmn SD: 8.33 &plusmn 6.65
+                  <br> Median (IQR): 5.0 (5.0, 9.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 24866 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> eig_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_13.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 1.0
+                  <br> Mean &plusmn SD: 0.12 &plusmn 0.16
+                  <br> Median (IQR): 0.04 (0.01, 0.17)
+               </td>
+               <td> No Missing Values </td>
+               <td> 16120 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> degree_2 </th>
+               <td> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_14.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 2
+                  <br> Max: 872
+                  <br> Mean &plusmn SD: 91.47 &plusmn 116.43
+                  <br> Median (IQR): 44.0 (12.0, 130.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 16490 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> alf_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_15.png' width ='200' hight='150'> </img> </td>
+               <td> Min: -221.59
+                  <br> Max: 197.43
+                  <br> Mean &plusmn SD: 0.91 &plusmn 42.91
+                  <br> Median (IQR): 2.99 (-22.3, 23.41)
+               </td>
+               <td> No Missing Values </td>
+               <td> 12823 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> ct_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_16.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.25
+                  <br> Mean &plusmn SD: 0.04 &plusmn 0.07
+                  <br> Median (IQR): 0.01 (0.0, 0.04)
+               </td>
+               <td> No Missing Values </td>
+               <td> 40022 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> bt_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_17.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 10.66
+                  <br> Mean &plusmn SD: 3.72 &plusmn 2.7
+                  <br> Median (IQR): 3.83 (0.95, 5.97)
+               </td>
+               <td> No Missing Values </td>
+               <td> 0 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> cls_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_18.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.0
+                  <br> Mean &plusmn SD: 0.0 &plusmn 0.0
+                  <br> Median (IQR): 0.0 (0.0, 0.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 870 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> pwr_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_19.png' width ='200' hight='150'> </img> </td>
+               <td> Min: -5.22
+                  <br> Max: 4.6
+                  <br> Mean &plusmn SD: -0.0 &plusmn 1.01
+                  <br> Median (IQR): 0.05 (-0.55, 0.53)
+               </td>
+               <td> No Missing Values </td>
+               <td> 12823 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> trngl_2 </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_20.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.23
+                  <br> Mean &plusmn SD: 0.07 &plusmn 0.06
+                  <br> Median (IQR): 0.07 (0.02, 0.11)
+               </td>
+               <td> No Missing Values </td>
+               <td> 0 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> wc_2 </th>
+               <td> Continuous variable
+                  <br>(int64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_21.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 1
+                  <br> Max: 98
+                  <br> Mean &plusmn SD: 12.13 &plusmn 17.53
+                  <br> Median (IQR): 6.0 (5.0, 9.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 42024 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> dst </th>
+               <td> Categorical Variable
+                  <br> (integer based)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/bars_22.png' width='200' hight='200'> </img> </td>
+               <td> Categorical Variable
+                  <br> 6 unique values
+               </td>
+               <td> No Missing Values </td>
+               <td> Categorical Variable
+                  <br>No outliers
+               </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> simJ </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_23.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 1.0
+                  <br> Mean &plusmn SD: 0.04 &plusmn 0.09
+                  <br> Median (IQR): 0.01 (0.0, 0.04)
+               </td>
+               <td> No Missing Values </td>
+               <td> 31804 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> simAA </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_24.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 272.24
+                  <br> Mean &plusmn SD: 5.19 &plusmn 11.82
+                  <br> Median (IQR): 0.66 (0.0, 4.51)
+               </td>
+               <td> No Missing Values </td>
+               <td> 37625 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> eig_prod </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_25.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.85
+                  <br> Mean &plusmn SD: 0.03 &plusmn 0.06
+                  <br> Median (IQR): 0.01 (0.0, 0.03)
+               </td>
+               <td> No Missing Values </td>
+               <td> 30379 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> ct_prod </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_26.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 0.06
+                  <br> Mean &plusmn SD: 0.0 &plusmn 0.0
+                  <br> Median (IQR): 0.0 (0.0, 0.0)
+               </td>
+               <td> No Missing Values </td>
+               <td> 39712 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> alf_div </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_27.png' width ='200' hight='150'> </img> </td>
+               <td> Min: -1115.06
+                  <br> Max: 1317.42
+                  <br> Mean &plusmn SD: -0.01 &plusmn 17.68
+                  <br> Median (IQR): -0.0 (-0.93, 0.92)
+               </td>
+               <td> No Missing Values </td>
+               <td> 49852 </td>
+            </tr>
+            <tr align="left" class="single-row">
+               <th> bt_div </th>
+               <td> Continuous variable
+                  <br>(float64)
+               </td>
+               <td> <img src='Graphs_for_seenopsis/hist_28.png' width ='200' hight='150'> </img> </td>
+               <td> Min: 0.0
+                  <br> Max: 109.2
+                  <br> Mean &plusmn SD: 22.74 &plusmn 19.71
+                  <br> Median (IQR): 19.9 (3.91, 37.27)
+               </td>
+               <td> No Missing Values </td>
+               <td> 234 </td>
+            </tr>
+         </table>
+      </div>
+      <!-- /.row -->
+      <!-- FOOTER -->
+      <div class="navbar navbar-fixed-bottom bottom-bar" >
+         <div class="container">
+            <div class="nav navbar-nav pull-right ">
+               <br/>
+               <span style="color: #257D92">&copy; Copyright 2018 Meytal Avgil Tsadok</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+</body>
+</html>
