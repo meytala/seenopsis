@@ -136,7 +136,7 @@ class VariableInfo:
                 return "Single Variable\n"  \
                        " ({})".format (self.var_type())
             elif self.values.nunique()== 2:
-                return "Binary Variable\n" +\
+               return "Binary Variable\n" +\
                         " ({})".format (self.var_type())
             elif self.values.nunique()>2 and self.values.nunique()<=10:
                 return "Categorical variable\n" +\
@@ -236,7 +236,9 @@ class VariableInfo:
                         "Median (IQR): {} ({}, {})".format (self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
 
         elif self.values.nunique()> 2 and self.values.nunique()>= 10 :
-            return ["Categorical Variable", "{} unique values".format (self.unique_categories())]
+            return ["Categorical Variable",
+                    "{} unique values".format (self.unique_categories()),
+                    "Only top 10 values are presented"]
 
         elif self.values.nunique()== 2:
             return ["Binary variable",
@@ -259,10 +261,11 @@ class VariableInfo:
         values = self.values
         number_of_null=values.isnull().sum()
         if number_of_null == 0:
-            return "No Missing Values"
+            return ["No missing",
+                    "values"]
         else:
             percent_of_null = round((number_of_null/len(self.values)) *100,1)
-            return ("N={}, {}%".format(number_of_null,  percent_of_null) ) ####this function returns the number of nulls in the variable
+            return [("N={}, {}%".format(number_of_null,  percent_of_null) )]
 
 
     def number_of_outliers(self, outlier_constant):
@@ -359,12 +362,12 @@ def build_html():
         <table class="table table-hover"> 
             <thead>
             <tr align="left"> 
-                <th >Variable Name</th>  
-                <th >Type</th> 
-                <th >Graphic Representation</th>
-                <th >Basic Statistic</th>
-                <th >Missing</th> 
-                <th >Outliers (n)</th>  
+                <th align="left">Variable Name</th>  
+                <th align="left" >Type</th> 
+                <th align="left">Graphic Representation</th>
+                <th align="left">Basic Statistic</th>
+                <th align="left">Missing</th> 
+                <th align="left">Outliers (n)</th>  
             </tr></thead>""".format(record_count, number_of_variables)
 
 
@@ -372,17 +375,17 @@ def build_html():
     for object in list_of_objects:
         list_for_body = """ 
         <tr align="left">
-        <th > {} </th>
-        <td > {} </td>
-        <td > <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
-        <td > {} </td>
-        <td > {} </td>
-        <td > {} </td>
+        <th align="left"> {} </th>
+        <td align="left"> {} </td>
+        <td align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
+        <td align="left"> {} </td>
+        <td align="left"> {} </td>
+        <td align="left"> {} </td>
         </tr>""".format (object.name,
                          object.type(),
                          object.graph(),
                          "<br>".join(object.statistics()),
-                         object.count_null(),
+                         "<br>".join(object.count_null()),
                          "<br>".join(object.number_of_outliers(1.5)))
         body_list.append(list_for_body)
 
@@ -405,7 +408,6 @@ def build_html():
 
 
 
-
 ###############call seenopsis
 
 ####call seenopsis fron this file
@@ -415,4 +417,3 @@ def build_html():
 ####call seenopsis from a different tab
 # import seenopsis
 # seenopsis.process_csv()
-
