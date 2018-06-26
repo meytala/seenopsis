@@ -31,6 +31,7 @@ def process_pandas_df(name_of_df):
     global list_of_objects
     global df
     df = name_of_df
+    df = df.dropna(how='all',axis=0)
     record_count = count_records(df)
     column_name_list = name_of_variables(df)
     number_of_variables = count_var(df)
@@ -38,7 +39,6 @@ def process_pandas_df(name_of_df):
     build_html()
     print("In this dataset, the number of variables is: ", number_of_variables)
     print("The number of records in the dataset is: ", record_count)
-    print("This is a list with the names of the variables: ", column_name_list)
 
 
 #######################################################
@@ -237,7 +237,7 @@ class VariableInfo:
         elif self.values.nunique()> 2 and self.values.nunique()>= 10 :
             return ["Categorical Variable",
                     "{} unique values".format (self.unique_categories()),
-                    "Only top 10 values are presented"]
+                    "Up to top 10 values are presented"]
 
         elif self.values.nunique()== 2:
             return ["Binary variable",
@@ -251,7 +251,7 @@ class VariableInfo:
         else:
             return [
                     "Text/Date variable",
-                    "Only top 10 values are presented",
+                    "Up to top 10 values are presented",
                     "Out of {} unique values".format(self.unique_categories())]
 
 
@@ -301,7 +301,7 @@ class VariableInfo:
         percentage_list = []
         count = self.values.value_counts()
         for name, count in count.items():
-            percentage = round(count/len(self.values),3)*100
+            percentage = round((count/len(self.values))*100,2)
             sub_list = [name, percentage]
             percentage_list.append(sub_list)
             # (np.unique(self.values, return_counts=True)[1] / len(self.values)) * 100
