@@ -413,12 +413,12 @@ def build_html():
     for object in list_of_objects:
         list_for_body = """ 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> {} </th>
+        <th width="10%"  align="left"> {} </th>
         <td width="15%" align="left"> {} </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
         <td width="15%" align="left"> {} </td>
-        <td width="15%" align="left"> {} </td>
-        <td width="15%" align="left"> {} </td>
+        <td width="10%" align="left"> {} </td>
+        <td width="10%" align="left"> {} </td>
         <tr align="left" class="single-row">""".format (object.name,
                          object.type(),
                          object.graph(),
