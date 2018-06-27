@@ -32,6 +32,7 @@ def process_pandas_df(name_of_df):
     global df
     df = name_of_df
     df = df.dropna(how='all',axis=0)
+    df = df.dropna(how='all', axis=1)
     record_count = count_records(df)
     column_name_list = name_of_variables(df)
     number_of_variables = count_var(df)
@@ -174,8 +175,10 @@ class VariableInfo:
     def graph(self):
         if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
             return self.histogram()
-        else:
+        elif self.values.nunique()> 0:
             return self.bars()
+        else:
+            return "No graphic representation"
 
 
     def mean_of_var (self):
@@ -263,7 +266,7 @@ class VariableInfo:
                     "values"]
         else:
             percent_of_null = round((number_of_null/len(self.values)) *100,1)
-            return [("N={}, {}%".format(number_of_null,  percent_of_null) )]
+            return [("N={}, {}%".format(number_of_null, percent_of_null))]
 
 
     def number_of_outliers(self, outlier_constant):
@@ -345,77 +348,77 @@ def list_of_object(column_name_list, df_table):
 
 def build_html():
     html_top = """<html>
-<head>
-   <title>SEENOPSIS</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <link rel="stylesheet" href="bootstrap.min.css">
-   <style>
-      .bottom-bar{{
-         background: #deede9;
-      }}
-      .navbar.bottom-bar{{
-         border: none;
-      }}
-      .main-bg{{
-         background-color: #FFFFFF;
-      }}
-      .single-row{{
-         margin-bottom: 5px;
-      }}
-      .content-table td{{
-         padding-bottom: 10px;
-      }}
-   </style>
-</head>
-<body class="main-bg">
-<div class="navbar-wrapper" >
-   <div class="container main-bg">
-      <div class="row  navbar-fixed-top">
-         <div class="container main-bg" style="color: #1d576b">
-        <h2>SEENOPSIS</h2> 
-        <span>The file you are investing has {} records and {} variables <br>
-        This is the seenopsis of your file:</span> 
-        <table class="table table-hover" style="margin-bottom:0px">
-            <thead>
-            <tr align="right" >
-                <th width="7%">Variable<br/>Name</th>
-                  <th width="15%" >Type</th>
-                  <th width="15%">Graphic<br/> Representation</th>
-                  <th width="15%">Basic<br/> Statistic</th>
-                  <th width="15%">Missing</th>
-                  <th width="15%">Outliers(n)</th>
-            </tr></thead></table>
-         </div>
-      </div>
-   </div>
-</div> 
-<div class="container" style="padding-top:160px">
-   <div class="row">
-      <div class="container">
-         <table class="content-table">
-            <thead>
-            <tr >
-               <th width="7%"></th>
-               <th width="15%"></th>
-               <th width="15%"></th>
-               <th width="15%"></th>
-               <th width="15%"></th>
-               <th width="15%"></th>
-            </tr>
-            </thead>""".format(record_count, number_of_variables)
+    <head>
+       <title>SEENOPSIS</title>
+       <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <link rel="stylesheet" href="bootstrap.min.css">
+       <style>
+          .bottom-bar{{
+             background: #deede9;
+          }}
+          .navbar.bottom-bar{{
+             border: none;
+          }}
+          .main-bg{{
+             background-color: #FFFFFF;
+          }}
+          .single-row{{
+             margin-bottom: 5px;
+          }}
+          .content-table td{{
+             padding-bottom: 10px;
+          }}
+       </style>
+    </head>
+    <body class="main-bg">
+    <div class="navbar-wrapper" >
+       <div class="container main-bg">
+          <div class="row  navbar-fixed-top">
+             <div class="container main-bg" style="color: #1d576b">
+            <h2>SEENOPSIS</h2> 
+            <span>The file you are investing has {} records and {} variables <br>
+            This is the seenopsis of your file:</span> 
+            <table class="table table-hover" style="margin-bottom:0px">
+                <thead>
+                <tr align="right" >
+                    <th width="7%">Variable<br/>Name</th>
+                      <th width="15%" >Type</th>
+                      <th width="15%">Graphic<br/> Representation</th>
+                      <th width="15%">Basic<br/> Statistic</th>
+                      <th width="15%">Missing</th>
+                      <th width="15%">Outliers(n)</th>
+                </tr></thead></table>
+             </div>
+          </div>
+       </div>
+    </div> 
+    <div class="container" style="padding-top:160px">
+       <div class="row">
+          <div class="container">
+             <table class="content-table">
+                <thead>
+                <tr >
+                   <th width="7%"></th>
+                   <th width="15%"></th>
+                   <th width="15%"></th>
+                   <th width="15%"></th>
+                   <th width="15%"></th>
+                   <th width="15%"></th>
+                </tr>
+                </thead>""".format(record_count, number_of_variables)
 
 
     body_list = []
     for object in list_of_objects:
         list_for_body = """ 
         <tr align="left" class="single-row">
-        <th align="left"> {} </th>
-        <td align="left"> {} </td>
-        <td align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
-        <td align="left"> {} </td>
-        <td align="left"> {} </td>
-        <td align="left"> {} </td>
+        <th width="7%"  align="left"> {} </th>
+        <td width="15%" align="left"> {} </td>
+        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> {} </td>
+        <td width="15%" align="left"> {} </td>
+        <td width="15%" align="left"> {} </td>
         <tr align="left" class="single-row">""".format (object.name,
                          object.type(),
                          object.graph(),
@@ -427,19 +430,22 @@ def build_html():
 
     html_bottomn = """</tr>
          </table>
+     <br />
+     <br />
+     <br />
       </div>
-                    <div class="navbar navbar-fixed-bottom bottom-bar" >
+           <div class="navbar navbar-fixed-bottom bottom-bar" >
          <div class="container">
             <div class="nav navbar-nav pull-right ">
                <br/>
                <span style="color: #257D92">&copy; Copyright 2018 Meytal Avgil Tsadok</span>
-            </div>
-         </div>
-      </div>
-   </div>
-</div>
-</body>
-</html>"""
+                </div>
+             </div>
+          </div>
+       </div>
+    </div>
+    </body>
+    </html>"""
 
     merged_html = html_top + "".join(body_list) +html_bottomn
 
@@ -463,3 +469,4 @@ def build_html():
 ####call seenopsis from a different tab
 # import seenopsis
 # seenopsis.process_csv()
+
