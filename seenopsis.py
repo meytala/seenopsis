@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import webbrowser
 from tkinter.filedialog import askopenfilename
 import os
+import pdfkit
 
 
 #############################functions that call csv or pandas df
@@ -459,6 +460,12 @@ def build_html():
         html_file.close()
 
 
+    config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe')
+
+    with open('output_seenopsis.html') as pdf:
+        pdfkit.from_file(pdf, 'seenopsis_pdf.pdf')
+
+    # pdfkit.from_file("output_seenopsis.html", graph_dir +"seenopsis.pdf")
 
 ###############call seenopsis
 
