@@ -19,13 +19,13 @@ import os
 
 #############################functions that call csv or pandas df
 
-def process_csv():
+def process_csv():                  ###a function that handle the csv file  - tranform it to pandas df
     file_name = get_csv_table()
     df_table = table_as_df (file_name)
     process_pandas_df(df_table)
 
 
-def process_pandas_df(name_of_df):
+def process_pandas_df(name_of_df):  ###a function that take the pandas df and process it to an output table
     global record_count
     global column_name_list
     global number_of_variables
@@ -53,12 +53,12 @@ def process_pandas_df(name_of_df):
 """a function that takes the input table and manipulate it for work"""
 """if the table is a csv, the user need to choose the spesific file from a directory with a browser"""
 
-def get_csv_table ():
+def get_csv_table ():               ###a function that let you choose a csv file from a bowser
     filename = askopenfilename()
     return filename
 
 
-def table_as_df (filename):
+def table_as_df (filename):         ###a function that take csv in spesific encodings and transfer it to csv
     df = None
     for encoding in ['utf-8','UTF-8','ANSI', 'ISO-8859-1', 'ISO-8859-8']:
         try:
@@ -75,10 +75,10 @@ def table_as_df (filename):
 #########################################################
 ##create a directory for the graphs or use the graph directory if available
 
-script_dir = os.path.dirname(__file__)
+script_dir = os.path.dirname(__file__)          ###create a folder for storing the graphs in the active directory
 graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
 
-if not os.path.isdir(graph_dir):
+if not os.path.isdir(graph_dir):                ###only if it doesn't exist already
     os.makedirs(graph_dir)
 
 
@@ -96,12 +96,12 @@ class VariableInfo:
         self.index = index
 
 
-    def var_type (self):                                ##get_var_type
-        type_of_variable = np.dtype(df[self.name])      ###try a different function for type
+    def var_type (self):                                ## a variable that get the variable type based on numpy
+        type_of_variable = np.dtype(df[self.name])
         return type_of_variable
 
 
-    def type (self):
+    def type (self):                                    ### a function that subdivid the types for more accurate categories
         if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
             if self.values.nunique()== 1:
                 return "Single Variable\n"  \
@@ -128,21 +128,21 @@ class VariableInfo:
             return "Text or Date"
 
 
-    def histogram (self):           ###create hist
+    def histogram (self):           ### a function that create a histogram with 50 bins/20%!!!
         plt.hist(self.values.dropna(), bins=50)
         plt.savefig(graph_dir + "hist_{}".format(self.index))
         plt.close()
         return "hist_{}.png".format(self.index)
 
 
-    def bars(self):
+    def bars(self):                 ### a function that create an horisontal barchart
         self.values.value_counts().nlargest(10).plot(kind='barh')
         plt.savefig(graph_dir + "bars_{}".format(self.index))
         plt.close()
         return "bars_{}.png".format(self.index)
 
 
-    def graph(self):
+    def graph(self):                ### a function that match the graph type to present based on the variable type
         if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
             return self.histogram()
         elif self.values.nunique()> 0:
@@ -200,7 +200,7 @@ class VariableInfo:
         return round(sd,2)
 
 
-    def statistics (self):
+    def statistics (self):          #####this function returns what will be written in the statistic coloumn - based on variable type
         if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
             return ["Min: {}".format (self.minimum_of_var()),
                     "Max: {}".format (self.maximum_of_var()),
@@ -227,7 +227,7 @@ class VariableInfo:
                     "Out of {} unique values".format(self.unique_categories())]
 
 
-    def count_null (self):
+    def count_null (self):          #this function counts the nulls
         name = self.name
         values = self.values
         number_of_null=values.isnull().sum()
@@ -239,7 +239,7 @@ class VariableInfo:
             return [("N={}, {}%".format(number_of_null, percent_of_null))]
 
 
-    def number_of_outliers(self, outlier_constant):
+    def number_of_outliers(self, outlier_constant):     #this function counts the number of outliers based on a distance of XX IQR
         if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique()> 10:
             a = np.array(self.values)
             upper_quartile = np.nanpercentile(a,75)
@@ -267,23 +267,17 @@ class VariableInfo:
                    "No outliers"]
 
 
-    def count_binary (self):
-        # unique, counts = np.unique(self.values, return_counts=True)
-        # percentage = self.values.value_counts()/len(self.values)*100
+    def count_binary (self):                ###this function return a list of the percentage of the binary variables
         percentage_list = []
         count = self.values.value_counts()
         for name, count in count.items():
             percentage = round((count/len(self.values))*100,2)
             sub_list = [name, percentage]
             percentage_list.append(sub_list)
-            # (np.unique(self.values, return_counts=True)[1] / len(self.values)) * 100
-        # counts, freq = self.values.value_counts(normalize=True)
-        # percent = freq *100
-        # return round(percentage,1)
         return percentage_list
 
 
-    def unique_categories (self):
+    def unique_categories (self):           ###this function return the number of unique values
         unique_counts = self.values.nunique()
         return unique_counts
 
@@ -297,11 +291,10 @@ class VariableInfo:
 #  3. The index of the variable"""
 
 
-def list_of_object(column_name_list, df_table):             #####make it shorter
+def list_of_object(column_name_list, df_table):            ###this functin create a list of objects with the attributes of VariableInfo
     list_of_objects = []
-    for index, variable in enumerate(column_name_list):
-        name = variable
-        values = df_table[name]  ##in pandas - this is how you get the values
+    for index, name in enumerate(column_name_list):
+        values = df_table[name]
         list_of_objects.append(VariableInfo(name, values, index))
     return list_of_objects
 
@@ -419,11 +412,11 @@ def build_html():
 
     merged_html = html_top + "".join(body_list) +html_bottomn
 
-    with open("output_seenopsis.html","w") as html_file:
+    with open("output_seenopsis.html","w") as html_file:        ###write the html to a file
         html_file.write(merged_html)
         html_file.close()
 
-    with open("output_seenopsis.html","r") as html_file:
+    with open("output_seenopsis.html","r") as html_file:        ###read the html from the file and present it in a new tab of the browser
         seenopsis_table = html_file.read()
         webbrowser.open_new_tab('output_seenopsis.html')
         html_file.close()

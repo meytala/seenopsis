@@ -28,7 +28,7 @@
           <div class="row  navbar-fixed-top">
              <div class="container main-bg" style="color: #1d576b">
             <h2>SEENOPSIS</h2> 
-            <span>The file you are investing has 1001 records and 10 variables <br>
+            <span>The file you are investing has 519718 records and 34 variables <br>
             This is the seenopsis of your file:</span> 
             <table class="table table-hover" style="margin-bottom:0px">
                 <thead>
@@ -59,89 +59,282 @@
                 </tr>
                 </thead> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> Unnamed: 0 </th>
+        <th width="10%"  align="left"> YearStart </th>
         <td width="15%" align="left"> Continuous variable
  (int64) </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/hist_0.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Min: 500<br>Max: 1500<br>Mean &plusmn SD: 1000.0 &plusmn 288.96<br>Median (IQR): 1000.0 (750.0, 1250.0) </td>
-        <td width="15%" align="left"> No missing<br>values </td>
-        <td width="15%" align="left"> N=0 </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/hist_0.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Min: 2001<br>Max: 2016<br>Mean &plusmn SD: 2013.14 &plusmn 1.78<br>Median (IQR): 2013.0 (2012.0, 2015.0) </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> N=0 </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> diab_date </th>
+        <th width="10%"  align="left"> YearEnd </th>
+        <td width="15%" align="left"> Categorical variable
+ (int64) </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_1.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>10 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> LocationAbbr </th>
         <td width="15%" align="left"> Text or Date </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/bars_1.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Categorical Variable<br>544 unique values<br>Up to top 10 values are presented </td>
-        <td width="15%" align="left"> No missing<br>values </td>
-        <td width="15%" align="left"> Text/Date variable<br>No outliers </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_2.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>55 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> age </th>
+        <th width="10%"  align="left"> LocationDesc </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_3.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>55 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> DataSource </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_4.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>32 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> Topic </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_5.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>17 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> Question </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_6.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>203 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> Response </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_7.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> DataValueUnit </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_8.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>14 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> N=43672, 8.4% </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> DataValueType </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_9.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>19 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> DataValue </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_10.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>31896 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> N=145154, 27.9% </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> DataValueAlt </th>
         <td width="15%" align="left"> Continuous variable
  (float64) </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/hist_2.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Min: 60.0<br>Max: 100.0<br>Mean &plusmn SD: 73.2 &plusmn 8.4<br>Median (IQR): 72.0 (66.0, 80.0) </td>
-        <td width="15%" align="left"> N=40, 4.0% </td>
-        <td width="15%" align="left"> N=0 </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/hist_11.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Min: 0.0<br>Max: 2600878.0<br>Mean &plusmn SD: 891.77 &plusmn 18330.71<br>Median (IQR): 41.0 (18.45, 70.3) </td>
+        <td width="10%" align="left"> N=169383, 32.6% </td>
+        <td width="10%" align="left"> N=0 </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> sex </th>
-        <td width="15%" align="left"> Binary Variable </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/bars_3.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Binary variable<br>M: 50.25%<br>F: 49.75% </td>
-        <td width="15%" align="left"> No missing<br>values </td>
-        <td width="15%" align="left"> Binary variable<br>No outlier </td>
+        <th width="10%"  align="left"> DataValueFootnoteSymbol </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_12.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>19 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> N=292400, 56.3% </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> residence </th>
-        <td width="15%" align="left"> Binary Variable </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/bars_4.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Binary variable<br>Urban: 91.01%<br>Rural: 8.99% </td>
-        <td width="15%" align="left"> No missing<br>values </td>
-        <td width="15%" align="left"> Binary variable<br>No outlier </td>
+        <th width="10%"  align="left"> DatavalueFootnote </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_13.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>19 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> N=292566, 56.3% </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> bmi_pre_value </th>
+        <th width="10%"  align="left"> LowConfidenceLimit </th>
         <td width="15%" align="left"> Continuous variable
  (float64) </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/hist_5.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Min: 16.18<br>Max: 56.71<br>Mean &plusmn SD: 29.15 &plusmn 5.34<br>Median (IQR): 28.26 (25.51, 31.9) </td>
-        <td width="15%" align="left"> N=25, 2.5% </td>
-        <td width="15%" align="left"> N=0 </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/hist_14.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Min: 0.2<br>Max: 1330.66<br>Mean &plusmn SD: 46.76 &plusmn 77.49<br>Median (IQR): 30.2 (12.7, 55.4) </td>
+        <td width="10%" align="left"> N=208656, 40.1% </td>
+        <td width="10%" align="left"> N=0 </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> smoking_status_2010 </th>
+        <th width="10%"  align="left"> HighConfidenceLimit </th>
+        <td width="15%" align="left"> Continuous variable
+ (float64) </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/hist_15.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Min: 0.42<br>Max: 2088.0<br>Mean &plusmn SD: 58.99 &plusmn 88.67<br>Median (IQR): 43.8 (18.9, 70.4) </td>
+        <td width="10%" align="left"> N=208656, 40.1% </td>
+        <td width="10%" align="left"> N=0 </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationCategory1 </th>
         <td width="15%" align="left"> Categorical variable </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/bars_6.png' width='200' hight='200'> </img> </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_16.png' width='200' hight='200'> </img> </td>
         <td width="15%" align="left"> Text/Date variable<br>Up to top 10 values are presented<br>Out of 3 unique values </td>
-        <td width="15%" align="left"> N=31, 3.1% </td>
-        <td width="15%" align="left"> Categorical variable<br>No outlier </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Categorical variable<br>No outlier </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> ethnicity_desc </th>
-        <td width="15%" align="left"> Categorical variable </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/bars_7.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Text/Date variable<br>Up to top 10 values are presented<br>Out of 8 unique values </td>
-        <td width="15%" align="left"> No missing<br>values </td>
-        <td width="15%" align="left"> Categorical variable<br>No outlier </td>
+        <th width="10%"  align="left"> Stratification1 </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_17.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>11 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> LDL_pre_result </th>
+        <th width="10%"  align="left"> StratificationCategory2 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_18.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> Stratification2 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_19.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationCategory3 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_20.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> Stratification3 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_21.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> GeoLocation </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_22.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>54 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> N=3603, 0.7% </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> ResponseID </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_23.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440542, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> LocationID </th>
         <td width="15%" align="left"> Continuous variable
- (float64) </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/hist_8.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Min: 23.7<br>Max: 400.0<br>Mean &plusmn SD: 102.39 &plusmn 33.74<br>Median (IQR): 97.0 (79.8, 120.0) </td>
-        <td width="15%" align="left"> N=28, 2.8% </td>
-        <td width="15%" align="left"> N=0 </td>
+ (int64) </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/hist_24.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Min: 1<br>Max: 78<br>Mean &plusmn SD: 30.99 &plusmn 17.72<br>Median (IQR): 30.0 (17.0, 45.0) </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> N=0 </td>
         <tr align="left" class="single-row"> 
         <tr align="left" class="single-row">
-        <th width="7%"  align="left"> sex2 </th>
-        <td width="15%" align="left"> Binary Variable
- (int64) </td>
-        <td width="15%" align="left"> <img src='Graphs_for_seenopsis/bars_9.png' width='200' hight='200'> </img> </td>
-        <td width="15%" align="left"> Binary variable<br>1: 50.25%<br>0: 49.75% </td>
-        <td width="15%" align="left"> No missing<br>values </td>
-        <td width="15%" align="left"> Binary variable<br>No outlier </td>
+        <th width="10%"  align="left"> TopicID </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_25.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>17 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> QuestionID </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_26.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>203 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> DataValueTypeID </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_27.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>19 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationCategoryID1 </th>
+        <td width="15%" align="left"> Categorical variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_28.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Text/Date variable<br>Up to top 10 values are presented<br>Out of 3 unique values </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Categorical variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationID1 </th>
+        <td width="15%" align="left"> Text or Date </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_29.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Categorical Variable<br>11 unique values<br>Up to top 10 values are presented </td>
+        <td width="10%" align="left"> No missing<br>values </td>
+        <td width="10%" align="left"> Text/Date variable<br>No outliers </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationCategoryID2 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_30.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440529, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationID2 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_31.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440529, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationCategoryID3 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_32.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
+        <tr align="left" class="single-row"> 
+        <tr align="left" class="single-row">
+        <th width="10%"  align="left"> StratificationID3 </th>
+        <td width="15%" align="left"> Single Variable </td>
+        <td width="20%" align="left"> <img src='Graphs_for_seenopsis/bars_33.png' width='200' hight='200'> </img> </td>
+        <td width="15%" align="left"> Single value<br>No Statistic </td>
+        <td width="10%" align="left"> N=440530, 84.8% </td>
+        <td width="10%" align="left"> Single variable<br>No outlier </td>
         <tr align="left" class="single-row"></tr>
          </table>
      <br />
