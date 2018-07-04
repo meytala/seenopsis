@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import webbrowser
 from tkinter.filedialog import askopenfilename
 import os
-import pdfkit
+#import pdfkit
 
 
 #############################functions that call csv or pandas df
@@ -34,9 +34,9 @@ def process_pandas_df(name_of_df):
     df = name_of_df
     df = df.dropna(how='all',axis=0)
     df = df.dropna(how='all', axis=1)
-    record_count = count_records(df)
-    column_name_list = name_of_variables(df)
-    number_of_variables = count_var(df)
+    record_count = max(df.count())
+    column_name_list = list(df)
+    number_of_variables = len(column_name_list)
     list_of_objects = list_of_object(column_name_list, df)
     build_html()
     print("In this dataset, the number of variables is: ", number_of_variables)
@@ -59,47 +59,16 @@ def get_csv_table ():
 
 
 def table_as_df (filename):
-    df = pd.read_csv(filename, parse_dates = True, infer_datetime_format = True, date_parser = pd.to_datetime, encoding='UTF-8')
-    #print("this is the database: ", df)                                       ###QA
+    df = None
+    for encoding in ['utf-8','UTF-8','ANSI', 'ISO-8859-1', 'ISO-8859-8']:
+        try:
+            df = pd.read_csv(filename, parse_dates = True, infer_datetime_format = True, date_parser = pd.to_datetime, encoding=encoding)
+            break
+        except UnicodeDecodeError:
+           print("Try to convert your csv encoding to utf-8")
     return df
 
 
-#######################################################
-####################Meta data for  the table###########
-#######################################################
-
-
-################count the number of variables in a dataset############
-##input: name of the dataset
-##output: number of variables in the dataset
-
-def count_var (df):
-    number_of_variables = len(name_of_variables(df))
-    #print("there are {} variables in the dataset".format(number_of_variables) )
-    return  number_of_variables
-
-
-######## count the number of the values in each variable not including NA
-##input = df
-##output = number of nun null records
-
-def count_records (df):
-    num_records = df.count()
-    maximal_numer = max(num_records)
-    #print("the number of records in the dataset is {}".format(maximal_numer))
-    print(num_records)
-    return maximal_numer
-
-
-###############careat a list with the names of the variables from the original df##############
-# create a list with the names of the variables from the original df
-# input: name of the dataset
-# output: a list of the names of the variables in the dataset
-
-def name_of_variables (df):
-    column_name_list = list(df)
-    #print("column names: ", column_name_list)
-    return column_name_list
 
 #########################################################
 ####################directory for graphs#################
@@ -127,8 +96,8 @@ class VariableInfo:
         self.index = index
 
 
-    def var_type (self):
-        type_of_variable = np.dtype(df[self.name])
+    def var_type (self):                                ##get_var_type
+        type_of_variable = np.dtype(df[self.name])      ###try a different function for type
         return type_of_variable
 
 
@@ -159,8 +128,8 @@ class VariableInfo:
             return "Text or Date"
 
 
-    def histogram (self):
-        plt.hist(self.values.dropna(), bins=50)    ######this returns n=array, bins, patch=Silent list of individual patches used to create the histogram
+    def histogram (self):           ###create hist
+        plt.hist(self.values.dropna(), bins=50)
         plt.savefig(graph_dir + "hist_{}".format(self.index))
         plt.close()
         return "hist_{}.png".format(self.index)
@@ -182,53 +151,53 @@ class VariableInfo:
             return "No graphic representation"
 
 
-    def mean_of_var (self):
+    def mean_of_var (self):         ####this function returns mean round to 2 decimal
         name = self.name
         mean = np.mean(self.values)
         #print("the mean of the coloum {} is {}".format (name, mean))
-        return round(mean,2)    ####this function returns mean round to 2 decimal
+        return round(mean,2)
 
 
-    def median_of_var (self):
+    def median_of_var (self):       ####this function returns median round to 2 decimal
         name = self.name
         median = np.nanmedian(self.values)
         #print("the median of the coloum {} is {}".format (name, median))
-        return round(median,2)   ####this function returns median round to 2 decimal
+        return round(median,2)
 
 
-    def lower_iqr (self):
+    def lower_iqr (self):           ####this function returns the lower boundry of IQR
         name = self.name
         values = self.values
         low_iqr = np.nanpercentile(values,25)
-        return round(low_iqr,2)       ####this function returns the lower boundry of IQR
+        return round(low_iqr,2)
 
 
-    def upper_iqr(self):
+    def upper_iqr(self):            ####this function returns the upper boundry of IQR
         name = self.name
         values = self.values
-        up_iqr = np.nanpercentile(values, 75)    ####this function returns the upper boundry of IQR
+        up_iqr = np.nanpercentile(values, 75)
         return round(up_iqr,2)
 
 
-    def minimum_of_var (self):
+    def minimum_of_var (self):      ####this function returns the minimal value of the variable
         name = self.name
         minimum = np.min(self.values)
         #print("the minimal value of coloum {} is {}".format (name, minimum))    ##QA
-        return round(minimum,2) ####this function returns the minimal value of the variable
+        return round(minimum,2)
 
 
-    def maximum_of_var (self):
+    def maximum_of_var (self):      ####this function returns the maximal value of the variable
         name = self.name
         maximum = np.max(self.values)
         #print("the maximal value of coloum {} is {}".format (name, maximum))    ##QA
-        return round(maximum,2)    ####this function returns the maximal value of the variable
+        return round(maximum,2)
 
 
-    def sd_of_var (self):
+    def sd_of_var (self):           #####this function returns the sd, round to 2 decimals
         name = self.name
         sd = np.std(self.values)
         #print("the std of coloum {} is {}".format (name, sd))        ##QA
-        return round(sd,2)   #####this function returns the sd, round to 2 decimals
+        return round(sd,2)
 
 
     def statistics (self):
@@ -328,12 +297,11 @@ class VariableInfo:
 #  3. The index of the variable"""
 
 
-def list_of_object(column_name_list, df_table):
+def list_of_object(column_name_list, df_table):             #####make it shorter
     list_of_objects = []
     for index, variable in enumerate(column_name_list):
         name = variable
         values = df_table[name]  ##in pandas - this is how you get the values
-        index=index
         list_of_objects.append(VariableInfo(name, values, index))
     return list_of_objects
 
@@ -420,7 +388,8 @@ def build_html():
         <td width="15%" align="left"> {} </td>
         <td width="10%" align="left"> {} </td>
         <td width="10%" align="left"> {} </td>
-        <tr align="left" class="single-row">""".format (object.name,
+        <tr align="left" class="single-row">""".format \
+                        (object.name,
                          object.type(),
                          object.graph(),
                          "<br>".join(object.statistics()),
@@ -455,15 +424,15 @@ def build_html():
         html_file.close()
 
     with open("output_seenopsis.html","r") as html_file:
-        Seenopsis_table = html_file.read()
+        seenopsis_table = html_file.read()
         webbrowser.open_new_tab('output_seenopsis.html')
         html_file.close()
 
 
-    config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe')
-
-    with open('output_seenopsis.html') as pdf:
-        pdfkit.from_file(pdf, 'seenopsis_pdf.pdf')
+    # config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe')
+    #
+    # with open('output_seenopsis.html') as pdf:
+    #     pdfkit.from_file(pdf, 'seenopsis_pdf.pdf')
 
     # pdfkit.from_file("output_seenopsis.html", graph_dir +"seenopsis.pdf")
 
@@ -476,4 +445,3 @@ def build_html():
 ####call seenopsis from a different tab
 # import seenopsis
 # seenopsis.process_csv()
-
