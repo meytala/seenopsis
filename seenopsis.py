@@ -72,7 +72,7 @@ def table_as_df (filename):                             ###a function that take 
             print("At least one of your column has mixed type")
         except pd.errors.ParserError:
             print("Please use a csv file for your database")
-   return df
+    return df
 
 
 
