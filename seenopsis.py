@@ -21,7 +21,9 @@ import os
 #############################functions that call csv or pandas df
 
 def process_csv():                                      ###a function that handle the csv file  - tranform it to pandas df
+    global csv_file_name
     file_name = get_csv_table()
+    csv_file_name = file_name.split("/")[-1].replace(".csv","").replace(" ","_")
     df_table = table_as_df (file_name)
     process_pandas_df(df_table)
 
@@ -427,11 +429,11 @@ def build_html():
 
     merged_html = html_top + "".join(body_list) +html_bottomn
 
-    with open("output_seenopsis.html","w") as html_file:        ### write the html to a file
+    with open("seenopsis_{}.html".format(csv_file_name),"w") as html_file:        ### write the html to a file
         html_file.write(merged_html)
         html_file.close()
 
-    with open("output_seenopsis.html","r") as html_file:        ### read the html from the file and present it in a new tab of the browser
+    with open("seenopsis_{}.html".format(csv_file_name),"r") as html_file:        ### read the html from the file and present it in a new tab of the browser
         seenopsis_table = html_file.read()
         webbrowser.open_new_tab('output_seenopsis.html')
         html_file.close()
