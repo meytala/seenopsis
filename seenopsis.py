@@ -21,20 +21,19 @@ import os
 #############################functions that call csv or pandas df
 
 def process_csv():                                      ###a function that handle the csv file  - tranform it to pandas df
-    global csv_file_name
     file_name = get_csv_table()
-    csv_file_name = file_name.split("/")[-1].replace(".csv","").replace(" ","_")
+    # csv_file_name = file_name.split("/")[-1].replace(".csv","").replace(" ","_")
     df_table = table_as_df (file_name)
     process_pandas_df(df_table)
 
 
-def process_pandas_df(name_of_df):                      ###a function that take the pandas df and process it to an output table
+def process_pandas_df(name_of_pandas_df):                      ###a function that take the pandas df and process it to an output table
     global record_count
     global column_name_list
     global number_of_variables
     global list_of_objects
     global df
-    df = name_of_df
+    df = name_of_pandas_df
     df = df.dropna(how='all',axis=0)
     df = df.dropna(how='all', axis=1)
     record_count = max(df.count())
@@ -43,8 +42,7 @@ def process_pandas_df(name_of_df):                      ###a function that take 
     list_of_objects = list_of_object(column_name_list, df)
     build_html()
     print("In this dataset, there are {} variables and {} observations".format(number_of_variables,record_count ))
-
-
+    
 
 #######################################################
 ####################Importing Table from CSV###########
@@ -429,13 +427,13 @@ def build_html():
 
     merged_html = html_top + "".join(body_list) +html_bottomn
 
-    with open("seenopsis_{}.html".format(csv_file_name),"w") as html_file:        ### write the html to a file
+    with open("seenopsis_output.html","w") as html_file:        ### write the html to a file
         html_file.write(merged_html)
         html_file.close()
 
-    with open("seenopsis_{}.html".format(csv_file_name),"r") as html_file:        ### read the html from the file and present it in a new tab of the browser
+    with open("seenopsis_output.html","r") as html_file:        ### read the html from the file and present it in a new tab of the browser
         seenopsis_table = html_file.read()
-        webbrowser.open_new_tab('output_seenopsis.html')
+        webbrowser.open_new_tab('seenopsis_output.html')
         html_file.close()
 
 
