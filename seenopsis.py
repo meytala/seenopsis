@@ -118,7 +118,7 @@ class VariableInfo:
                 return "Single Variable"
             elif self.values.nunique() == 2:
                 return "Binary Variable"
-            elif self.values.nunique() > 2 and self.values.nunique() <= 10:
+            elif 2 < self.values.nunique() <= 10:
                 return "Categorical variable"
             else:
                 return "Text or Date"
@@ -153,13 +153,13 @@ class VariableInfo:
         name = self.name
         mean = np.mean(self.values)
         # print("the mean of the coloum {} is {}".format (name, mean))
-        return round(mean, 2)
+        return round(float(mean), 2)
 
     def median_of_var(self):                                                        ### this function returns median round to 2 decimal
         name = self.name
         median = np.nanmedian(self.values)
         # print("the median of the coloum {} is {}".format (name, median))
-        return round(median, 2)
+        return round(float(median), 2)
 
     def lower_iqr(self):                                                            ### this function returns the lower boundry of IQR
         name = self.name
@@ -189,17 +189,16 @@ class VariableInfo:
         name = self.name
         sd = np.std(self.values)
         # print("the std of coloum {} is {}".format (name, sd))        ##QA
-        return round(sd, 2)
+        return round(float(sd), 2)
 
-    def statistics(
-            self):                                                                  ### this function returns what will be written in the statistic coloumn - based on variable type
+    def statistics(self):                                                                  ### this function returns what will be written in the statistic coloumn - based on variable type
         if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique() > 10:
             return ["Min: {}".format(self.minimum_of_var()),
                     "Max: {}".format(self.maximum_of_var()),
                     "Mean &plusmn SD: {} &plusmn {}".format(self.mean_of_var(), self.sd_of_var()),
                     "Median (IQR): {} ({}, {})".format(self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
 
-        elif self.values.nunique() > 2 and self.values.nunique() >= 10:
+        elif 2 < self.values.nunique() <= 10:
             return ["Categorical Variable",
                     "{} unique values".format(self.unique_categories()),
                     "Up to top 10 values are presented"]
@@ -229,8 +228,7 @@ class VariableInfo:
             percent_of_null = round((number_of_null / len(self.values)) * 100, 1)
             return [("N={}, {}%".format(number_of_null, percent_of_null))]
 
-    def number_of_outliers(self,
-                           outlier_constant):                                       ### this function counts the number of outliers based on a distance of XX IQR
+    def number_of_outliers(self, outlier_constant):                                       ### this function counts the number of outliers based on a distance of XX IQR
         if self.var_type() in ('int64', 'float64', 'int32', 'float32') and self.values.nunique() > 10:
             a = np.array(self.values)
             upper_quartile = np.nanpercentile(a, 75)
@@ -244,7 +242,7 @@ class VariableInfo:
                 if (y <= lower_boundry) or (y >= upper_boundry):
                     count += 1
             return ["N={}".format(count)]
-        elif self.values.nunique() > 2 and self.values.nunique() < 10:
+        elif 2 < self.values.nunique() < 10:
             return ["Categorical variable",
                     "No outlier"]
         elif self.values.nunique() == 2:
@@ -406,11 +404,10 @@ def build_html():
         html_file.write(merged_html)
         html_file.close()
 
-    with open("seenopsis_output.html",
-              "r") as html_file:                                                    ### read the html from the file and present it in a new tab of the browser
-        seenopsis_table = html_file.read()
-        webbrowser.open_new_tab('seenopsis_output.html')
-        html_file.close()
+    webbrowser.open_new_tab('seenopsis_output.html')
+
+
+
 
     # config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe')
     #
