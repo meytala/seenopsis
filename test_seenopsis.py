@@ -91,3 +91,110 @@ class Test_var_type(unittest.TestCase):
         actual = "int64"
         self.assertEqual(tested, actual)
 
+
+
+
+# class Test_type(unittest.TestCase):
+# ###test if the type is actually the var_type that is expected (categorical, because it is less than 10 unique variables)
+#     def test_var_type(self):
+#         tested = seenopsis.
+#         actual = "Categorical variable"
+#         self.assertEqual(tested, actual)
+#
+#
+#
+#
+# class Test_histogram(unittest.TestCase):   ##########????
+# class Test_bars(unittest.TestCase):        ##########????
+# class Test_graph(unittest.TestCase):       ##########????   test if it returns a bar???
+#
+# class Test_mean_of_var(unittest.TestCase):
+#     ###test if the mean is actually the mean that is expected    (df: 1,2,3,4,56,6,7 mean = 11.3)
+#     def test_mean(self):
+#         tested = seenopsis.
+#         actual = 11.3
+#         self.assertEqual(tested, actual)
+#
+#
+# class Test_median_of_var(unittest.TestCase):
+#     ###test if the median is actually the median that is expected  (df: 1,2,3,4,56,6,7 median = 4)
+#     def test_median(self):
+#         tested = seenopsis.
+#         actual = 4
+#         self.assertEqual(tested, actual)
+#
+#
+#
+#
+# class Test_lower_iqr(unittest.TestCase):
+# ###test if the lower_iqr is actually the lower_iqr that is expected  (df: 1,2,3,4,56,6,7 lower IQR = 2)
+#     def test_lower_iqr(self):
+#         tested = seenopsis.
+#         actual = 2
+#         self.assertEqual(tested, actual)
+#
+# class Test_upper_iqr(unittest.TestCase):
+# ###test if the upper_iqr is actually the upper_iqr that is expected  (df: 1,2,3,4,56,6,7 upper IQR = 7)
+#     def test_upper_iqr(self):
+#         tested = seenopsis.
+#         actual = 7
+#         self.assertEqual(tested, actual)
+#
+# class Test_minimum_of_var(unittest.TestCase):
+# ###test if the minimum is actually the minimum that is expected  (df: 1,2,3,4,56,6,7 minimum = 1)
+#     def test_minimum_of_var(self):
+#         tested = seenopsis.
+#         actual = 1
+#         self.assertEqual(tested, actual)
+#
+# class Test_maximum_of_var(unittest.TestCase):
+# ###test if the maximum is actually the maximum that is expected  (df: 1,2,3,4,56,6,7 maximum = 56)
+#     def test_maximum_of_var(self):
+#         tested = seenopsis.
+#         actual = 56
+#         self.assertEqual(tested, actual)
+#
+#
+#
+# class Test_sd_of_var(unittest.TestCase):
+# ###test if the sd is actually the sd that is expected  (df: 1,2,3,4,56,6,7 sd = 19.8)
+#     def test_sd_of_var(self):
+#         tested = seenopsis.
+#         actual = 19.8
+#         self.assertEqual(tested, actual)
+#
+#
+#
+# class Test_statistics(unittest.TestCase): ##########????
+#     def test_statistics(self):
+#         tested = seenopsis.
+#         actual =
+#         self.assertEqual(tested, actual)
+#
+#
+# class Test_count_null(unittest.TestCase): ##########????
+#     def test_count_null(self):
+#         tested = seenopsis.
+#         actual =
+#         self.assertEqual(tested, actual)
+#
+# class Test_number_of_outliers(unittest.TestCase):
+# ###test if the number_of_outliers is actually the number_of_outliersthat is expected  (df: 1,2,3,4,56,6,7 number_of_outliers = 1)
+#     def test_number_of_outliers(self):
+#         tested = seenopsis.
+#         actual = 1
+#         self.assertEqual(tested, actual)
+#
+# class Test_count_binary(unittest.TestCase):
+#
+#
+# class Test_unique_categories(unittest.TestCase):
+# ###test if the unique_categories is actually the unique_categories is expected  (df: 1,2,3,4,56,6,7 unique_categories = 7)
+#     def test_unique_categories(self):
+#         tested = seenopsis.
+#         actual = 7
+#         self.assertEqual(tested, actual)
+
+
+if __name__ == '__main__':
+    unittest.main()

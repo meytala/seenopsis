@@ -211,7 +211,7 @@ class VariableInfo:
 
         elif self.values.nunique() == 1:
             return ["Single value",
-                    "No Statistic"]
+                    "No Statistics"]
 
         else:
             return ["Text/Date variable",
@@ -339,7 +339,7 @@ def build_html():
                     <th width="7%">Variable<br/>Name</th>
                       <th width="15%" >Type</th>
                       <th width="15%">Graphic<br/> Representation</th>
-                      <th width="15%">Basic<br/> Statistic</th>
+                      <th width="15%">Basic<br/> Statistics</th>
                       <th width="15%">Missing</th>
                       <th width="15%">Outliers(n)</th>
                 </tr></thead></table>
