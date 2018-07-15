@@ -1,7 +1,3 @@
-from typing import Any, Union
-
-from numpy.core.multiarray import ndarray
-
 __author__ = "Meytal Avgil Tsadok"
 __copyright__ = "Copyright 2018, TLV Israel"
 __credits__ = "She codes - Final project"
@@ -18,21 +14,17 @@ import matplotlib.pyplot as plt
 import webbrowser
 from tkinter.filedialog import askopenfilename
 import os
-
-
-# import shutil
-# import pdfkit
-
+import sys
 
 #############################functions that call csv or pandas df
 
-def process_csv():                                                                  ###a function that handle the csv file  - tranform it to pandas df
+def process_csv():      ###a function that handle the csv file  - tranform it to pandas df
     csv_file_name = askopenfilename()
     df_table = convert_csv_to_pd(csv_file_name)
     process_pandas_df(df_table)
 
 
-def process_pandas_df(name_of_pandas_df):                                           ###a function that take the pandas df and process it to an output table
+def process_pandas_df(name_of_pandas_df):  ###a function that take the pandas df and process it to an output table
     global record_count
     global column_name_list
     global number_of_variables
@@ -57,17 +49,19 @@ def process_pandas_df(name_of_pandas_df):                                       
 ##output: a dataframe in pandas
 
 
-def convert_csv_to_pd(csv_file_name):                                                 ###a function that take csv in spesific encodings and transfer it to df
+def convert_csv_to_pd(csv_file_name):  ###a function that take csv in spesific encodings and transfer it to df
     local_df = None
     for encoding in ['utf-8', 'UTF-8', 'ANSI', 'ISO-8859-1', 'ISO-8859-8']:
         try:
-            local_df = pd.read_csv(csv_file_name, parse_dates=True, infer_datetime_format=True, date_parser=pd.to_datetime, encoding=encoding)
+            local_df = pd.read_csv(csv_file_name, parse_dates=True, infer_datetime_format=True,
+                                    date_parser=pd.to_datetime, encoding=encoding)
             print("The csv file is encoded with {}".format(encoding))
             break
         except UnicodeDecodeError:
-            print("The csv file is not encoded with {}".format(encoding))
+            pass
         except pd.errors.ParserError:
-            print("Please use a csv file for your database")
+            print("Please use a csv file for your database (not excel), or encode with utf-8")
+            sys.exit(1)
     return local_df
 
 
@@ -76,7 +70,7 @@ def convert_csv_to_pd(csv_file_name):                                           
 #########################################################
 ##create a directory for the graphs or use the graph directory if available
 
-script_dir = os.path.dirname(__file__)                                              ###create a folder for storing the graphs in the active directory
+script_dir = os.path.dirname(__file__)  ###create a folder for storing the graphs in the active directory
 graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
 
 if not os.path.isdir(graph_dir):  ###only if it doesn't exist already
@@ -97,7 +91,7 @@ class VariableInfo:
         self.values = values
         self.index = index
 
-    def var_type(self):                                                             ### a variable that get the variable type based on numpy
+    def var_type(self):  ### a variable that get the variable type based on numpy
         type_of_variable = np.dtype(self.values)
         return type_of_variable
 
@@ -123,98 +117,75 @@ class VariableInfo:
         else:
             return "general text"
 
-    def type(self):                                                                ### a function that subdivid the types for more accurate categories
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique() == 1:
-                return "Single Variable\n" \
-                       " ({})".format(self.var_type())
-            elif self.values.nunique() == 2:
-                return "Binary Variable\n" + \
-                       " ({})".format(self.var_type())
-            elif 2 < self.values.nunique() <= 10:
-                return "Categorical variable\n" + \
-                       " ({})".format(self.var_type())
-            else:
-                return "Continuous variable\n" + \
-                       " ({})".format(self.var_type())
-        elif self.var_type() == 'object':
-            if self.values.nunique() == 1:
-                return "Single Variable"
-            elif self.values.nunique() == 2:
-                return "Binary Variable"
-            elif 2 < self.values.nunique() <= 10:
-                return "Categorical variable"
-            else:
-                return "Text or Date"
+    def type(self):  ### a function that subdivid the types for more accurate categories
+        if "single" in self.type_for_operation():
+            return "Single Variable\n" \
+                   "({})".format(self.var_type())
+        elif "binary" in self.type_for_operation():
+            return "Binary Variable\n" + \
+                   "({})".format(self.var_type())
+        elif "category" in self.type_for_operation():
+            return "Categorical Variable\n" + \
+                   "({})".format(self.var_type())
+        elif "continuous number" in self.type_for_operation():
+            return "Continuous Variable\n" + \
+                   "({})".format(self.var_type())
         else:
             return "Text or Date"
 
-    def histogram(self):                                                     ### a function that create a histogram with 50 bins/20%!!!
+    def histogram(self):  ### a function that create a histogram using 50 bins
         plt.hist(self.values.dropna(), bins=50)
-        plt.yticks(fontsize=14)
-        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=15)
+        plt.xticks(fontsize=15)
         plt.savefig(graph_dir + "hist_{}".format(self.index))
         plt.close()
         return "hist_{}.png".format(self.index)
 
-    def bars(self):                                                                 ### a function that create an horisontal barchart
+    def bars(self):  ### a function that create an horisontal barchart
         self.values.value_counts().nlargest(10).plot(kind='barh')
-        plt.yticks(fontsize=14)
-        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=15)
+        plt.xticks(fontsize=15)
         plt.savefig(graph_dir + "bars_{}".format(self.index))
         plt.close()
         return "bars_{}.png".format(self.index)
 
-    def graph(self):                                                                ### a function that match the graph type to present based on the variable type
-        my_type = self.type_for_operation()
-        if my_type == "continuous number":
+    def graph(self):  ### a function that match the graph type to present based on the variable type
+        if "continuous number" in self.type_for_operation():
             return self.histogram()
         else:
             return self.bars()
 
-    def mean_of_var(self):                                                          ### this function returns mean round to 2 decimal
-        name = self.name
+    def mean_of_var(self):  ### this function returns mean round to 2 decimal
         mean = np.mean(self.values)
-        # print("the mean of the column {} is {}".format (name, mean))
         return round(float(mean), 2)
 
-    def median_of_var(self):                                                        ### this function returns median round to 2 decimal
-        name = self.name
+    def median_of_var(self):  ### this function returns median round to 2 decimal
         median = np.nanmedian(self.values)
-        # print("the median of the column {} is {}".format (name, median))
         return round(float(median), 2)
 
-    def lower_iqr(self):                                                            ### this function returns the lower boundary of IQR
-        name = self.name
+    def lower_iqr(self):  ### this function returns the lower boundary of IQR
         values = self.values
         low_iqr = np.nanpercentile(values, 25)
         return round(low_iqr, 2)
 
-    def upper_iqr(self):                                                            ### this function returns the upper boundary of IQR
-        name = self.name
+    def upper_iqr(self):  ### this function returns the upper boundary of IQR
         values = self.values
         up_iqr = np.nanpercentile(values, 75)
         return round(up_iqr, 2)
 
-    def minimum_of_var(self):                                                       ### this function returns the minimal value of the variable
-        name = self.name
+    def minimum_of_var(self):  ### this function returns the minimal value of the variable
         minimum = np.min(self.values)
-        # print("the minimal value of column {} is {}".format (name, minimum))    ##QA
         return round(minimum, 2)
 
-    def maximum_of_var(self):                                                       ### this function returns the maximal value of the variable
-        name = self.name
+    def maximum_of_var(self):  ### this function returns the maximal value of the variable
         maximum = np.max(self.values)
-        # print("the maximal value of column {} is {}".format (name, maximum))    ##QA
         return round(maximum, 2)
 
-    def sd_of_var(self):                                                            ### this function returns the sd, round to 2 decimals
-        name = self.name
+    def sd_of_var(self):  ### this function returns the sd, round to 2 decimals
         sd = np.std(self.values)
-        # print("the std of column {} is {}".format (name, sd))        ##QA
         return round(float(sd), 2)
 
-    def statistics(self):                                                                  ### this function returns what will be written in the statistic column - based on variable type
+    def statistics(self):  ### this function returns what will be written in the statistic column - based on variable type
         if self.type_for_operation() == "continuous number":
             return ["Min: {}".format(self.minimum_of_var()),
                     "Max: {}".format(self.maximum_of_var()),
@@ -226,7 +197,7 @@ class VariableInfo:
                     "{} unique values".format(self.unique_categories()),
                     "Up to top 10 values are presented"]
 
-        elif "binary" in self.type_for_operation():
+        elif "binary" in self.type_for_operation ():
             return ["Binary variable",
                     "{}: {}%".format(self.count_binary()[0][0], self.count_binary()[0][1]),
                     "{}: {}%".format(self.count_binary()[1][0], self.count_binary()[1][1])]
@@ -240,8 +211,7 @@ class VariableInfo:
                     "Up to top 10 values are presented",
                     "Out of {} unique values".format(self.unique_categories())]
 
-    def count_null(self):                                                            ### this function counts the nulls
-        name = self.name
+    def count_null(self):  ### this function counts the nulls
         values = self.values
         number_of_null = values.isnull().sum()
         if number_of_null == 0:
@@ -251,34 +221,38 @@ class VariableInfo:
             percent_of_null = round((number_of_null / len(self.values)) * 100, 1)
             return [("N={}, {}%".format(number_of_null, percent_of_null))]
 
-    def number_of_outliers(self, outlier_constant):                                       ### this function counts the number of outliers based on a distance of XX IQR
+    def number_of_outliers(self, outlier_constant):  ### this function counts the number of outliers based on a distance of XX IQR
         if self.type_for_operation() == "continuous number":
             a = np.array(self.values)
             upper_quartile = np.nanpercentile(a, 75)
             lower_quartile = np.nanpercentile(a, 25)
             IQR = (upper_quartile - lower_quartile)
             extend_IQR = IQR * outlier_constant
-            lower_boundary: Union[Union[int, float, complex, ndarray], Any] = lower_quartile - extend_IQR
+            lower_boundary = lower_quartile - extend_IQR
             upper_boundary = upper_quartile + extend_IQR
             count = 0
-            for y in a:
-                if (y <= lower_boundary) or (y >= upper_boundary):
-                    count += 1
-            return ["N={}".format(count)]
+            if IQR == 0:
+                return ["IQR=0",
+                        "Outliers were not analyzed"]
+            else:
+                for y in a:
+                    if (y <= lower_boundary) or (y >= upper_boundary):
+                        count += 1
+                return ["N={}".format(count)]
         elif "category" in self.type_for_operation():
             return ["Categorical variable",
-                    "No outlier"]
+                    "No outliers"]
         elif "binary" in self.type_for_operation():
             return ["Binary variable",
-                    "No outlier"]
+                    "No outliers"]
         elif "single" in self.type_for_operation():
             return ["Single variable",
-                    "No outlier"]
+                    "No outliers"]
         else:
             return ["Text/Date variable",
                     "No outliers"]
 
-    def count_binary(self):                                                         ### this function return a list of the percentage of the binary variables
+    def count_binary(self):  ### this function return a list of the percentage of the binary variables
         percentage_list = []
         count = self.values.value_counts()
         for name, count in count.items():
@@ -287,7 +261,7 @@ class VariableInfo:
             percentage_list.append(sub_list)
         return percentage_list
 
-    def unique_categories(self):                                                    ### this function return the number of unique values
+    def unique_categories(self):  ### this function return the number of unique values
         unique_counts = self.values.nunique()
         return unique_counts
 
@@ -301,15 +275,13 @@ class VariableInfo:
 #  2. The values of the variable
 #  3. The index of the variable"""
 
-def list_of_object(column_name_list, df_table):                                                       ###this functin create a list of objects with the attributes of VariableInfo
+
+def list_of_object(column_name_list, df_table):  ###this functin create a list of objects with the attributes of VariableInfo
     list_of_objects = []
     for index, name in enumerate(column_name_list):
         values = df_table[name]
         list_of_objects.append(VariableInfo(name, values, index))
     return list_of_objects
-
-
-# print("list of objects: ", list_of_objects)            #QA
 
 
 ###########################################################
@@ -361,7 +333,7 @@ def build_html():
                       <th width="10%">Graphic<br/> Representation</th>
                       <th width="10%">Basic<br/> Statistics</th>
                       <th width="10%">Missing</th>
-                      <th width="10%">Outliers (n)</th>
+                      <th width="10%">Outliers (n)<br/>(Median &plusmn 3 IQR) </th>
                 </tr></thead></table>
              </div>
           </div>
@@ -392,7 +364,7 @@ def build_html():
         <td width="10%" align="left"> {} </td>
         <td width="10%" align="left"> {} </td>
         <td width="10%" align="left"> {} </td>
-        <tr align="left" class="single-row">""".format \
+        <tr align="left" class="single-row">""".format\
             (object.name,
              object.type(),
              object.graph(),
@@ -401,7 +373,7 @@ def build_html():
              "<br>".join(object.number_of_outliers(3)))
         body_list.append(list_for_body)
 
-    html_bottomn = """</tr>
+    html_bottom = """</tr>
          </table>
      <br />
      <br />
@@ -420,7 +392,7 @@ def build_html():
     </body>
     </html>"""
 
-    merged_html = html_top + "".join(body_list) + html_bottomn
+    merged_html = html_top + "".join(body_list) + html_bottom
 
     with open("seenopsis_output.html", "w") as html_file:  ### write the html to a file
         html_file.write(merged_html)
@@ -428,15 +400,6 @@ def build_html():
 
     webbrowser.open_new_tab('seenopsis_output.html')
 
-
-
-
-    # config = pdfkit.configuration(wkhtmltopdf='wkhtmltopdf.exe')
-    #
-    # with open('output_seenopsis.html') as pdf:
-    #     pdfkit.from_file(pdf, 'seenopsis_pdf.pdf')
-
-    # pdfkit.from_file("output_seenopsis.html", graph_dir +"seenopsis.pdf")
 
 ###############call seenopsis
 
