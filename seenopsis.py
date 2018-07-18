@@ -222,7 +222,7 @@ class VariableInfo:
                     "{}: {}%".format(self.count_binary()[0][0], self.count_binary()[0][1]),
                     "{}: {}%".format(self.count_binary()[1][0], self.count_binary()[1][1])]
 
-        elif "unique" in self.type_for_operation():
+        elif "single" in self.type_for_operation():
             return ["Single value",
                     "No Statistics"]
 

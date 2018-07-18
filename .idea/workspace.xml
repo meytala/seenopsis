@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d973903-2ec5-4e66-8fc4-9e286bcc14b7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/seenopsis.py" beforeDir="false" afterPath="$PROJECT_DIR$/seenopsis.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -17,8 +16,8 @@
       <file leaf-file-name="seenopsis.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/seenopsis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
-              <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+            <state relative-caret-position="286">
+              <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
               <folding>
                 <element signature="e#268#287#0" expanded="true" />
               </folding>
@@ -58,7 +57,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find />
+      <find>column names</find>
       <find>color</find>
       <find>cm</find>
       <find>ContVariable</find>
@@ -70,7 +69,7 @@
       <find>df</find>
       <find>column_name</find>
       <find>value</find>
-      <find />
+      <find>(</find>
       <find>graph</find>
       <find>unique_categories</find>
       <find>count_unique_values</find>
@@ -384,8 +383,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/seenopsis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
-          <caret line="58" lean-forward="true" selection-start-line="58" selection-end-line="58" />
+        <state relative-caret-position="286">
+          <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
           <folding>
             <element signature="e#268#287#0" expanded="true" />
           </folding>
