@@ -6,8 +6,6 @@ __maintainer__ = "Meytal Avgil Tsadok"
 __email__ = "meytala@gmail.com"
 __status__ = "Production"
 
-####relevent libraries:
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,44 +14,38 @@ from tkinter.filedialog import askopenfilename
 import os
 import sys
 
-#############################functions that call csv or pandas df
 
-def process_csv():      ###a function that handle the csv file  - tranform it to pandas df
+##########################################################################################
+####### functions to process the df - based on the type of the df (csv or pandas)#########
+##########################################################################################
+
+def process_csv():
     csv_file_name = askopenfilename()
-    df_table = convert_csv_to_pd(csv_file_name)
-    process_pandas_df(df_table)
+    pd_df = convert_csv_to_pd(csv_file_name)
+    process_pandas_df(pd_df)
 
 
-def process_pandas_df(name_of_pandas_df):  ###a function that take the pandas df and process it to an output table
-    global record_count
-    global column_name_list
-    global number_of_variables
-    global list_of_objects
-    global df
-    df = name_of_pandas_df
+def process_pandas_df(pd_df):
+    df = pd_df
     df = df.dropna(how='all', axis=0)
     df = df.dropna(how='all', axis=1)
     record_count = max(df.count())
     column_name_list = list(df)
     number_of_variables = len(column_name_list)
-    list_of_objects = list_of_object(column_name_list, df)
-    build_html()
+    list_of_objects = get_list_of_objects(column_name_list, df)
+    build_html(df)
     print("In this dataset, there are {} variables and {} observations".format(number_of_variables, record_count))
 
 
-#######################################################
-####################Importing Table from CSV###########
-#######################################################
+#########################################################
+########converting the CSV table to pandas df ###########
+#########################################################
 
-##input:  the name of the table
-##output: a dataframe in pandas
-
-
-def convert_csv_to_pd(csv_file_name):  ###a function that take csv in spesific encodings and transfer it to df
-    local_df = None
+def convert_csv_to_pd(csv_file_name):
+    pd_df = None
     for encoding in ['utf-8', 'UTF-8', 'ANSI', 'ISO-8859-1', 'ISO-8859-8']:
         try:
-            local_df = pd.read_csv(csv_file_name, parse_dates=True, infer_datetime_format=True,
+            pd_df = pd.read_csv(csv_file_name, parse_dates=True, infer_datetime_format=True,
                                     date_parser=pd.to_datetime, encoding=encoding)
             print("The csv file is encoded with {}".format(encoding))
             break
@@ -62,7 +54,7 @@ def convert_csv_to_pd(csv_file_name):  ###a function that take csv in spesific e
         except pd.errors.ParserError:
             print("Please use a csv file for your database (not excel), or encode with utf-8")
             sys.exit(1)
-    return local_df
+    return pd_df
 
 
 #########################################################
@@ -70,20 +62,19 @@ def convert_csv_to_pd(csv_file_name):  ###a function that take csv in spesific e
 #########################################################
 ##create a directory for the graphs or use the graph directory if available
 
-script_dir = os.path.dirname(__file__)  ###create a folder for storing the graphs in the active directory
+script_dir = os.path.dirname(__file__)
 graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
 
-if not os.path.isdir(graph_dir):  ###only if it doesn't exist already
+if not os.path.isdir(graph_dir):
     os.makedirs(graph_dir)
 
-#########################################################
-################seenopsis data to present################
-#########################################################
 
-"""Instances of the Class represents the different variables"""
+#########################################################################
+################The information to present in seenopsis: ################
+#########################################################################
 
-
-####each variable will turn to an object (in the class VariableInfo) and the following are the object's methods:
+#######create a class named VariableInfo with different method to represent featurs of the datasets' variables
+#######each variable in the dataset will turn to an object
 
 class VariableInfo:
     def __init__(self, name, values, index):
@@ -91,11 +82,13 @@ class VariableInfo:
         self.values = values
         self.index = index
 
-    def var_type(self):  ### a variable that get the variable type based on numpy
+
+    def var_type(self):  ### get the variable type based on numpy
         type_of_variable = np.dtype(self.values)
         return type_of_variable
 
-    def type_for_operation(self):
+
+    def type_for_operation(self):  ###subdivide the variable type to single, binary, category, continuous, test/date
         if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
             if self.values.nunique() == 1:
                 return "single number"
@@ -117,7 +110,8 @@ class VariableInfo:
         else:
             return "general text"
 
-    def type(self):  ### a function that subdivid the types for more accurate categories
+
+    def type(self):  ### variables' type in a format to be presented nicely in the seenopsis output
         if "single" in self.type_for_operation():
             return "Single Variable\n" \
                    "({})".format(self.var_type())
@@ -133,7 +127,8 @@ class VariableInfo:
         else:
             return "Text or Date"
 
-    def histogram(self):  ### a function that create a histogram using 50 bins
+
+    def histogram(self):
         plt.hist(self.values.dropna(), bins=50)
         plt.yticks(fontsize=15)
         plt.xticks(fontsize=15)
@@ -141,51 +136,76 @@ class VariableInfo:
         plt.close()
         return "hist_{}.png".format(self.index)
 
-    def bars(self):  ### a function that create an horisontal barchart
+
+    def bars(self):
         self.values.value_counts().nlargest(10).plot(kind='barh')
         plt.yticks(fontsize=15)
-        plt.xticks(fontsize=15)
+        plt.xticks(fontsize=14)
         plt.savefig(graph_dir + "bars_{}".format(self.index))
         plt.close()
         return "bars_{}.png".format(self.index)
 
-    def graph(self):  ### a function that match the graph type to present based on the variable type
+
+    def create_hist_or_bars_graph(self):
         if "continuous number" in self.type_for_operation():
             return self.histogram()
         else:
             return self.bars()
 
-    def mean_of_var(self):  ### this function returns mean round to 2 decimal
-        mean = np.mean(self.values)
+
+    def mean_of_var(self):
+        mean = np.nanmean(self.values)
         return round(float(mean), 2)
 
-    def median_of_var(self):  ### this function returns median round to 2 decimal
+
+    def median_of_var(self):
         median = np.nanmedian(self.values)
         return round(float(median), 2)
 
-    def lower_iqr(self):  ### this function returns the lower boundary of IQR
+
+    def lower_iqr(self):
         values = self.values
         low_iqr = np.nanpercentile(values, 25)
-        return round(low_iqr, 2)
+        return round(float(low_iqr), 2)
 
-    def upper_iqr(self):  ### this function returns the upper boundary of IQR
+
+    def upper_iqr(self):
         values = self.values
         up_iqr = np.nanpercentile(values, 75)
-        return round(up_iqr, 2)
+        return round(float(up_iqr), 2)
 
-    def minimum_of_var(self):  ### this function returns the minimal value of the variable
-        minimum = np.min(self.values)
-        return round(minimum, 2)
 
-    def maximum_of_var(self):  ### this function returns the maximal value of the variable
-        maximum = np.max(self.values)
-        return round(maximum, 2)
+    def minimum_of_var(self):
+        minimum = np.nanmin(self.values)
+        return round(float(minimum), 2)
 
-    def sd_of_var(self):  ### this function returns the sd, round to 2 decimals
-        sd = np.std(self.values)
+
+    def maximum_of_var(self):
+        maximum = np.nanmax(self.values)
+        return round(float(maximum), 2)
+
+
+    def sd_of_var(self):
+        sd = np.nanstd(self.values)
         return round(float(sd), 2)
 
-    def statistics(self):  ### this function returns what will be written in the statistic column - based on variable type
+
+    def count_binary(self):  ### return a list of the percentage for binary variables
+        percentage_list = []
+        count = self.values.value_counts()
+        for name, count in count.items():
+            percentage = round((count / len(self.values)) * 100, 2)
+            sub_list = [name, percentage]
+            percentage_list.append(sub_list)
+        return percentage_list
+
+
+    def count_unique_values(self):
+        unique_counts = self.values.nunique()
+        return unique_counts
+
+
+    def statistics(self):  ### returns what will be written in the statistic column of seenopsis- based on variable type
         if self.type_for_operation() == "continuous number":
             return ["Min: {}".format(self.minimum_of_var()),
                     "Max: {}".format(self.maximum_of_var()),
@@ -194,7 +214,7 @@ class VariableInfo:
 
         elif "category" in self.type_for_operation():
             return ["Categorical Variable",
-                    "{} unique values".format(self.unique_categories()),
+                    "{} unique values".format(self.count_unique_values()),
                     "Up to top 10 values are presented"]
 
         elif "binary" in self.type_for_operation ():
@@ -209,11 +229,11 @@ class VariableInfo:
         else:
             return ["Text/Date variable",
                     "Up to top 10 values are presented",
-                    "Out of {} unique values".format(self.unique_categories())]
+                    "Out of {} unique values".format(self.count_unique_values())]
 
-    def count_null(self):  ### this function counts the nulls
-        values = self.values
-        number_of_null = values.isnull().sum()
+
+    def count_null(self):
+        number_of_null = self.values.isnull().sum()
         if number_of_null == 0:
             return ["No missing",
                     "values"]
@@ -221,17 +241,18 @@ class VariableInfo:
             percent_of_null = round((number_of_null / len(self.values)) * 100, 1)
             return [("N={}, {}%".format(number_of_null, percent_of_null))]
 
-    def number_of_outliers(self, outlier_constant):  ### this function counts the number of outliers based on a distance of XX IQR
+
+    def number_of_outliers(self, outlier_constant):
         if self.type_for_operation() == "continuous number":
             a = np.array(self.values)
             upper_quartile = np.nanpercentile(a, 75)
             lower_quartile = np.nanpercentile(a, 25)
-            IQR = (upper_quartile - lower_quartile)
-            extend_IQR = IQR * outlier_constant
-            lower_boundary = lower_quartile - extend_IQR
-            upper_boundary = upper_quartile + extend_IQR
+            iqr = (upper_quartile - lower_quartile)
+            extend_iqr = iqr * outlier_constant
+            lower_boundary = lower_quartile - extend_iqr
+            upper_boundary = upper_quartile + extend_iqr
             count = 0
-            if IQR == 0:
+            if iqr == 0:
                 return ["IQR=0",
                         "Outliers were not analyzed"]
             else:
@@ -252,31 +273,14 @@ class VariableInfo:
             return ["Text/Date variable",
                     "No outliers"]
 
-    def count_binary(self):  ### this function return a list of the percentage of the binary variables
-        percentage_list = []
-        count = self.values.value_counts()
-        for name, count in count.items():
-            percentage = round((count / len(self.values)) * 100, 2)
-            sub_list = [name, percentage]
-            percentage_list.append(sub_list)
-        return percentage_list
-
-    def unique_categories(self):  ### this function return the number of unique values
-        unique_counts = self.values.nunique()
-        return unique_counts
 
 
-#######################################################
-#######################OBJECTS#########################
-#######################################################
 
-"""creating a list of objects for the Variable class. Each object has to have:
-#  1. a name - the name of the variable
-#  2. The values of the variable
-#  3. The index of the variable"""
+###########################################################################
+#######Transform variable in the dataset to a VariableInfo object##########
+###########################################################################
 
-
-def list_of_object(column_name_list, df_table):  ###this functin create a list of objects with the attributes of VariableInfo
+def get_list_of_objects(column_name_list, df_table):
     list_of_objects = []
     for index, name in enumerate(column_name_list):
         values = df_table[name]
@@ -288,10 +292,11 @@ def list_of_object(column_name_list, df_table):  ###this functin create a list o
 ###############building the HTML###########################
 ###########################################################
 
-""" a function that wrap everything nicely in an html table to display """
-
-
-def build_html():
+def build_html(df):
+    column_name_list = list(df)
+    record_count = max(df.count())
+    number_of_variables = len(column_name_list)
+    list_of_objects = get_list_of_objects(column_name_list, df)
     html_top = """<html>
     <head>
        <title>SEENOPSIS</title>
@@ -332,8 +337,8 @@ def build_html():
                       <th width="10%" >Type</th>
                       <th width="10%">Graphic<br/> Representation</th>
                       <th width="10%">Basic<br/> Statistics</th>
-                      <th width="10%">Missing</th>
-                      <th width="10%">Outliers (n)<br/>(Median &plusmn 3 IQR) </th>
+                      <th width="10%">Missing<br/> (N, %)</th>
+                      <th width="10%">Outliers (N)<br/>(Median &plusmn 3 IQR) </th>
                 </tr></thead></table>
              </div>
           </div>
@@ -367,7 +372,7 @@ def build_html():
         <tr align="left" class="single-row">""".format\
             (object.name,
              object.type(),
-             object.graph(),
+             object.create_hist_or_bars_graph(),
              "<br>".join(object.statistics()),
              "<br>".join(object.count_null()),
              "<br>".join(object.number_of_outliers(3)))
@@ -394,7 +399,7 @@ def build_html():
 
     merged_html = html_top + "".join(body_list) + html_bottom
 
-    with open("seenopsis_output.html", "w") as html_file:  ### write the html to a file
+    with open("seenopsis_output.html", "w") as html_file:
         html_file.write(merged_html)
         html_file.close()
 
