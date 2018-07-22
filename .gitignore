@@ -5,6 +5,7 @@
 **/*.pptx
 "text for seenopsis presentation.docx"
 text for seenopsis presentation.docx
-seenopsis_rational.pdf
+"seenopsis_rational.pdf"
 Data Sample/fiction_cohort_data-short.csv
 Data Sample/U.S._Chronic_Disease_Indicators__CDI_.csv
+"run_seenopsis.py"
