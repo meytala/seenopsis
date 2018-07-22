@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d973903-2ec5-4e66-8fc4-9e286bcc14b7" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/seenopsis.py" beforeDir="false" afterPath="$PROJECT_DIR$/seenopsis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/seenopsis_presentation.pptx" beforeDir="false" afterPath="$PROJECT_DIR$/seenopsis_presentation.pptx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,11 +18,8 @@
       <file leaf-file-name="seenopsis.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/seenopsis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
-              <folding>
-                <element signature="e#268#287#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="110">
+              <caret line="47" column="13" lean-forward="true" selection-start-line="47" selection-end-line="48" />
             </state>
           </provider>
         </entry>
@@ -41,7 +40,7 @@
         <entry file="file://$PROJECT_DIR$/run_seenopsis.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="242">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+              <caret line="11" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -127,7 +126,7 @@
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://C:/Users/meyta/PycharmProjects/Final_project/test.html" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="Python" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/test.py" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -215,10 +214,10 @@
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2535771" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2535771" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.18634686" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32841328" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.32841328" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.18634686" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.398524" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -268,11 +267,32 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/seenopsis.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8316">
+          <caret line="384" column="11" lean-forward="true" selection-start-line="384" selection-start-column="11" selection-end-line="384" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_seenopsis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="506">
+          <caret line="23" column="25" selection-start-line="23" selection-start-column="25" selection-end-line="23" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/run_seenopsis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="242">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/seenopsis.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4290">
           <caret line="195" lean-forward="true" selection-start-line="195" selection-end-line="195" />
-          <folding>
-            <element signature="e#268#287#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -358,9 +378,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1914">
           <caret selection-end-line="434" selection-end-column="25" />
-          <folding>
-            <element signature="e#268#287#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -377,17 +394,14 @@
     <entry file="file://$PROJECT_DIR$/run_seenopsis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/seenopsis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="233" lean-forward="true" selection-start-line="233" selection-end-line="233" />
-          <folding>
-            <element signature="e#268#287#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="110">
+          <caret line="47" column="13" lean-forward="true" selection-start-line="47" selection-end-line="48" />
         </state>
       </provider>
     </entry>

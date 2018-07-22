@@ -38,7 +38,7 @@ def process_pandas_df(pd_df):
 
 
 #########################################################
-########converting the CSV table to pandas df ###########
+####### converting the CSV table to pandas df ###########
 #########################################################
 
 def convert_csv_to_pd(csv_file_name):
@@ -58,9 +58,9 @@ def convert_csv_to_pd(csv_file_name):
 
 
 #########################################################
-####################directory for graphs#################
+#################### directory for graphs ###############
 #########################################################
-##create a directory for the graphs or use the graph directory if available
+#create a directory for the graphs or use the graph directory if available
 
 script_dir = os.path.dirname(__file__)
 graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
@@ -70,11 +70,11 @@ if not os.path.isdir(graph_dir):
 
 
 #########################################################################
-################The information to present in seenopsis: ################
+############### The information to present in seenopsis: ################
 #########################################################################
 
-#######create a class named VariableInfo with different method to represent featurs of the datasets' variables
-#######each variable in the dataset will turn to an object
+#create a class named VariableInfo with different method to represent featurs of the datasets' variables
+#each variable in the dataset will turn to an object
 
 class VariableInfo:
     def __init__(self, name, values, index):
@@ -277,7 +277,7 @@ class VariableInfo:
 
 
 ###########################################################################
-#######Transform variable in the dataset to a VariableInfo object##########
+###### Transform variable in the dataset to a VariableInfo object #########
 ###########################################################################
 
 def get_list_of_objects(column_name_list, df_table):
@@ -289,7 +289,7 @@ def get_list_of_objects(column_name_list, df_table):
 
 
 ###########################################################
-###############building the HTML###########################
+############## Building the HTML ##########################
 ###########################################################
 
 def build_html(df):
@@ -406,12 +406,10 @@ def build_html(df):
     webbrowser.open_new_tab('seenopsis_output.html')
 
 
-###############call seenopsis
+###########################################################
+#############  call seenopsis  ############################
+###########################################################
 
-####call seenopsis fron this file
+####call seenopsis
 # process_csv()
 # process_pandas_df()
-
-####call seenopsis from a different tab
-# import seenopsis
-# seenopsis.process_csv()
