@@ -16,7 +16,7 @@ import sys
 
 
 ##########################################################################################
-####### functions to process the df - based on the type of the df (csv or pandas)#########
+####### functions to process the dataframe (df) - based on the type of the df (csv or pandas)#########
 ##########################################################################################
 
 def process_csv():
@@ -32,7 +32,6 @@ def process_pandas_df(pd_df):
     record_count = max(df.count())
     column_name_list = list(df)
     number_of_variables = len(column_name_list)
-    list_of_objects = get_list_of_objects(column_name_list, df)
     build_html(df)
     print("In this dataset, there are {} variables and {} observations".format(number_of_variables, record_count))
 
