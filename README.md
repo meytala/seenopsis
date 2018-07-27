@@ -1,4 +1,6 @@
-## seenopsis by Meytal Avgil Tsadok
+## **seenopsis**
+by Meytal Avgil Tsadok
+meytala@gmail.com
 
 ## **INTRODUCTION**
 
