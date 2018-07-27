@@ -1,4 +1,4 @@
-## **seenopsis**
+## **SEENOPSIS**
 by Meytal Avgil Tsadok
 meytala@gmail.com
 
