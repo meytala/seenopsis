@@ -2,6 +2,9 @@
 by Meytal Avgil Tsadok
 meytala@gmail.com
 
+All code in this project is released under the AGPLv3 license unless a different license for a particular library is specified in the applicable library path.
+Copyright © Meytal Avgil Tsadok. All rights reserved.
+
 ## **INTRODUCTION**
 
 seenopsis is a tool aiming to aid first exploration and visualization of available variables in a giving dataset.  seenopsis centralizes the main important features of the different variables in a structured visualized approach.
