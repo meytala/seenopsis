@@ -6,6 +6,9 @@ __maintainer__ = "Meytal Avgil Tsadok"
 __email__ = "meytala@gmail.com"
 __status__ = "Production"
 
+##All code in this project is released under the AGPLv3 license unless a different license for a particular library is specified in the applicable library path.
+##Copyright © Meytal Avgil Tsadok. All rights reserved.
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
