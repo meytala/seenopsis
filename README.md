@@ -31,14 +31,14 @@ seenopsis is intendent to be used by anyone who wants to have a first exploratio
 
 In version 1.0.1, seenopsis users will choose one of the following options, based on the formatting of the dataset:
 
-**seenopsis.process\_pandas\_df()** - for datasets that are in a _pandas_ data structures (python):
+**seenopsis.process_pandas_df()** - for datasets that are in a _pandas_ data structures (python)
 After importing seenopsis, simply run this command, passing the name of the dataset.
-After executing the _seenopsis.process\_pandas\_df()_command , a new html tab with the dataset&#39;s seenopsis will be opened in your default internet browser.
+After executing the seenopsis.process_pandas_df() command , a new html tab with the dataset&#39;s seenopsis will be opened in your default internet browser.
 
-**seenopsis.process\_csv()**- for datasets that are saved as a csv file **:**
-If your dataset is not in a pandas dataframe (for example you are using R or SQL environments), simply convert it to a csv file and use seenopsis.process\_csv(). seenopsis version 1.0.1 can read csv files that were encoded using utf-8, ANSI, ISO-8859-1 and ISO-8859-8.
+**seenopsis.process_csv()**- for datasets that are saved as a csv file **:**
+If your dataset is not in a pandas dataframe (for example you are using R or SQL environments), simply convert it to a csv file and use seenopsis.process_csv(). seenopsis version 1.0.1 can read csv files that were encoded using utf-8, ANSI, ISO-8859-1 and ISO-8859-8.
 
-After importing seenopsis and executing the seenopsis.process\_csv() command, a new dialog window will be open and the user will have to point the path for the dataset saved as csv. Once the user choose the file and click open, a new tab with the dataset&#39;s seenopsis will be opened in the default internet browser.
+After importing seenopsis and executing the seenopsis.process_csv() command, a new dialog window will be open and the user will have to point the path for the dataset saved as csv. Once the user choose the file and click open, a new tab with the dataset&#39;s seenopsis will be opened in the default internet browser.
 
 ## **Requirements and Dependencies**
 
@@ -57,7 +57,7 @@ A file named bootstrap.min.css (can be found in [https://github.com/meytala/seen
 
 ## **Additional Information**
 
-While running seenopsis, a new folder named &quot;Graphs\_for\_seenopsis&quot;, will appear in the working directory. This folder is essential for seenopsis table output.
+While running seenopsis, a new folder named &quot;Graphs_for_seenopsis&quot;, will appear in the working directory. This folder is essential for seenopsis table output.
 
 ## **seenopsis  output**
 
@@ -104,9 +104,9 @@ Follow the header, you will see the seenopsis information structured in a rollin
 For a dataset formed in a pandas dataframe:
 
     import seenopsis
-    seenopsis.process\_pandas\_df(name\_of\_dataset)
+    seenopsis.process_pandas_df(name_of_dataset)
 
 For a dataset formed as a csv:
 
     import seenopsis
-    seenopsis.process\_csv()
+    seenopsis.process_csv()
