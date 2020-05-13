@@ -1,5 +1,6 @@
 ## **SEENOPSIS**
-by Meytal Avgil Tsadok
+By Meytal Avgil Tsadok
+Contributed (alot): Leah London Arazi
 meytala@gmail.com
 
 All code in this project is released under the AGPLv3 license unless a different license for a particular library is specified in the applicable library path.
