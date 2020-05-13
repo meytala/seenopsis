@@ -56,7 +56,7 @@ class Seenopsis(object):
         self.input_file_path.set(input_val.replace("/", "\\"))
         
     def end(self):
-        tk.messagebox.showinfo("Success!", "Your output files are at: {}".format(self.output_file_path))
+        tk.messagebox.showinfo("Success!", "Your output files are at: {}".format(self.output_dir_path.get()))
         self.root.destroy()
     
     def run(self):
