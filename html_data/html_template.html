@@ -1,0 +1,52 @@
+<head>
+    <style>
+        table {{
+                   border-collapse: collapse;
+               }}
+        th, td, table {{
+            border: thin solid black;
+            font-size: medium;
+            overflow-wrap: break-word;
+                    }}
+        th {{
+            font-weight: bold;
+            font-style: oblique;
+        }}
+        * {{
+            font-family: 'Segoe UI';
+        }}
+    </style>
+</head>
+<article>
+    <header>
+        <h1 style="font-size: xx-large; font-style: oblique">
+            SEENOPSIS
+        </h1>
+        <h2 style="font-size: large">
+            The file you are investing has {columns_count} variables for {lines_count} observations.
+            This is the seenopsis of your file:
+        </h2>
+    </header>
+</article>
+<body>
+    <table style="table-layout: fixed; width: 100%">
+        <colgroup>
+            <col style="width: 15%; background-color: mintcream; font-weight: bolder"/>
+            <col style="width: 10%"/>
+            <col style="width: 250px" />
+            <col style="width: 30%" />
+            <col style="width: 10%" />
+            <col style="width: 15%" />
+        </colgroup>
+        <tr style="background-color: aliceblue">
+            <th>Variable</th>
+            <th>Type</th>
+            <th>Graphic Representation</th>
+            <th>Basic Statistics</th>
+            <th>Missing (N,%)</th>
+            <th>Outliers (N) (Median &plusmn 3 IQR)</th>
+        </tr>
+        {table_body}
+    </table>
+    <div class="footer">Copyright 2020 Meytal Avgil Tsadok & Leah London Arazi ©</div>
+</body>

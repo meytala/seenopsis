@@ -1,417 +1,146 @@
-__author__ = "Meytal Avgil Tsadok"
-__copyright__ = "Copyright 2018, TLV Israel"
-__credits__ = "She codes - Final project"
-__version__ = "1.0.1"
-__maintainer__ = "Meytal Avgil Tsadok"
-__email__ = "meytala@gmail.com"
-__status__ = "Production"
+# -*- coding: utf-8 -*-
+import seenopsis_data, paths, os, traceback
+import tkinter as tk
+from tkinter import ttk, filedialog
 
-##All code in this project is released under the AGPLv3 license unless a different license for a particular library is specified in the applicable library path.
-##Copyright © Meytal Avgil Tsadok. All rights reserved.
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import webbrowser
-from tkinter.filedialog import askopenfilename
-import os
-import sys
-
-
-##########################################################################################
-####### functions to process the dataframe (df) - based on the type of the df (csv or pandas)#########
-##########################################################################################
-
-def process_csv():
-    csv_file_name = askopenfilename()
-    pd_df = convert_csv_to_pd(csv_file_name)
-    process_pandas_df(pd_df)
-
-
-def process_pandas_df(pd_df):
-    df = pd_df
-    df = df.dropna(how='all', axis=0)
-    df = df.dropna(how='all', axis=1)
-    record_count = max(df.count())
-    column_name_list = list(df)
-    number_of_variables = len(column_name_list)
-    build_html(df)
-    print("In this dataset, there are {} variables and {} observations".format(number_of_variables, record_count))
-
-
-#########################################################
-####### converting the CSV table to pandas df ###########
-#########################################################
-
-def convert_csv_to_pd(csv_file_name):
-    pd_df = None
-    for encoding in ['utf-8', 'UTF-8', 'ANSI', 'ISO-8859-1', 'ISO-8859-8']:
+class Seenopsis(object):
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.withdraw()
+        self.root.report_callback_exception = self.callback_error
+        self.input_file_path = tk.StringVar()
+        self.output_dir_path = tk.StringVar()
+        self.output_dir_path.set(paths.SCRIPT_DIR)
+        self.output_file_name = tk.StringVar()
+        self.output_file_name.set("seenopsis_output.html")
+        self.output_file_path = self.output_dir_path.get() + "\\" + self.output_file_name.get()
+        self.split_binary = ["split_binary"]
+        self.split_binary[0] = tk.BooleanVar() # that is a list because of a bug in tkinter.
+        self.split_by_column = tk.StringVar()
+        self.export_to_pdf = tk.BooleanVar()
+        self.export_to_pdf.set(True)
+     
+    def new_window(self):
         try:
-            pd_df = pd.read_csv(csv_file_name, parse_dates=True, infer_datetime_format=True,
-                                    date_parser=pd.to_datetime, encoding=encoding)
-            print("The csv file is encoded with {}".format(encoding))
-            break
-        except UnicodeDecodeError:
+            self.current_window.destroy()
+        except:
             pass
-        except pd.errors.ParserError:
-            print("Please use a csv file for your database (not excel), or encode with utf-8")
-            sys.exit(1)
-    return pd_df
-
-
-#########################################################
-#################### directory for graphs ###############
-#########################################################
-#create a directory for the graphs or use the graph directory if available
-
-script_dir = os.path.dirname(__file__)
-graph_dir = os.path.join(script_dir, 'Graphs_for_seenopsis/')
-
-if not os.path.isdir(graph_dir):
-    os.makedirs(graph_dir)
-
-
-#########################################################################
-############### The information to present in seenopsis: ################
-#########################################################################
-
-#create a class named VariableInfo with different method to represent featurs of the datasets' variables
-#each variable in the dataset will turn to an object
-
-class VariableInfo:
-    def __init__(self, name, values, index):
-        self.name = name
-        self.values = values
-        self.index = index
-
-
-    def var_type(self):  ### get the variable type based on numpy
-        type_of_variable = np.dtype(self.values)
-        return type_of_variable
-
-
-    def type_for_operation(self):  ###subdivide the variable type to single, binary, category, continuous, test/date
-        if self.var_type() in ('int64', 'float64', 'int32', 'float32'):
-            if self.values.nunique() == 1:
-                return "single number"
-            elif self.values.nunique() == 2:
-                return "binary number"
-            elif 2 < self.values.nunique() <= 10:
-                return "category number"
-            else:
-                return "continuous number"
-        elif self.var_type() == 'object':
-            if self.values.nunique() == 1:
-                return "single text"
-            elif self.values.nunique() == 2:
-                return "binary text"
-            elif 2 < self.values.nunique() <= 10:
-                return "category text"
-            else:
-                return "general text"
+        self.current_window = tk.Toplevel()
+        self.current_window.title("SEENOPSIS")
+        
+    def unpload_data(self):
+        # check valid inputs:
+        if not(os.path.isfile(self.input_file_path.get())):
+            tk.messagebox.showwarning("Warning", "You did not choose a valid input file.")
+        elif os.path.splitext(self.input_file_path.get())[1] != ".csv":
+            tk.messagebox.showwarning("Warning", "Please choose a .csv file as an input.")
+        elif not(os.path.isdir(self.output_dir_path.get())):
+            tk.messagebox.showwarning("Warning", "You did not choose a valid output directory.")
+        elif os.path.splitext(self.output_file_name.get())[1] != ".html":
+            tk.messagebox.showwarning("Warning", "The output file name has to end with .html.")
         else:
-            return "general text"
-
-
-    def type(self):  ### variables' type in a format to be presented nicely in the seenopsis output
-        if "single" in self.type_for_operation():
-            return "Single Variable\n" \
-                   "({})".format(self.var_type())
-        elif "binary" in self.type_for_operation():
-            return "Binary Variable\n" + \
-                   "({})".format(self.var_type())
-        elif "category" in self.type_for_operation():
-            return "Categorical Variable\n" + \
-                   "({})".format(self.var_type())
-        elif "continuous number" in self.type_for_operation():
-            return "Continuous Variable\n" + \
-                   "({})".format(self.var_type())
+            self.output_file_path = self.output_dir_path.get() + "\\" + self.output_file_name.get()
+            self.sd = seenopsis_data.SeenopsisData(self.input_file_path.get(), self.output_file_path, export_to_pdf=self.export_to_pdf.get())
+            self.build_options_gui()
+    
+    def close_window(self):
+        if tk.messagebox.askokcancel("Quit", "Do you want to quit?"):
+            self.root.destroy()
+        
+    def ask_output_dir(self):
+        input_val = filedialog.askdirectory()
+        self.output_dir_path.set(input_val.replace("/", "\\"))
+        
+    def ask_input_file(self):
+        input_val = filedialog.askopenfilename()
+        self.input_file_path.set(input_val.replace("/", "\\"))
+        
+    def end(self):
+        tk.messagebox.showinfo("Success!", "Your output files are at: {}".format(self.output_dir_path.get()))
+        self.root.destroy()
+    
+    def run(self):
+        # check valid inputs:
+        if self.split_binary[0].get() and self.split_by_column.get() == "":
+            tk.messagebox.showwarning("Warning", "If you chose to split by binary, you have to choose a column.")
         else:
-            return "Text or Date"
-
-
-    def histogram(self):
-        plt.hist(self.values.dropna(), bins=50)
-        plt.yticks(fontsize=15)
-        plt.xticks(fontsize=15)
-        plt.savefig(graph_dir + "hist_{}".format(self.index))
-        plt.close()
-        return "hist_{}.png".format(self.index)
-
-
-    def bars(self):
-        self.values.value_counts().nlargest(10).plot(kind='barh')
-        plt.yticks(fontsize=15)
-        plt.xticks(fontsize=14)
-        plt.savefig(graph_dir + "bars_{}".format(self.index))
-        plt.close()
-        return "bars_{}.png".format(self.index)
-
-
-    def create_hist_or_bars_graph(self):
-        if "continuous number" in self.type_for_operation():
-            return self.histogram()
+            self.sd.export_to_html()
+            if self.split_binary[0].get():
+                res = self.sd.split_by_binary(self.split_by_column.get())
+            self.end()
+        
+    def open_column_options(self, binary_columns):
+        global temp_lbl
+        global temp_menu
+        if self.split_binary[0].get():
+            temp_lbl = tk.Label(master=self.current_window, text="Choose column name from the following list:")
+            temp_lbl.grid(row=4, column=0, sticky=tk.W)
+            binary_columns_names = [c.name for c in binary_columns]
+            temp_menu = tk.OptionMenu(self.current_window, self.split_by_column, *binary_columns_names)
+            temp_menu.grid(row=5, column=0, sticky=tk.W)
         else:
-            return self.bars()
-
-
-    def mean_of_var(self):
-        mean = np.nanmean(self.values)
-        return round(float(mean), 2)
-
-
-    def median_of_var(self):
-        median = np.nanmedian(self.values)
-        return round(float(median), 2)
-
-
-    def lower_iqr(self):
-        values = self.values
-        low_iqr = np.nanpercentile(values, 25)
-        return round(float(low_iqr), 2)
-
-
-    def upper_iqr(self):
-        values = self.values
-        up_iqr = np.nanpercentile(values, 75)
-        return round(float(up_iqr), 2)
-
-
-    def minimum_of_var(self):
-        minimum = np.nanmin(self.values)
-        return round(float(minimum), 2)
-
-
-    def maximum_of_var(self):
-        maximum = np.nanmax(self.values)
-        return round(float(maximum), 2)
-
-
-    def sd_of_var(self):
-        sd = np.nanstd(self.values)
-        return round(float(sd), 2)
-
-
-    def count_binary(self):  ### return a list of the percentage for binary variables
-        percentage_list = []
-        count = self.values.value_counts()
-        for name, count in count.items():
-            percentage = round((count / len(self.values)) * 100, 2)
-            sub_list = [name, percentage]
-            percentage_list.append(sub_list)
-        return percentage_list
-
-
-    def count_unique_values(self):
-        unique_counts = self.values.nunique()
-        return unique_counts
-
-
-    def statistics(self):  ### returns what will be written in the statistic column of seenopsis- based on variable type
-        if self.type_for_operation() == "continuous number":
-            return ["Min: {}".format(self.minimum_of_var()),
-                    "Max: {}".format(self.maximum_of_var()),
-                    "Mean &plusmn SD: {} &plusmn {}".format(self.mean_of_var(), self.sd_of_var()),
-                    "Median (IQR): {} ({}, {})".format(self.median_of_var(), self.lower_iqr(), self.upper_iqr())]
-
-        elif "category" in self.type_for_operation():
-            return ["Categorical Variable",
-                    "{} unique values".format(self.count_unique_values()),
-                    "Up to top 10 values are presented"]
-
-        elif "binary" in self.type_for_operation ():
-            return ["Binary variable",
-                    "{}: {}%".format(self.count_binary()[0][0], self.count_binary()[0][1]),
-                    "{}: {}%".format(self.count_binary()[1][0], self.count_binary()[1][1])]
-
-        elif "single" in self.type_for_operation():
-            return ["Single value",
-                    "No Statistics"]
-
+            try:
+                temp_lbl.destroy()
+                temp_menu.destroy()
+            except:
+                pass
+            
+    def build_options_gui(self):
+        # build new window
+        self.new_window()
+        # show all binary columns in sd
+        binary_columns = self.sd.get_columns(filter_by_var_type="Binary Variable")
+        if len(binary_columns) > 0:
+            lbl1 = tk.Label(master=self.current_window, text="We uploaded your data.\nThese are the binary columns we found:", anchor='w', justify=tk.LEFT)
+            lbl1.grid(row=1, column=0, sticky=tk.W)
+            # create a "table" to show the columns details:
+            columns = ('name', 'index', 'type')
+            table = ttk.Treeview(master=self.current_window, columns=columns, show="headings")
+            for c in columns:
+                table.heading(c, text=c)
+            for bc in binary_columns:
+                table.insert("", "end", values=(bc.name, bc.index, bc.var_type + " " + str(bc.np_type)))
+            table.grid(row=2, column=0)
+            # split_binary
+            split_button = ttk.Checkbutton(self.current_window, text="I whould like to split results based on a binary feature.", variable=self.split_binary[0])
+            split_button.grid(row=3, column=0, sticky=tk.W)
+            self.split_binary[0].trace('w', lambda *args: self.open_column_options(binary_columns))
         else:
-            return ["Text/Date variable",
-                    "Up to top 10 values are presented",
-                    "Out of {} unique values".format(self.count_unique_values())]
-
-
-    def count_null(self):
-        number_of_null = self.values.isnull().sum()
-        if number_of_null == 0:
-            return ["No missing",
-                    "values"]
-        else:
-            percent_of_null = round((number_of_null / len(self.values)) * 100, 1)
-            return [("N={}, {}%".format(number_of_null, percent_of_null))]
-
-
-    def number_of_outliers(self, outlier_constant):
-        if self.type_for_operation() == "continuous number":
-            a = np.array(self.values)
-            upper_quartile = np.nanpercentile(a, 75)
-            lower_quartile = np.nanpercentile(a, 25)
-            iqr = (upper_quartile - lower_quartile)
-            extend_iqr = iqr * outlier_constant
-            lower_boundary = lower_quartile - extend_iqr
-            upper_boundary = upper_quartile + extend_iqr
-            count = 0
-            if iqr == 0:
-                return ["IQR=0",
-                        "Outliers were not analyzed"]
-            else:
-                for y in a:
-                    if (y <= lower_boundary) or (y >= upper_boundary):
-                        count += 1
-                return ["N={}".format(count)]
-        elif "category" in self.type_for_operation():
-            return ["Categorical variable",
-                    "No outliers"]
-        elif "binary" in self.type_for_operation():
-            return ["Binary variable",
-                    "No outliers"]
-        elif "single" in self.type_for_operation():
-            return ["Single variable",
-                    "No outliers"]
-        else:
-            return ["Text/Date variable",
-                    "No outliers"]
-
-
-
-
-###########################################################################
-###### Transform variable in the dataset to a VariableInfo object #########
-###########################################################################
-
-def get_list_of_objects(column_name_list, df_table):
-    list_of_objects = []
-    for index, name in enumerate(column_name_list):
-        values = df_table[name]
-        list_of_objects.append(VariableInfo(name, values, index))
-    return list_of_objects
-
-
-###########################################################
-############## Building the HTML ##########################
-###########################################################
-
-def build_html(df):
-    column_name_list = list(df)
-    record_count = max(df.count())
-    number_of_variables = len(column_name_list)
-    list_of_objects = get_list_of_objects(column_name_list, df)
-    html_top = """<html>
-    <head>
-       <title>SEENOPSIS</title>
-       <meta charset="utf-8">
-       <meta name="viewport" content="width=device-width, initial-scale=1">
-       <link rel="stylesheet" href="bootstrap.min.css">
-       <style>
-          .bottom-bar{{
-             background: #deede9;
-          }}
-          .navbar.bottom-bar{{
-             border: none;
-          }}
-          .main-bg{{
-             background-color: #FFFFFF;
-         }}
-          .single-row{{
-             margin-bottom: 5px;
-          }}
-          .content-table td{{
-             padding-bottom: 10px;
-          }}
-       </style>
-    </head>
-    <body class="main-bg">
-    <div class="navbar-wrapper" >
-       <div class="container main-bg">
-          <div class="row  navbar-fixed-top">
-             <div class="container main-bg" style="color: #1d576b">
-            <h2>SEENOPSIS</h2> 
-            <span>The file you are investing has {} variables for {} observations. <br>
-            This is the seenopsis of your file:</span> 
-            <br>
-            <table class="table table-hover" style="margin-bottom:0px">
-                <thead>
-                <tr align="right" >
-                    <th width="10%">Variable<br/>Name</th>
-                      <th width="10%" >Type</th>
-                      <th width="10%">Graphic<br/> Representation</th>
-                      <th width="10%">Basic<br/> Statistics</th>
-                      <th width="10%">Missing<br/> (N, %)</th>
-                      <th width="10%">Outliers (N)<br/>(Median &plusmn 3 IQR) </th>
-                </tr></thead></table>
-             </div>
-          </div>
-       </div>
-    </div> 
-    <div class="container" style="padding-top:160px">
-       <div class="row">
-          <div class="container">
-             <table class="content-table">
-                <thead>
-                <tr >
-                   <th width="10%"></th>
-                   <th width="10%"></th>
-                   <th width="10%"></th>
-                   <th width="10%"></th>
-                   <th width="10%"></th>
-                   <th width="10%"></th>
-                </tr>
-                </thead>""".format(number_of_variables, record_count)
-
-    body_list = []
-    for object in list_of_objects:
-        list_for_body = """ 
-        <tr align="left" class="single-row">
-        <th width="10%"  align="left"> {} </th>
-        <td width="10%" align="left"> {} </td>
-        <td width="10%" align="left"> <img src='Graphs_for_seenopsis/{}' width='200' hight='200'> </img> </td>
-        <td width="10%" align="left"> {} </td>
-        <td width="10%" align="left"> {} </td>
-        <td width="10%" align="left"> {} </td>
-        <tr align="left" class="single-row">""".format\
-            (object.name,
-             object.type(),
-             object.create_hist_or_bars_graph(),
-             "<br>".join(object.statistics()),
-             "<br>".join(object.count_null()),
-             "<br>".join(object.number_of_outliers(3)))
-        body_list.append(list_for_body)
-
-    html_bottom = """</tr>
-         </table>
-     <br />
-     <br />
-     <br />
-      </div>
-           <div class="navbar navbar-fixed-bottom bottom-bar" >
-         <div class="container">
-            <div class="nav navbar-nav pull-right ">
-               <br/>
-               <span style="color: #257D92">&copy; Copyright 2018 Meytal Avgil Tsadok</span>
-                </div>
-             </div>
-          </div>
-       </div>
-    </div>
-    </body>
-    </html>"""
-
-    merged_html = html_top + "".join(body_list) + html_bottom
-
-    with open("seenopsis_output.html", "w") as html_file:
-        html_file.write(merged_html)
-        html_file.close()
-
-    webbrowser.open_new_tab('seenopsis_output.html')
-
-
-###########################################################
-#############  call seenopsis  ############################
-###########################################################
-
-####call seenopsis
-# process_csv()
-# process_pandas_df()
+            lbl1 = tk.Label(master=self.current_window, text="We uploaded your data.\nThere are no binary columns.", anchor='w', justify=tk.LEFT)
+            lbl1.grid(row=1, column=0, sticky=tk.W)
+        # run
+        tk.Button(self.current_window, text="Run", command=self.run).grid(row=6, column=0, sticky=tk.S)      
+        self.current_window.protocol("WM_DELETE_WINDOW", self.close_window)
+        
+    def build_main_gui(self):
+        # build new window
+        self.new_window()
+        # input file path
+        browse_input_button = ttk.Button(master=self.current_window, text="Choose input file", command=self.ask_input_file)
+        browse_input_button.grid(row=1, column=0, sticky=tk.W)
+        lbl1 = tk.Label(master=self.current_window, textvariable=self.input_file_path, justify=tk.LEFT)
+        lbl1.grid(row=1, column=1, sticky=tk.W)
+        # output dir path
+        browse_output_button = ttk.Button(master=self.current_window, text="Choose output directory", command=self.ask_output_dir)
+        browse_output_button.grid(row=2, column=0, sticky=tk.W)
+        lbl2 = tk.Label(master=self.current_window, textvariable=self.output_dir_path, justify=tk.LEFT)
+        lbl2.grid(row=2, column=1, sticky=tk.W)
+        # output file name
+        lbl3 = tk.Label(master=self.current_window, text="Choose output file name (.html):", justify=tk.LEFT)
+        lbl3.grid(row=3, column=0, sticky=tk.W)
+        file_name_ent = tk.Entry(master=self.current_window, textvariable=self.output_file_name)
+        file_name_ent.grid(row=3, column=1, sticky=tk.W)
+        # export to pdf
+        export_pdf_button = ttk.Checkbutton(self.current_window, text="I whould like to export my results as a PDF file.", variable=self.export_to_pdf)
+        export_pdf_button.grid(row=4, column=0, sticky=tk.W)
+        # upload data
+        tk.Button(self.current_window, text="Upload Data", command=self.unpload_data).grid(row=6, column=0, sticky=tk.W + tk.E)
+        self.current_window.protocol("WM_DELETE_WINDOW", self.close_window)
+        self.root.mainloop()
+        
+    def callback_error(self, *args):
+        tk.messagebox.showerror("Error!", "The process has failed:\n {}".format(traceback.format_exc()))
+                
+def run_seenposis():
+    s = Seenopsis()
+    s.build_main_gui()
