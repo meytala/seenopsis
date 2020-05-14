@@ -65,8 +65,8 @@ class BinaryVariable(Variable):
         val_0_count = self.values.isin([self.unique_values[0]]).sum(axis=0)
         val_1_count = self.values.isin([self.unique_values[1]]).sum(axis=0)
         return ["Binary Variable",
-        "{}: {}, {}%".format(self.unique_values[0], val_0_count, val_0_count / all_count * 100.0),
-        "{}: {}, {}%".format(self.unique_values[1], val_1_count, val_1_count  / all_count * 100.0)]
+        "{}: {}, {}%".format(self.unique_values[0], val_0_count, round(val_0_count / all_count * 100.0, 2)),
+        "{}: {}, {}%".format(self.unique_values[1], val_1_count, round(val_1_count  / all_count * 100.0, 2))]
 
 
 class CategoricalVariable(Variable):
