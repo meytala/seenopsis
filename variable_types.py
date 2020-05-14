@@ -61,9 +61,12 @@ class BinaryVariable(Variable):
         self.unique_values = self.values.dropna().unique().tolist()
 
     def list_statistics(self):  ### returns what will be written in the statistic column of seenopsis- based on variable type
-         return ["Binary Variable",
-        "{}: {}%".format(self.unique_values[0], self.values.isin([self.unique_values[0]]).sum(axis=0)),
-        "{}: {}%".format(self.unique_values[1], self.values.isin([self.unique_values[1]]).sum(axis=0))]
+        all_count = len(self.values)
+        val_0_count = self.values.isin([self.unique_values[0]]).sum(axis=0)
+        val_1_count = self.values.isin([self.unique_values[1]]).sum(axis=0)
+        return ["Binary Variable",
+        "{}: {}, {}%".format(self.unique_values[0], val_0_count, val_0_count / all_count * 100.0),
+        "{}: {}, {}%".format(self.unique_values[1], val_1_count, val_1_count  / all_count * 100.0)]
 
 
 class CategoricalVariable(Variable):
