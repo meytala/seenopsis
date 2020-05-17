@@ -68,7 +68,7 @@ class SeenopsisData(object):
                     print(UPLOAD_FROM_CSV_FAILED.format(csv_file_path=self.csv_file_path))
                     raise errors.UploadCSVFailed
             
-        print(UPLOAD_FROM_CSV_UNKNOWN_ENCODING.format(csv_file_path=self.csv_file_path, encodings=str(CSV_ENCODINGS), delimimters=str(CSV_DELIMITERS)))
+        print(UPLOAD_FROM_CSV_UNKNOWN_ENCODING_OR_DELIMITER.format(csv_file_path=self.csv_file_path, encodings=str(CSV_ENCODINGS), delimimters=str(CSV_DELIMITERS)))
         raise errors.UploadCSVUnknownEncoding
         
     def create_columns(self):
