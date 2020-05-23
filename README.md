@@ -32,29 +32,13 @@ The following are required:
 ## **USE CASE**
 seenopsis is intendent to be used by anyone who wants to have a first exploration of dataset&#39;s variables.
 
-## **Prerequisites**
+## **Requirements and Dependencies**
 - Do not work with Hebrew paths.
+- You should have a Chrome browser installed on your computer.
 - If you work with Anaconda3, the script will run via Spyder.
 - To run the script in CMD:
   1. Install Python 3 (https://www.python.org/downloads/)
   2. Install packages in requirements.txt
-
-
-## **Requirements and Dependencies**
-
-In order to execute seenopsis the following libraries are needed:
-- pandas
-- numpy
-- pyplot
-- webbrowser
-- filedialog (askopenfilename)
-- os
-- sys
-
-Additionally, you should have an internet browser installed on your computer (for example chrome or explorer). seenopsis will be better presented in chrome.
-
-A file named bootstrap.min.css (can be found in [https://github.com/meytala/seenopsis](https://github.com/meytala/seenopsis)) should also be copied to the working directory.
-
 
 ## **Additional Information**
 
